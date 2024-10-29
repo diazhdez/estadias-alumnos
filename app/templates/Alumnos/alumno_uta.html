@@ -291,7 +291,7 @@
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="{{ url_for('subir_documento_alumno_uta') }}" method="POST"
+                                            <form action="{{ url_for('update.subir_documento_alumno_uta') }}" method="POST"
                                                 enctype="multipart/form-data">
 
                                                 <div class="form-group">
@@ -423,7 +423,7 @@
                                         </div>
                                         <div class="modal-body">
                                             <form
-                                                action="{{ url_for('subir_documento_uta', id_alumno=alumno._id, documento_nombre=key) }}"
+                                                action="{{ url_for('update.subir_documento_uta', id_alumno=alumno._id, documento_nombre=key) }}"
                                                 method="POST" enctype="multipart/form-data">
 
                                                 <div class="form-group">

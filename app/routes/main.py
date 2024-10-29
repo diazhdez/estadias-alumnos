@@ -7,4 +7,4 @@ main_routes = Blueprint('main', __name__)
 @main_routes.route('/')
 @nocache
 def index():
-    return render_template('main.html')
+    return render_template('login.html')

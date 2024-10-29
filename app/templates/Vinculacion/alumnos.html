@@ -1,0 +1,328 @@
+<!-- templates/alumnos.html -->
+{% extends 'base.html' %}
+
+{% block title %}Información de Alumnos{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/alumnos.css') }}">
+<script src="{{ url_for('static', filename='js/alerts.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/BarraDProgreso.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+{% endblock %}
+
+{% block content %}
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+                <div style="width: 25%; position: fixed; top: 20%; right: 10%; z-index: 1050;" class="alert alert-{{ category }} alert-dismissible fade show flash-message" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% endif %}
+{% endwith %}
+
+<div class="alumnos-container">
+    <h1 class="text-center">Lista de Alumnos</h1>
+    <div class="search-bar">
+        <input type="text" id="search-box" class="search-box" placeholder="Buscar alumno por nombre o matrícula..." oninput="filterTable()">
+        <select id="filtroEstadia" class="form-select me-2" >
+            <option value="">Todas las estadias</option>
+            <option value="Estadias T.S.U">Estadias T.S.U</option>
+            <option value="Ingenieria">Ingeniería</option>
+        </select>
+        <select id="filtroCarrera" class="form-select me-2" oninput="filterTable()" >
+            <option value="">Todas las carreras</option>
+            <option value="MANTENIMIENTO">MANTENIMIENTO</option>
+            <option value="GASTRONOMIA">GASTRONOMIA</option>
+            <option value="TECNOLOGIAS">TECNOLOGIAS</option>
+            <option value="DESARROLLO">DESARROLLO</option>
+            
+        </select>
+ 
+        <select id="filtroCuatri" class="form-select me-2" oninput="filterTable()" >
+            <option value="">Todas los Cuatrimestres</option>
+            <option value="6to">6to</option>
+            <option value="11vo">11vo</option>
+        </select>
+
+        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar Alumno</button>
+    </div>
+    <div class="table-container">
+        <table class="alumnos-table-list">
+            <thead>
+                <tr>
+                    <th>Matrícula</th>
+                    <th>Nombre</th>
+                    <!--<th>Correo Instirucional</th>-->
+                    <th>Telefono</th>
+                    <th>Carrera</th>
+                    <th>Grupo</th>
+                    <th>Cuatrimestre</th>
+                    
+                    <th>Periodo</th>
+                    <th>Estadia en</th>
+
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                {% for alumno in alumnos %}
+                <tr data-id="{{ alumno['_id'] }}" data-progreso="{{ alumno.progreso }}" data-ultima-actividad="{{ alumno.ultima_actividad }}" data-nombre="{{ alumno.Nombre }} {{ alumno.Apellido_Pat }}">
+                    <td>{{ alumno['Matricula'] }}</td>
+                    <td>{{ alumno['Nombre'] }} {{ alumno['Apellido_Pat'] }}</td>
+                    <!--<td>{{ alumno['Correo_Institucional'] }}</td>-->
+                    <td>{{ alumno['Telefono'] }}</td>
+                    <td>{{ alumno['Carrera'] }}</td>
+                    <td>{{ alumno['Grupo'] }}</td>
+                    <td>{{ alumno['Cuatrimestre'] }}</td>
+                    
+                    <td>{{ alumno['Duracion'] }}</td>
+                    <td>{{ alumno['TSU/ING'] }}</td>
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>    
+</div>
+
+
+{% for alumno in alumnos %}
+
+<!-- Barra lateral de progreso para cada alumno -->
+<div id="Progreso{{ alumno['_id'] }}" class="sidebar-progreso">
+    <div class="header">
+        <h3>Progreso del Estudiante</h3>
+        <button type="button" class="close-btn" onclick="cerrarBarra('Progreso{{ alumno['_id'] }}')">X</button>
+    </div>
+    <div class="contenido">
+        <h4 id="nombreAlumno">{{ alumno.Nombre }} {{ alumno.Apellido_Pat }}</h4>
+        <div class="progress">
+            {% set progreso_total = alumno.progreso if alumno.progreso else 0 %}
+            {% set progreso_clase = 'bg-primary' if progreso_total < 100 else 'bg-success' %}
+            <div class="progress-bar {{ progreso_clase }}" role="progressbar" 
+                aria-valuenow="{{ progreso_total }}" 
+                aria-valuemin="0" 
+                aria-valuemax="100" 
+                style="width: {{ progreso_total }}%;">
+                {{ progreso_total | round(0) }}%
+            </div>
+        </div>
+            <div class="table-container">
+                <table class="alumnos-table">
+                    <thead style="background-color: var(--primary-color);">
+                        <tr>
+                            <th>Actividad</th>
+                            <th>Estatus</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        {% for actividad in alumno.actividades %}
+                        <tr>
+                            {% if actividad.estatus == 'completado' %}
+                            <td>{{ actividad.nombre }}</td>
+                            <td>{{ actividad.estatus }}<i style="color: green;" class="bi bi-check2-circle"></i></td>
+                            <td></td>
+                            {% else %}
+                            <td>{{ actividad.nombre }}</td>
+                            <td>{{ actividad.estatus }} <i style="color: red;"  class="bi bi-x-circle"></i></td>
+                            <td><button type="button" class="btn" >Completar</button></td>
+                            {% endif %}
+                            
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>  
+    </div>
+</div>
+{% endfor %}
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Alumno</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('create_vinculacion.agregarAlumno') }}" method="POST">
+                    <div class="form-group">
+                        <label for="matricula_Alum">Matricula del Alumno</label>
+                        <input type="text" class="form-control" id="Matricula" name="Matricula" placeholder="Introduce Matricula" required maxlength="9" minlength="9">
+                    </div>
+                    <div class="form-group">
+                        <label for="Nombre_Alumn">Nombre(s) del Alumno</label>
+                        <input type="text" class="form-control" id="Nombre" name="Nombre" placeholder="Introduce Nombre(s)" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellidos_Alum">Apellidos Paterno</label>
+                        <input type="text" class="form-control" id="apellidos_Alum" name="Apellido_Pat" placeholder="Introduce Apllido Paterno" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellidos_Alum">Apellidos Materno</label>
+                        <input type="text" class="form-control" id="apellidos_Alum" name="Apellido_Mat" placeholder="Introduce Apllido Materno" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="correoAlumn">Correo:</label>
+                        <input type="email" class="form-control" id="correoAlumn" name="Correo" placeholder="Introduce Correo Institucional" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contraseñaAlumn">Contraseña:</label>
+                        <input type="password" class="form-control" id="contraseñaAlumn" name="Contraseña" placeholder="Introduce Contraseña" minlength="8" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono_alumno">Numero de telefono:</label>
+                        <input type="text" class="form-control" id="telefonoAlumno" name="Telefono" placeholder="Introduce telefono" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono_alumno">Cuatrimestre:</label>
+                        <input type="text" class="form-control" id="cuatrimestre" name="Cuatrimestre" placeholder="Introduce Cuatrimestre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono_alumno">Grupo:</label>
+                        <input type="text" class="form-control" id="grupo" name="Grupo" placeholder="Introduce Grupo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="idCarrera">Carrera:</label>
+                        
+                        <select class="form-select me-2" id="Carrera" name="Carrera">
+                            <option value="MANTENIMIENTO">MANTENIMIENTO</option>
+                            <option value="DESARROLLO">DESARROLLO</option>
+                            <option value="TICS">TICS</option>
+                            <option value="GASTRONOMIA">GASTRONOMIA</option>
+                        </select>
+                        
+                    </div>
+                    <div class="form-group">
+                        <label for="idPeriodo">Periodo:</label>
+                        
+                        <select class="form-select me-2" id="idPeriodo" name="idPeriodo">
+                            {% for periodos in periodos %}
+                            <option value="{{ periodos._id }}">{{ periodos.Duracion }}</option>
+                            {% endfor %}
+                        </select>
+                        
+                    </div>
+                    <div class="form-group">
+                        <label for="estadia">Estadia del alumno</label>
+                        <select class="form-select me-2" id="Estadia" name="Estadia">
+                            <option value="T.S.U">T.S.U</option>
+                            <option value="Ingenieria">Ingenieria</option>
+                        </select>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Agregar Alumno</button>
+                    </div>
+                </form>
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+});
+
+
+</script>
+
+
+
+
+<script>
+    function filterTable() {
+        // Obtener el valor del cuadro de búsqueda
+        let searchInput = document.getElementById('search-box').value.toLowerCase();
+        let filterCarrera = document.getElementById('filtroCarrera').value.toUpperCase(); // Cambiado a toUpperCase()
+        let filterEstadia = document.getElementById('filtroEstadia').value.toLowerCase(); // Cambiado a toLowerCase()
+        let filterCuatri = document.getElementById('filtroCuatri').value.toLowerCase();
+        // Obtener las filas de la tabla
+        let tableRows = document.querySelectorAll('#table-body tr');
+
+        // Recorrer cada fila y mostrar u ocultar según el criterio de búsqueda
+        tableRows.forEach(row => {
+            // Obtener el texto de cada columna relevante en la fila
+            let nombreText = row.cells[0].textContent.toLowerCase();
+            let matriculaText = row.cells[1].textContent.toLowerCase();
+            let carreraText = row.cells[3].textContent.toUpperCase(); // Cambiado a toUpperCase()
+            let estadiaText = row.cells[12].textContent.toLowerCase();
+            let cuatriText = row.cells[5].textContent.toLowerCase();
+
+            // Verificar si el texto de búsqueda coincide con el nombre o la matrícula
+            let matchesSearch = nombreText.includes(searchInput) || matriculaText.includes(searchInput);
+            let matchesCarrera = filterCarrera === "" || carreraText.includes(filterCarrera);
+            let matchesEstadia = filterEstadia === "" || estadiaText.includes(filterEstadia);
+            let matchesCuatri = filterCuatri === "" || cuatriText.includes(filterCuatri);
+
+            // Mostrar u ocultar la fila según los criterios de filtro
+            if (matchesSearch && matchesCarrera && matchesEstadia && matchesCuatri) {
+                row.style.display = ""; // Mostrar fila
+            } else {
+                row.style.display = "none"; // Ocultar fila
+            }
+        });
+    }
+</script>
+
+
+<script>
+    // Manejo del doble clic en las celdas de la tabla
+    document.querySelectorAll('.alumnos-container .alumnos-table-list td').forEach(function(td) {
+        td.addEventListener('dblclick', function() {
+            // Obtener el ID del alumno desde el atributo data-id de la fila
+            var fila = this.closest('tr');
+            var idAlumno = fila.getAttribute('data-id');
+
+
+            // Mostrar la barra lateral correspondiente al alumno
+            var barraLateral = document.getElementById('Progreso' + idAlumno);
+            if (barraLateral) {
+
+
+                // Mostrar la barra lateral
+                barraLateral.classList.add('show');
+            }
+        });
+    });
+
+
+    // Función para cerrar la barra lateral
+    function cerrarBarra(idBarra) {
+        var barraLateral = document.getElementById(idBarra);
+        if (barraLateral) {
+            barraLateral.classList.remove('show');
+        }
+    }
+
+    /* // (Opcional) Cerrar el modal al hacer clic en el botón de cerrar
+    // Esto es redundante si usas data-bs-dismiss en el botón de cerrar de Bootstrap
+    document.querySelectorAll('.close-btn').forEach(function(btn) {
+        btn.onclick = function() {
+            var modal = this.closest('.modal');
+            var bootstrapModal = bootstrap.Modal.getInstance(modal);
+            if (bootstrapModal) {
+                bootstrapModal.hide();
+            }
+        };
+    }); */
+</script>
+
+
+
+
+
+{% endblock %}

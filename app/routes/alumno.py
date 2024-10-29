@@ -32,7 +32,7 @@ def alumno_vista():
             alumno['NombrePeriodo'] = periodo_info['NombrePeriodo']
             alumno['Duracion'] = periodo_info['Duracion']
 
-            return render_template('alumno_uta.html', alumno=alumno, documentos=documentacion_alumno, Carreras=carreras, Periodos=periodos)
+            return render_template('Alumnos/alumno_uta.html', alumno=alumno, documentos=documentacion_alumno, Carreras=carreras, Periodos=periodos)
         else:
             flash('No se encontró al alumno.', 'danger')
     return redirect(url_for('session.login'))
