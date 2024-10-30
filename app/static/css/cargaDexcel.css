@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+
+.upload-boton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: rgb(255, 255, 255);
+}
+
+.wrapper{
+    width: 430px;
+    padding: 30px;
+    align-items: center;
+    background: #fff;
+    border-radius: 710x;
+}
+
+.wrapper header{
+    color: #6990f2;
+    font-size: 27px;
+    font-size: 600;
+    text-align: center;
+}
+
+.wrapper form{
+    height: 200px;
+    display: flex;
+    margin: 30px 0;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 10px;
+    border: 2px dashed #6990f2;
+    text-align: center; /* Alinear el texto al centro */
+}
+
+
+/* Estilo para las etiquetas */
+.form-group label {
+    font-size: 16px; /* Tamaño de fuente */
+    color: #333; /* Color del texto */
+    font-weight: 600; /* Negrita */
+    margin-left: 15px;
+    
+}
+
+/* Estilo para el select */
+.form-group select {
+    margin-left: 15px;
+    width: 90%; /* Asegurarse de que ocupe todo el ancho del contenedor */
+    padding: 10px; /* Espaciado interno para una mejor apariencia */
+    font-size: 16px; /* Tamaño de fuente */
+    color: #555; /* Color del texto */
+    background-color: #f9f9f9; /* Color de fondo */
+    border: 1px solid #000000; /* Borde */
+    border-radius: 5px; /* Esquinas redondeadas */
+    appearance: none; /* Remover estilos predeterminados del navegador */
+    cursor: pointer; /* Cambiar el cursor para indicar que es interactivo */
+    
+}
+
+/* Estilo para el select al estar en foco */
+.form-group select:focus {
+    border-color: #6990f2; /* Cambiar color del borde al seleccionar */
+    outline: none; /* Remover borde adicional */
+}
+
+/* Ajuste para select con flecha */
+.form-group select {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjNjk5MGYyIiBoZWlnaHQ9IjEwIiB2aWV3Qm94PSIwIDAgMTEgNiIgd2lkdGg9IjEwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0wIDAgNSAzIDAgNmgxMWwtNS0zeiIvPjwvc3ZnPg==');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 10px;
+}
+
+form :where(i, p){
+    color: #6990f2;
+}
+
+form i {
+    font-size: 50px;
+    color: #6990f2; /* Ajustar color si es necesario */
+    margin-left: 40%;
+}
+
+form p{
+    font-size: 16px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+section .row{
+    background: #e9f0ff;
+    margin-bottom: 10px;
+    list-style: none;
+    padding: 15px 20px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+section .row i{
+    font-size: 30px;
+    color: #6990f2;
+}
+
+section .details span{
+    font-size: 14px;
+}
+
+.progress-area .row .content{
+    width: 50%;
+    margin-left: 15px;
+}
+
+.progress-area .details{
+    display: flex;
+    align-items: center;
+    margin-bottom: 7px;
+    justify-content:center;
+}
+
+.progress-area .progress-bar{
+    height: 6px;
+    width: 50%;
+    background: #fff;
+    margin-bottom: 4px;
+    border-radius: 30px; 
+}
+
+.progress-bar .progress{
+    height: 50%;
+    width: 0%;
+    background: #6990f2;
+    border-radius: inherit;
+}
+
+.uploaded-area{
+    max-height: 150px;
+    overflow-y: scroll;
+}
+
+.uploaded-area::-webkit-scrollbar{
+    width: 0px;
+}
+
+.uploaded-area .row .content{
+    display: flex;
+    align-items: center;
+}
+
+.uploaded-area .row .details{
+    display: flex;
+    margin-left: 15px;
+    flex-direction: column;
+}
+
+.uploaded-area .row .size{
+    font-size: 11px;
+    color: #404040;
+}
+
+.uploaded-area .fa-check{
+    color: #6990f2;
+    font-size: 16px;
+}
+
+.hidden {
+    display: none;
+}
