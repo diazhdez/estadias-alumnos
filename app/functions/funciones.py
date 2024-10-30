@@ -179,7 +179,7 @@ def asignar_actividades():
             alumno_actividades = []  # Crea un arreglo para las actividades del alumno
             for actividad in lista_actividades:
                 # Verificar si la actividad es la de orden 1
-                estatus = "completado" if actividad["Orden"] == 0 else "no iniciado"
+                estatus = "completado" if actividad["Orden"] == "1" else "no iniciado"
 
                 alumno_actividad = {
                     "idAlumno": id_alumno,

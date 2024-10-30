@@ -36,10 +36,14 @@
                                 <h3 class="document-name">{{ key }}</h3>
                             </div>
                             <div class="card-status">
-                                {% if documento.estado == 'aceptado' or documento.estado == 'entregado' %}
+                                {% if documento.estado == 'aceptado' %}
                                     <span class="status completado">Completado <i class="bi bi-check2-circle" style="color: green;"></i></span>
-                                {% else %}
-                                    <span class="status pendiente">Pendiente <i class="bi bi-x-circle" style="color: red;"></i></span>
+                                {% elif documento.estado == 'entregado' %}
+                                <span class="status completado">Entregado <i class="bi bi-check2-circle" style="color: green;"></i></span>
+                                {% elif documento.estado == 'activo' %}
+                                <span class="status completado">Activo <i class="bi bi-check2-circle" style="color: green;"></i></span>
+                                {%else%}
+                                    <span class="status pendiente">Sin activar <i class="bi bi-x-circle" style="color: red;"></i></span>
                                 {% endif %}
                             </div>
                             <div class="card-footer">
@@ -88,18 +92,19 @@
     <div class="right-sidebar">
         <h2>Progreso del Alumno</h2>
         <div class="progress">
-            {% set progreso_total = alumno.progreso if alumno.progreso else 0 %}
-            {% set progreso_clase = 'bg-primary' if progreso_total < 100 else 'bg-success' %}
+            {% set progreso_total = alumno.progreso if alumno.progreso is not none else 0 %}  {# Asegúrate de que 'progreso' no sea None #}
+            {% set progreso_clase = 'bg-primary' if progreso_total < 100 else 'bg-success' %}  {# Cambia el color según el progreso #}
+            
             <div class="progress-bar {{ progreso_clase }}" role="progressbar" 
                 aria-valuenow="{{ progreso_total }}" 
                 aria-valuemin="0" 
                 aria-valuemax="100" 
                 style="width: {{ progreso_total }}%;">
-                {{ progreso_total | round(0) }}%
+                {{ progreso_total | round(0) }}%  {# Muestra el progreso redondeado #}
             </div>
         </div>
     </div>
-</div>
+    
 {% endblock %}
 
 {% block scripts %}
