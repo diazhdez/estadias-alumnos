@@ -46,7 +46,7 @@ def alumno_vista():
             alumno["actividades"] = actividades_alumno  # Almacena las actividades directamente en el diccionario alumno
 
             return render_template(
-                'Alumnos/alumno_uta.html.j2',
+                'Alumnos/alumno_uta.html',
                 alumno=alumno,
                 documentos=documentacion_alumno,
                 Carreras=carreras,
