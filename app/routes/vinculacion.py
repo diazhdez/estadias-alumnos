@@ -116,75 +116,81 @@ def carga():
          return redirect(url_for('session.login'))
     else:
         return redirect(url_for('session.login'))
-    
 @Vinculacion_routes.route('/EduLink/Vinculación/Carga_Alumnos', methods=['POST'])
 def carga_alumnos():
-        db = current_app.get_db_connection()
-        archivo = request.files['archivo']
-        alumno = db["Alumnos"]
-        carga = db ["Carga_Alumnos"]
-       
-        Periodo = request.form.get('Periodo')
-        TSU_ING = request.form.get('tsu_ing')
-        fecha_carga = datetime.combine(datetime.now().date(), datetime.min.time())
+    db = current_app.get_db_connection()
+    archivo = request.files['archivo']
+    alumno = db["Alumnos"]
+    carga = db["Carga_Alumnos"]
 
-        
-        if archivo:
+    Periodo = request.form.get('Periodo')
+    TSU_ING = request.form.get('tsu_ing')
+    fecha_carga = datetime.combine(datetime.now().date(), datetime.min.time())
 
-            if archivo.filename.endswith('.xlsx') or archivo.filename.endswith('.xls'):
+    if archivo:
+        if archivo.filename.endswith('.xlsx') or archivo.filename.endswith('.xls'):
+            try:
                 # Leer el archivo Excel y seleccionar las columnas necesarias
-                alumnos = pd.read_excel(archivo, usecols=['Matricula','Apellido_Pat', 'Apellido_Mat','Nombre','Correo_Institucional','Contraseña','Telefono','Carrera','Cuatrimestre','Grupo','Tipo_estadía'])
-                
+                alumnos = pd.read_excel(archivo, usecols=['Matricula', 'Apellido_Pat', 'Apellido_Mat', 'Nombre',
+                                                           'Correo_Institucional', 'Contraseña', 'Telefono',
+                                                           'Carrera', 'Cuatrimestre', 'Grupo', 'Tipo_estadía'])
+
                 # Validar que no haya datos faltantes en las columnas requeridas
-                if alumnos[['Matricula','Apellido_Pat', 'Apellido_Mat','Nombre','Correo_Institucional','Contraseña','Telefono','Carrera','Cuatrimestre','Grupo']].isnull().any().any():
+                if alumnos[['Matricula', 'Apellido_Pat', 'Apellido_Mat', 'Nombre', 
+                             'Correo_Institucional', 'Contraseña', 'Telefono', 
+                             'Carrera', 'Cuatrimestre', 'Grupo']].isnull().any().any():
                     flash('El archivo contiene filas con datos faltantes. Asegúrate de que todos los campos estén completos.', 'warning')
                     return redirect(url_for('catalago'))
-                
+
+                # Verificar si ya existe una carga
                 existe_carga = carga.find_one({'periodo': Periodo, 'TSU_ING': TSU_ING})
                 if existe_carga:
-                        flash(f'Ya existe una carga de alumnos para el periodo "{Periodo}" y tipo "{TSU_ING}".', 'warning')
-                        return redirect(url_for('Vinculacion.carga'))
-                else:
-                    archivo_data = archivo.read()
-                    archivo_bin = Binary(archivo_data)
-                    carga.insert_one({
-                            'Archivo': archivo_bin,
-                            'periodo':Periodo,
-                            'TSU_ING':TSU_ING,
-                            'Fecha_Carga':fecha_carga  # Almacena solo la fecha (YYYY-MM-DD)
-                        })
+                    flash(f'Ya existe una carga de alumnos para el periodo "{Periodo}" y tipo "{TSU_ING}".', 'warning')
+                    return redirect(url_for('Vinculacion.carga'))
 
-                # Encriptar contraseñas y agregar las columnas adicionales
+                # Almacenar el archivo en binario
+                archivo_data = archivo.read()
+                archivo_bin = Binary(archivo_data)
+                carga.insert_one({
+                    'Archivo': archivo_bin,
+                    'periodo': Periodo,
+                    'TSU_ING': TSU_ING,
+                    'Fecha_Carga': fecha_carga  # Almacena solo la fecha (YYYY-MM-DD)
+                })
+
+                # Encriptar contraseñas y agregar columnas adicionales
                 for index, row in alumnos.iterrows():
-                    # Encriptar la contraseña
                     password = row['Contraseña']
                     if password and isinstance(password, str):
+                        # Hashear la contraseña y almacenarla como bytes
                         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-                        alumnos.at[index, 'Contraseña'] = hashed_password.decode('utf-8')
-                
+                        alumnos.at[index, 'Contraseña'] = hashed_password  # Almacena como bytes
+
                 alumnos['Periodo'] = Periodo        
                 alumnos['TSU/ING'] = TSU_ING
                 alumnos['formato_tres_opciones'] = alumnos.apply(lambda x: {"estado": "activo", "archivo": None, "comentario": None}, axis=1)
-                
+
                 # Convertir los datos a JSON para insertarlos en MongoDB
                 data_json = alumnos.to_dict(orient='records')
-                
+
                 # Insertar los registros en la base de datos
                 alumno.insert_many(data_json)
-                
 
                 # Llamar a la función para registrar actividades
                 if asignar_actividades():
                     flash('Alumnos cargados exitosamente', 'success')
                 else:
                     flash('Alumnos cargados, pero ocurrió un error al registrar actividades.', 'warning')
-            else:
-                flash('El archivo debe de ser .xlsx, .xls para poder ser compatible', 'warning')
-                return redirect(url_for('Vinculacion.Home'))
-        else:
-            archivo = None
 
-        return redirect(url_for('Vinculacion.Home'))
+            except Exception as e:
+                flash(f'Ocurrió un error: {str(e)}', 'danger')
+                return redirect(url_for('Vinculacion.Home'))
+
+        else:
+            flash('El archivo debe de ser .xlsx o .xls para poder ser compatible', 'warning')
+            return redirect(url_for('Vinculacion.Home'))
+
+    return redirect(url_for('Vinculacion.Home'))
 
 
 @Vinculacion_routes.route('/aceptar_documento_uta/', methods=['GET', 'POST'])

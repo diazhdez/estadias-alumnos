@@ -17,11 +17,11 @@ def iniciar():
     db = current_app.get_db_connection()  # Obtener la conexión a la base de datos
     correo = request.form['correo']
     password = request.form['password']
-    alumno = db['usuarios']
+    alumno = db['Alumnos']
     administracion = db['administradores']
 
-    login_alumno = alumno.find_one({'correoAlumno': correo})
-    if login_alumno and bcrypt.checkpw(password.encode('utf-8'), login_alumno['contraseñaAlumno']):
+    login_alumno = alumno.find_one({'Correo_Institucional': correo})
+    if login_alumno and bcrypt.checkpw(password.encode('utf-8'), login_alumno['Contraseña']):
         # Autenticación exitosa
         session['correo'] = correo
         flash('Inicio de sesión exitoso como alumno.', 'success')

@@ -41,8 +41,7 @@ def alumno_vista():
             alumno['Duracion'] = periodo_info['Duracion']
 
             # Calcular el progreso y obtener las actividades del alumno
-            id_alumno = '6721e34b940a396150eae06a'
-            progreso, actividades_alumno = progreso_alumno(id_alumno)
+            progreso, actividades_alumno = progreso_alumno(alumno['_id'])
             alumno["progreso"] = progreso  # Almacena el progreso directamente en el diccionario alumno
             alumno["actividades"] = actividades_alumno  # Almacena las actividades directamente en el diccionario alumno
 

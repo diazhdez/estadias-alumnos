@@ -19,7 +19,7 @@ def nocache(view):
 
 def obtener_usuario_por_matricula(id_alumno):
     db = current_app.get_db_connection()  # Obtener la conexión a la base de datos
-    usuario = db['usuarios'].find_one({'_id': ObjectId(id_alumno)})
+    usuario = db['Alumnos'].find_one({'_id': ObjectId(id_alumno)})
     return usuario
 
 
@@ -36,7 +36,7 @@ def obtener_documentos_alumno(id_alumno):
 
 def obtener_usuario_por_correo(correo):
     db = current_app.get_db_connection()  # Obtener la conexión a la base de datos
-    usuario = db['usuarios'].find_one({'correoAlumno': correo})
+    usuario = db['Alumnos'].find_one({'Correo_Institucional': correo})
     return usuario
 
 
