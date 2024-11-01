@@ -1,0 +1,521 @@
+:root {
+    --primary-color: #007bff; /* Azul claro */
+    --secondary-color: #28a745; /* Verde */
+    --accent-color: #fd7e14; /* Naranja */
+    --background-light: #f8f9fa; /* Fondo claro */
+    --background-dark: #343a40; /* Fondo oscuro */
+    --text-color: #212529; /* Color de texto */
+}
+
+
+.projects-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Encabezado */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.alumno-info {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    text-align: left;
+    max-width: 600px;
+}
+
+.alumno-info p {
+    font-size: 15px;
+    margin: 6px 0;
+    color: #555;
+}
+
+.alumno-info p strong {
+    color: #333;
+}
+
+/* Contenedor de tarjetas */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Estilos de las tarjetas */
+.card {
+    width: 260px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-top: 4px solid #6c63ff;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card.completado {
+    border-top: 4px solid #28a745;
+}
+
+.card.pendiente {
+    border-top: 4px solid #dc3545;
+}
+
+.card-header h3 {
+    font-size: 16px;
+    margin: 8px 0;
+    color: #333;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Estatus de la tarjeta */
+.card-status {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 8px;
+    color: #555;
+}
+
+.status.completado {
+    color: #28a745;
+}
+
+.status.pendiente {
+    color: #dc3545;
+}
+
+.status i {
+    margin-left: 5px;
+    font-size: 1.2em;
+}
+
+/* Footer de la tarjeta */
+.card-footer {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Título de entrega */
+.entregar-documento-title {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+/* Botón de subir archivo */
+.btn-subir-archivo {
+    display: block;
+    width: 100%;
+    margin: 12px 0;
+    font-size: 0.85rem;
+    padding: 10px;
+    background-color: #6c63ff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-subir-archivo:hover {
+    background-color: #574b90;
+}
+
+/* Botón de visualizar */
+.btn-visualizar {
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 150px;
+}
+
+.btn-visualizar:hover {
+    background-color: #218838;
+}
+
+/* Sección de carga de archivos en el modal */
+.upload-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.custom-file-label {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 0.9rem;
+    text-align: center;
+    color: #555;
+    background-color: #e6e6e6;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    transition: background-color 0.3s ease;
+}
+
+.custom-file-label:hover {
+    background-color: #d4d4d4;
+}
+
+.file-input {
+    display: none; /* Oculta el input de tipo file */
+}
+
+.btn-upload {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+    background-color: #4a4a9d;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 160px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-upload:hover {
+    background-color: #3a3a7f;
+}
+
+/* Título del modal para entregar documento */
+.entregar-documento-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin-top: 15px;
+}
+
+/* Estilos para el título y campo del documento */
+.document-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.document-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #4a4a4a;
+    margin-bottom: 8px;
+}
+
+.document-input {
+    width: 100%;
+    max-width: 180px;
+    padding: 8px 12px;
+    font-size: 0.95rem;
+    color: #333;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    text-align: center;
+    transition: border-color 0.3s ease;
+}
+
+.document-input:focus {
+    border-color: #6c63ff;
+    outline: none;
+}
+
+/* Mejora visual del formulario en el modal */
+.form-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.file-name-container {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #555;
+    background-color: #f4f4f4;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-align: center;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Contenedor de página con sidebar derecho */
+.page-container {
+    display: flex;
+    width: 100%;
+}
+
+/* Contenido principal ajustado */
+.main-content {
+    width: calc(100% - 250px); /* Resta el ancho del sidebar derecho */
+    padding: 20px;
+    overflow-y: auto;
+    
+}
+
+
+/* Estilos para la barra lateral de progreso */
+.sidebar-progreso {
+    position:sticky;
+    top: 0;
+    right: 1px; /* Ocultar inicialmente */
+    width: 350px;
+    height: 100%;
+    background-color: #f4f4f4;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+    transition: right 0.4s ease;
+    z-index: 1050;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+/* Mostrar la barra lateral */
+.sidebar-progreso.show {
+    right: 0;
+}
+
+
+
+/* Estilo del encabezado */
+.sidebar-progreso .header-list {
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-progreso .header-list h3 {
+    font-size: 1.1em;
+    margin: 0;
+    display: flex;
+    text-align: center;
+}
+
+.sidebar-progreso .header h3::before {
+    content: "\f058"; /* Ícono de Font Awesome */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-right: 8px;
+}
+
+.sidebar-progreso .contenido {
+    flex: 1;
+}
+
+/* Separador después del nombre */
+.sidebar-progreso .contenido hr {
+    border: none;
+    border-top: 1px solid #e9ecef;
+    margin: 15px 0;
+}
+
+/* Estilo del nombre del alumno */
+.sidebar-progreso #nombreAlumno {
+    font-size: 1.4em;
+    color: #343a40;
+    margin-bottom: 15px;
+}
+
+/* Barra de progreso */
+.progress {
+    background-color: #e9ecef;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    height: 25px;
+
+}
+
+.progress-bar {
+    height: 100%;
+    text-align: center;
+    line-height: 25px;
+    color: white;
+    border-radius: 20px;
+    transition: width 0.4s ease;
+}
+
+
+/* Estilo de la última actividad */
+.sidebar-progreso .contenido p {
+    font-size: 1em;
+    color: #6c757d;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-progreso .contenido p::before {
+    content: "\f0ae"; /* Ícono de Font Awesome */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-right: 8px;
+    color: #28a745;
+}
+
+/* Efectos de hover en el botón de cerrar */
+.sidebar-progreso .close-btn:hover {
+    color: #ff4d4d;
+    transition: color 0.3s ease;
+}
+
+/* Estilo de la tabla */
+.table-container {
+    max-height: 55%; /* Ajusta la altura máxima según tus necesidades */
+    overflow-y: auto;  /* Habilita el desplazamiento vertical */
+    border: 1px solid #ddd; /* Opcional: añade un borde alrededor del contenedor */
+    border-radius: 8px; /* Opcional: redondea las esquinas */
+}
+/* Oculta la barra de desplazamiento */
+.table-container::-webkit-scrollbar {
+    display: none; /* Oculta la barra de desplazamiento */
+}
+.alumnos-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.alumnos-table thead th {
+    position: sticky; /* Hacer que el encabezado sea fijo */
+    top: 0; /* Fijar en la parte superior del contenedor */
+    background-color: var(--primary-color); /* Color de fondo */
+    color: white; /* Color del texto */
+    z-index: 10; /* Asegúrate de que esté encima del contenido */
+}
+
+.alumnos-table th, 
+.alumnos-table td {
+    font-size: 13px;
+    padding: 5px;
+    text-align: center;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.alumnos-table tbody tr:hover {
+    background-color: #f1f3f5; /* Fondo más claro al pasar el ratón */
+}
+
+.alumnos-table tbody tr:nth-child(even) {
+    background-color: #d3d4d4; /* Alternar filas */
+}
+
+.alumnos-table .btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 4px 4px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.alumnos-table .btn:hover {
+    background-color: var(--accent-color);
+}
+
+/* Estilo de la tabla */
+.alumnos-container .alumnos-table-list {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    overflow-y: auto;  /* Habilita el desplazamiento vertical */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.alumnos-container .alumnos-table-list thead {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.alumnos-table-list th,
+.alumnos-table-list td {
+    font-size: 15px;
+    padding: 15px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.alumnos-container .alumnos-table-list tbody tr:hover {
+    background-color: #f1f3f5; /* Fondo más claro al pasar el ratón */
+}
+
+.alumnos-container .alumnos-table-list tbody tr:nth-child(even) {
+    background-color: #d3d4d4; /* Alternar filas */
+}
+
+.modal, .modal * {
+    transition: none !important;
+}
+
+/* Fondo de la tabla */
+.alumnos-table-list,
+.search-bar {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Estilo de los encabezados de la tabla */
+.alumnos-table-list thead th {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.bg-primary {
+    background-color: #88C0D0; /* Color suave y moderno */
+}
+
+.bg-success {
+    background-color: #A3BE8C; /* Verde suave para progreso completo */
+}

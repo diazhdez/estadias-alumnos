@@ -33,7 +33,6 @@
         <div class="modal fade" id="SubirArchivo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    
                     <div class="modal-body">
                         <form action="{{ url_for('Vinculacion.carga_alumnos') }}" method="POST" enctype="multipart/form-data">
                             <div class="wrapper">
@@ -58,8 +57,8 @@
                             <div class="form-group" >
                                 <label>Seleccionar TSU O ING</label>
                                 <select name="tsu_ing" id="tsu_ing" class="form-select me-2">
-                                    <option value="T.S.U">T.S.U</option>
-                                    <option value="Estadias Ingenieria">Estadias Ingenieria</option>
+                                    <option value="TSU">T.S.U</option>
+                                    <option value="ING">Estadias Ingenieria</option>
                                 </select>
                             </div>
                             <div class="modal-footer">

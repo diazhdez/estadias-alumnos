@@ -193,3 +193,8 @@ def asignar_actividades():
                 Alumnos_Act.insert_many(alumno_actividades)
 
         return True
+
+def obtener_alumno(id_alumno):
+    db = current_app.get_db_connection()
+    usuario = db['Alumnos'].find_one({'_id': ObjectId(id_alumno)})
+    return usuario

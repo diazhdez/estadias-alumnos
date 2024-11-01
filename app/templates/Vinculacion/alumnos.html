@@ -32,22 +32,31 @@
         <input type="text" id="search-box" class="search-box" placeholder="Buscar alumno por nombre o matrícula..." oninput="filterTable()">
         <select id="filtroEstadia" class="form-select me-2" >
             <option value="">Todas las estadias</option>
-            <option value="Estadias T.S.U">Estadias T.S.U</option>
-            <option value="Ingenieria">Ingeniería</option>
+            <option value="TSU">Estadias T.S.U</option>
+            <option value="ING">Ingeniería</option>
         </select>
         <select id="filtroCarrera" class="form-select me-2" oninput="filterTable()" >
             <option value="">Todas las carreras</option>
-            <option value="MANTENIMIENTO">MANTENIMIENTO</option>
-            <option value="GASTRONOMIA">GASTRONOMIA</option>
-            <option value="TECNOLOGIAS">TECNOLOGIAS</option>
+            <option value="MANTO">MANTENIMIENTO</option>
+            <option value="GASTRO">GASTRONOMIA</option>
+            <option value="TICS">TECNOLOGIAS</option>
             <option value="DESARROLLO">DESARROLLO</option>
-            
         </select>
  
         <select id="filtroCuatri" class="form-select me-2" oninput="filterTable()" >
             <option value="">Todas los Cuatrimestres</option>
             <option value="6to">6to</option>
             <option value="11vo">11vo</option>
+        </select>
+
+        <select id="filtroGrupo" class="form-select me-2" oninput="filterTable()" >
+            <option value="">Todas los Grupos</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
         </select>
 
         <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar Alumno</button>
@@ -63,7 +72,6 @@
                     <th>Carrera</th>
                     <th>Grupo</th>
                     <th>Cuatrimestre</th>
-                    
                     <th>Periodo</th>
                     <th>Estadia en</th>
 
@@ -74,12 +82,10 @@
                 <tr data-id="{{ alumno['_id'] }}" data-progreso="{{ alumno.progreso }}" data-ultima-actividad="{{ alumno.ultima_actividad }}" data-nombre="{{ alumno.Nombre }} {{ alumno.Apellido_Pat }}">
                     <td>{{ alumno['Matricula'] }}</td>
                     <td>{{ alumno['Nombre'] }} {{ alumno['Apellido_Pat'] }}</td>
-                    <!--<td>{{ alumno['Correo_Institucional'] }}</td>-->
                     <td>{{ alumno['Telefono'] }}</td>
                     <td>{{ alumno['Carrera'] }}</td>
                     <td>{{ alumno['Grupo'] }}</td>
                     <td>{{ alumno['Cuatrimestre'] }}</td>
-                    
                     <td>{{ alumno['Duracion'] }}</td>
                     <td>{{ alumno['TSU/ING'] }}</td>
                     
@@ -127,7 +133,7 @@
                             {% if actividad.estatus == 'completado' %}
                             <td>{{ actividad.nombre }}</td>
                             <td>{{ actividad.estatus }}<i style="color: green;" class="bi bi-check2-circle"></i></td>
-                            <td></td>
+                            <td><a href="{{ url_for('Vinculacion.documento_alumnos', id_alumno=alumno._id) }}" class="btn">ver</i></a></td>
                             {% else %}
                             <td>{{ actividad.nombre }}</td>
                             <td>{{ actividad.estatus }} <i style="color: red;"  class="bi bi-x-circle"></i></td>
@@ -247,9 +253,10 @@ document.addEventListener("DOMContentLoaded", function() {
     function filterTable() {
         // Obtener el valor del cuadro de búsqueda
         let searchInput = document.getElementById('search-box').value.toLowerCase();
-        let filterCarrera = document.getElementById('filtroCarrera').value.toUpperCase(); // Cambiado a toUpperCase()
+        let filterCarrera = document.getElementById('filtroCarrera').value.toLowerCase(); // Cambiado a toLowerCase()
         let filterEstadia = document.getElementById('filtroEstadia').value.toLowerCase(); // Cambiado a toLowerCase()
         let filterCuatri = document.getElementById('filtroCuatri').value.toLowerCase();
+        let filterGrupo = document.getElementById('filtroGrupo').value.toLowerCase(); // Cambiado a toLowerCase()
         // Obtener las filas de la tabla
         let tableRows = document.querySelectorAll('#table-body tr');
 
@@ -258,18 +265,20 @@ document.addEventListener("DOMContentLoaded", function() {
             // Obtener el texto de cada columna relevante en la fila
             let nombreText = row.cells[0].textContent.toLowerCase();
             let matriculaText = row.cells[1].textContent.toLowerCase();
-            let carreraText = row.cells[3].textContent.toUpperCase(); // Cambiado a toUpperCase()
-            let estadiaText = row.cells[12].textContent.toLowerCase();
+            let carreraText = row.cells[3].textContent.toLowerCase(); // Cambiado a toLowerCase()
+            let estadiaText = row.cells[7].textContent.toLowerCase();
             let cuatriText = row.cells[5].textContent.toLowerCase();
+            let grupoText = row.cells[4].textContent.toLowerCase();
 
             // Verificar si el texto de búsqueda coincide con el nombre o la matrícula
             let matchesSearch = nombreText.includes(searchInput) || matriculaText.includes(searchInput);
             let matchesCarrera = filterCarrera === "" || carreraText.includes(filterCarrera);
             let matchesEstadia = filterEstadia === "" || estadiaText.includes(filterEstadia);
             let matchesCuatri = filterCuatri === "" || cuatriText.includes(filterCuatri);
+            let matchesGrupo = filterGrupo ==="" || grupoText.includes(filterGrupo);
 
             // Mostrar u ocultar la fila según los criterios de filtro
-            if (matchesSearch && matchesCarrera && matchesEstadia && matchesCuatri) {
+            if (matchesSearch && matchesCarrera && matchesEstadia && matchesCuatri && matchesGrupo) {
                 row.style.display = ""; // Mostrar fila
             } else {
                 row.style.display = "none"; // Ocultar fila

@@ -48,9 +48,9 @@ def create_app():
         app.register_blueprint(session_routes)
         app.register_blueprint(alumno_routes)
         app.register_blueprint(update_routes)
+
         app.register_blueprint(view_routes)
         app.register_blueprint(errors)
         app.register_blueprint(Vinculacion_routes)
         app.register_blueprint(create_vinculacion_routes)
-
     return app
