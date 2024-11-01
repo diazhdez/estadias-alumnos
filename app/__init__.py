@@ -43,12 +43,13 @@ def create_app():
         from app.routes.errors import errors
         from app.routes.vinculacion import Vinculacion_routes
         from app.routes.create_vinculacion import create_vinculacion_routes
+        from app.routes.update_vinculacion import update_vinculacion_routes
 
         app.register_blueprint(main_routes)
         app.register_blueprint(session_routes)
         app.register_blueprint(alumno_routes)
         app.register_blueprint(update_routes)
-
+        app.register_blueprint(update_vinculacion_routes)
         app.register_blueprint(view_routes)
         app.register_blueprint(errors)
         app.register_blueprint(Vinculacion_routes)

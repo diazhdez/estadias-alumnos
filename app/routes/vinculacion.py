@@ -116,6 +116,7 @@ def carga():
          return redirect(url_for('session.login'))
     else:
         return redirect(url_for('session.login'))
+    
 @Vinculacion_routes.route('/EduLink/Vinculación/Carga_Alumnos', methods=['POST'])
 def carga_alumnos():
     db = current_app.get_db_connection()

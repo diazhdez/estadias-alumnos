@@ -19,6 +19,17 @@ def ver_archivo_alumno_uta(nombre_archivo, id_alumno):
             return send_file(documento_stream, as_attachment=False, mimetype=mimetype)
     return 'Archivo no encontrado', 404
 
+@view_routes.route('/EduLink/Vinculación/Validar/Documentos_Alumno/ver/<nombre_archivo>/<id_alumno>', methods=['GET'])
+def ver_archivo_alumno(nombre_archivo, id_alumno):
+        alumno = obtener_usuario_por_matricula(id_alumno)
+        if alumno:
+            datos = ver_documento_alumno_uta(id_alumno, nombre_archivo)
+            if datos:
+                documento_stream = io.BytesIO(datos)
+                documento_stream.seek(0)
+                mimetype = 'application/pdf'
+                return send_file(documento_stream, as_attachment=False, mimetype=mimetype)
+        return 'Archivo no encontrado', 404
 
 @view_routes.route('/EduLink/Alumno/ver/formato_tres_opciones/<id_alumno>', methods=['GET'])
 def ver_archivo_alumno_uta_1(id_alumno):

@@ -16,17 +16,19 @@
 {% endblock %}
 
 {% block content %}
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-{% for category, message in messages %}
-<div style="width: 25%; position: fixed; top: 20%; right: 10%; z-index: 1050;"
-    class="alert alert-{{ category }} alert-dismissible fade show flash-message" role="alert">
-    {{ message }}
-</div>
-{% endfor %}
-{% endif %}
-{% endwith %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div style="width: 25%; position: fixed; top: 20%; z-index: 1050;"
+        class="alert alert-{{ category }} alert-dismissible fade show flash-message" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
 <div class="page-container">
+    
     <!-- Contenido principal ajustado -->
     <div class="main-content">
         <div class="projects-container">
@@ -76,24 +78,18 @@
                     </div>
                     <div class="card-footer">
                         {% if alumno.formato_tres_opciones.estado == 'activo' %}
-                        <a class="btn btn-success" data-bs-toggle="modal"
+                        <a href="#" class="btn btn-success" data-bs-toggle="modal"
                             data-bs-target="#Aceptar_documento{{alumno._id}}">Aceptar</a>
-
                         {% elif alumno.formato_tres_opciones.estado == 'entregado' %}
-                        <a href="#" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
-                        <a href="#" class="btn btn-success">Aceptar</a>
-                        <a type="button" class="btn btn-danger" data-bs-toggle="modal"
-                            data-bs-target="#devolver_documento_entregado">Devolver</a>
-
-                        <!-- Modal for "Entregado" status -->
-                        <div class="modal fade" id="devolver_documento_entregado" tabindex="-1"
-                            aria-labelledby="editarModalLabel" aria-hidden="true">
-                            <!-- Repeat modal content here as needed with unique ID -->
+                        <a href="{{ url_for('view.ver_archivo_alumno_uta', nombre_archivo=key, id_alumno=alumno._id) }}"
+                            class="btn-visualizar">Visualizar</a>
+                        <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento_entregado">Devolver</a>
                         </div>
                         {% elif alumno.formato_tres_opciones.estado == 'aceptado' %}
                         <a href="#" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
 
                         {% elif alumno.formato_tres_opciones.estado == 'devuelto' %}
+                        <p class="status-info">El documento ha sido devuelto.</p>
                         {% else %}
                         <a href="#" class="btn btn-warning">Activar</a>
                         {% endif %}
@@ -166,40 +162,10 @@
                         {% if alumno.formato_tres_opciones.estado == 'activo' %}
                         <a href="#" class="btn btn-success" data-bs-toggle="modal"
                             data-bs-target="#Aceptar_documento">Aceptar</a>
-                        <div class="modal fade" id="Aceptar_documento" tabindex="-1" aria-labelledby="editarModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="editarModalLabel">Aceptar Formato_tres_opciones
-                                        </h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="{{ url_for('Vinculacion.aceptar_documento_nuevo_uta') }}"
-                                            method="POST">
-                                            <div class="form-group">
-                                                <label for="estadia">Estadia del alumno del Alumno</label>
-                                                <select class="form-select me-2" id="tipo_estadia" name="tipo_estadia">
-                                                    <option value="documentosTSU">Normales</option>
-                                                    <option value="documentos_Foraneas">Foraneas</option>
-                                                    <option value="documentos_Especiales">Especiales</option>
-                                                </select>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <input type="hidden" name="id_alumno" value="{{ alumno._id }}">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Devolver</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                         {% elif alumno.formato_tres_opciones.estado == 'entregado' %}
-                        <a href="#" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
+                        <a href="{{ url_for('view.ver_archivo_alumno_uta', nombre_archivo=key, id_alumno=alumno._id) }}"
+                            class="btn-visualizar">Visualizar</a>
                         <a href="#" class="btn btn-success">Aceptar</a>
                         <a type="button" class="btn btn-danger" data-bs-toggle="modal"
                             data-bs-target="#devolver_documento_entregado">Devolver</a>
@@ -213,11 +179,43 @@
                         <a href="#" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
 
                         {% elif alumno.formato_tres_opciones.estado == 'devuelto' %}
+                        <p class="status-info">El documento ha sido devuelto.</p>
                         {% else %}
                         <a href="#" class="btn btn-warning">Activar</a>
                         {% endif %}
                     </div>
 
+                </div>
+                
+                <div class="modal fade" id="Aceptar_documento{{alumno._id}}" tabindex="-1"
+                    aria-labelledby="editarModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title fs-3" id="editarModalLabel">Aceptar Formato tres opciones</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ url_for('Vinculacion.aceptar_documento_nuevo_uta') }}" method="POST">
+                                    <div class="form-group">
+                                        <label for="estadia">Estadia del alumno del Alumno</label>
+                                        <select class="form-select me-2" id="tipo_estadia" name="tipo_estadia">
+                                            <option value="documentosTSU">Normales</option>
+                                            <option value="documentos_Foraneas">Foraneas</option>
+                                            <option value="documentos_Especiales">Especiales</option>
+                                        </select>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input type="hidden" name="id_alumno" value="{{ alumno._id }}">
+                                        <input type="hidden" name="estadia_Alumno" value="{{ alumno['TSU/ING'] }}">
+                                        <input type="hidden" name="nombre" value="{{ alumno.Nombre }}">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Devolver</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {%endif%}
@@ -248,17 +246,29 @@
                     </div>
                     <div class="card-footer">
                         {% if documento.estado == 'activo' %}
-                        <a href="#" class="btn btn-success">Aceptar</a>
-                        <a type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        {% elif documento.estado == 'entregado' %}
+                        <a href="{{ url_for('view.ver_archivo_alumno', nombre_archivo=key, id_alumno=alumno._id) }}"
+                            class="btn btn-primary btn-sm">view</a>
+                        <a href="{{ url_for('update_vinculacion.aceptar_documento_nuevo', documento_nombre=key, id_alumno=alumno._id) }}" class="btn btn-success btn-sm">Aceptar</a>
+                        <a type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
                             data-bs-target="#devolver_documento{{ key }}">Devolver</a>
-                        <div class="modal fade" id="devolver_documento{{ key }}" tabindex="-1"
+                        {% elif documento.estado == 'aceptado' %}
+                        <a href="{{ url_for('view.ver_archivo_alumno', nombre_archivo=key, id_alumno=alumno._id) }}"
+                        class="btn btn-primary btn-sm">view</a>
+                        {% elif documento.estado == 'devuelto' %}
+                        <p class="status-info">El documento ha sido devuelto.</p>
+                        {% else %}
+                        <a href="{{ url_for('update_vinculacion.actualizar_estado_documento_nuevo', documento_nombre=key, id_alumno=alumno._id) }}" class="btn btn-warning">Activar</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="modal fade" id="devolver_documento{{ key }}" tabindex="-1"
                             aria-labelledby="editarModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="editarModalLabel">Devolver Documento</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                                        <h4 class="modal-title fs-5" id="editarModalLabel">Devolver Documento</h4>
                                     </div>
                                     <div class="modal-body">
                                         <form action="#" method="POST">
@@ -282,24 +292,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        {% elif documento.estado == 'entregado' %}
-                        <a href="#" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
-                        <a href="#" class="btn btn-success">Aceptar</a>
-                        <a type="button" class="btn btn-danger" data-bs-toggle="modal"
-                            data-bs-target="#devolver_documento{{ key }}">Devolver</a>
-                        <!-- Modal similar to above -->
-                        {% elif documento.estado == 'aceptado' %}
-                        <a href="#" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
-                        {% elif documento.estado == 'devuelto' %}
-                        <a href="#" class="btn btn-success">Aceptar</a>
-                        <a type="button" class="btn btn-danger" data-bs-toggle="modal"
-                            data-bs-target="#devolver_documento{{ key }}">Devolver</a>
-                        <!-- Modal similar to above -->
-                        {% else %}
-                        <a href="#" class="btn btn-warning">Activar</a>
-                        {% endif %}
-                    </div>
                 </div>
                 {% endif %}
                 {% endfor %}
