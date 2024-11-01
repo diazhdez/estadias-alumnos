@@ -9,7 +9,7 @@ update_routes = Blueprint('update', __name__)
 def subir_documento_alumno_uta():
     db = current_app.get_db_connection()  # Obtener la conexión a la base de datos
     id_alumno = request.form.get('id_alumno')
-    alumno = db['usuarios'].find_one({'_id': ObjectId(id_alumno)})
+    alumno = db['Alumnos'].find_one({'_id': ObjectId(id_alumno)})
     archivo = request.files['archivo']
     if alumno:
         if archivo:
@@ -18,7 +18,7 @@ def subir_documento_alumno_uta():
                 archivo_bin = Binary(archivo_data)
 
                 # Actualiza el documento del alumno
-                db['usuarios'].update_one(
+                db['Alumnos'].update_one(
                     {'_id': ObjectId(id_alumno)},
                     {'$set': {
                         'formato_tres_opciones.estado': 'entregado',
@@ -43,5 +43,5 @@ def subir_documento_uta(id_alumno, documento_nombre):
             flash('Documento subido exitosamente.', 'success')
         else:
             flash('No se pudo subir el documento. Inténtelo de nuevo.', 'danger')
-        return redirect(url_for('alumno_vista', id_alumno=id_alumno))
-    return redirect(url_for('alumno_vista', id_alumno=id_alumno))
+        return redirect(url_for('alumno.alumno_vista', id_alumno=id_alumno))
+    return redirect(url_for('alumno.alumno_vista', id_alumno=id_alumno))

@@ -34,10 +34,10 @@ def alumno_vista():
                 alumno.get('idCarrera', ''), 'Carrera no encontrada'
             )
             periodo_info = periodos_dict.get(
-                alumno.get('idPeriodo', ''),  # Asegúrate de que esto se maneje correctamente
+                alumno.get('Periodo', ''),  # Cambiado de 'idPeriodo' a 'Periodo'
                 {'NombrePeriodo': 'Periodo no encontrado', 'Duracion': ''}
             )
-            alumno['NombrePeriodo'] = periodo_info['NombrePeriodo']
+            alumno['Periodo'] = periodo_info['NombrePeriodo']
             alumno['Duracion'] = periodo_info['Duracion']
 
             # Calcular el progreso y obtener las actividades del alumno
@@ -46,7 +46,7 @@ def alumno_vista():
             alumno["actividades"] = actividades_alumno  # Almacena las actividades directamente en el diccionario alumno
 
             return render_template(
-                'Alumnos/alumno_uta.html',
+                'Alumnos/alumno_uta.html.j2',
                 alumno=alumno,
                 documentos=documentacion_alumno,
                 Carreras=carreras,
@@ -67,8 +67,7 @@ def catalago():
         # Convertir el cursor a una lista de documentos
         archivos = list(conexion.find())
         for archivo in archivos:
-            archivo['extension'] = archivo['nombre'].split(
-                '.')[-1].lower()  # Obtener la extensión de cada archivo
+            archivo['extension'] = archivo['nombre'].split('.')[-1].lower()  # Obtener la extensión de cada archivo
         return render_template("Archivos_uta.html", archivos=archivos)
     else:
         flash('Acceso denegado: Debes de inciar sesion.', 'danger')

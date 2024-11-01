@@ -15,12 +15,12 @@
                 {% if alumno %}
                     <h1>Actividades del Alumno</h1>
                     <div class="alumno-info">
-                        <p><strong>Nombre del Alumno:</strong> {{ alumno.nombreAlumno }} {{ alumno.apellidosAlumno }}</p>
-                        <p><strong>Matrícula:</strong> {{ alumno.matricula }}</p>
-                        <p><strong>Grupo:</strong> {{ alumno.grupo }}</p>
-                        <p><strong>Carrera:</strong> {{ alumno.NombreCarrera }}</p>
-                        <p><strong>Periodo:</strong> {{ alumno.NombrePeriodo }} ({{ alumno.Duracion }})</p>
-                        <p><strong>Tipo de Estadía:</strong> {{ alumno.tipo_estadia }}</p>
+                        <p><strong>Nombre del Alumno:</strong> {{ alumno.Nombre }} {{ alumno.Apellido_Pat }} {{ alumno.Apellido_Mat }}</p>
+                        <p><strong>Matrícula:</strong> {{ alumno.Matricula }}</p>
+                        <p><strong>Grupo:</strong> {{ alumno.Cuatrimestre }} "{{ alumno.Grupo }}"</p>
+                        <p><strong>Carrera:</strong> {{ alumno.Carrera }}</p>
+                        <p><strong>Periodo:</strong> {{ alumno.Periodo }} ({{ alumno.Duracion }})</p>
+                        <p><strong>Tipo de Estadía:</strong> {{ alumno.Tipo_estadía }}</p>
                     </div>
                 {% else %}
                     <h1>Alumno no encontrado</h1>
@@ -37,21 +37,20 @@
                             </div>
                             <div class="card-status">
                                 {% if documento.estado == 'aceptado' %}
-                                    <span class="status completado">Completado <i class="bi bi-check2-circle" style="color: green;"></i></span>
+                                <span class="status completado">Completado <i class="bi bi-check2-circle" style="color: green;"></i></span>
                                 {% elif documento.estado == 'entregado' %}
                                 <span class="status completado">Entregado <i class="bi bi-check2-circle" style="color: green;"></i></span>
                                 {% elif documento.estado == 'activo' %}
                                 <span class="status completado">Activo <i class="bi bi-check2-circle" style="color: green;"></i></span>
-                                {%else%}
-                                    <span class="status pendiente">Sin activar <i class="bi bi-x-circle" style="color: red;"></i></span>
+                                {% elif documento.estado == 'desactivado' %}
+                                <span class="status pendiente">Sin activar <i class="bi bi-x-circle" style="color: red;"></i></span>
                                 {% endif %}
                             </div>
                             <div class="card-footer">
                                 {% if documento.estado == 'aceptado' or documento.estado == 'entregado' %}
-                                    <a href="{{ url_for('ver_archivo_alumno_uta', nombre_archivo=key, id_alumno=alumno._id) }}" class="btn-visualizar">Visualizar</a>
+                                    <a href="{{ url_for('view.ver_archivo_alumno_uta', nombre_archivo=key, id_alumno=alumno._id) }}" class="btn-visualizar">Visualizar</a>
                                 {% else %}
                                     <h3 class="entregar-documento-title">Entregar Documento</h3>
-                                    <button type="button" class="btn-subir-archivo" data-bs-toggle="modal" data-bs-target="#SubirArchivo{{key}}">Subir archivo</button>
                                     <div id="fileNameContainer-{{ key }}" class="file-name-container" style="display: none;">
                                         <span id="fileName-{{ key }}"></span>
                                     </div>
@@ -62,14 +61,14 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form action="#" method="POST" enctype="multipart/form-data"> 
+                                                    <form action="{{ url_for('update.subir_documento_uta', id_alumno=alumno._id, documento_nombre=key) }}" method="POST" enctype="multipart/form-data"> 
                                                         <div class="form-group upload-section">
                                                             <label for="archivo-{{ key }}" class="custom-file-label">Seleccionar archivo</label>
                                                             <input class="file-input" type="file" id="archivo-{{ key }}" name="archivo" required accept=".pdf" onchange="updateFileName('{{ key }}')">
                                                         </div>
                                                         <div class="modal-footer">
                                                             <input type="hidden" name="id_alumno" value="{{ alumno._id }}">
-                                                            <button type="button" class="btn btn-primary btn-upload" id="upload-{{ key }}" style="display: none;">Subir archivo</button>
+                                                            <button type="submit" class="btn-subir-archivo mb-3" id="upload-{{ key }}">Subir archivo</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -84,7 +83,7 @@
                 {% else %}
                     <p>No hay actividades para mostrar.</p>
                 {% endif %}
-            </div>    
+            </div>
         </div>
     </div>
 
