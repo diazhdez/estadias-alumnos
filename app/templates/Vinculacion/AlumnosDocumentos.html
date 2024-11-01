@@ -222,7 +222,7 @@
                 {% for key, documento in documentos.items() %}
                 {% if key not in ['_id', 'id_usuario'] %}
                 <div
-                    class="card {% if documento.estado == 'aceptado' or documento.estado == 'entregado' %}completado{% else %}pendiente{% endif %}">
+                    class="card {% if documento.estado == 'aceptado' or documento.estado == 'entregado' or documento.estado == 'activo'  %}completado{% else %}pendiente{% endif %}">
                     <div class="card-header">
                         <h3 class="document-name">{{ key }}</h3>
                     </div>
