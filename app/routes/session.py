@@ -1,14 +1,8 @@
-from flask import Blueprint, current_app, render_template, redirect, url_for, flash, session, request
+from flask import Blueprint, current_app, redirect, url_for, flash, session, request
 from app.functions.funciones import nocache
 import bcrypt
 
 session_routes = Blueprint('session', __name__)
-
-
-@session_routes.route('/EduLink/login/')
-def login():
-    return render_template('login.html')
-
 
 
 @session_routes.route('/iniciar/', methods=['POST'])
