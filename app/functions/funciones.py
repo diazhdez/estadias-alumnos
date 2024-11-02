@@ -181,6 +181,7 @@ def asignar_actividades():
                 # Verificar si la actividad es la de orden 1
                 estatus = "completado" if actividad["Orden"] == "1" else "no iniciado"
 
+                
                 alumno_actividad = {
                     "idAlumno": id_alumno,
                     "idActividad": actividad["_id"],
@@ -224,3 +225,16 @@ def actualizar_estado_documento(id_alumno, documento_nombre):
             )
             return True
     return False
+
+def devolver_documento(id_alumno, documento_nombre, comentario):
+        db = current_app.get_db_connection()
+        documentos_collections = ['documentos_TSU', 'documentos_LIC_ING', 'documentos_foraneas', 'documentos_especiales']
+        for collection in documentos_collections:
+            documento = db[collection].find_one({'id_usuario': id_alumno})
+            if documento and documento_nombre in documento:
+                db[collection].update_one(
+                    {'id_usuario': id_alumno},
+                    {'$set': {f'{documento_nombre}.estado': 'devuelto', f'{documento_nombre}.comentario': comentario}}
+                )
+                return True
+        return False

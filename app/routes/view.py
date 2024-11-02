@@ -113,3 +113,28 @@ def descargar_archivo(archivo_id):
         return send_file(io.BytesIO(datos), as_attachment=True, mimetype=mimetype, download_name=nombre)
     else:
         return 'Archivo no encontrado', 404
+
+@view_routes.route('/Catalago_De_Empresas/ver/<archivo_id>/', methods=['GET'])
+def ver_archivo_vinculacion(archivo_id):
+        db = current_app.get_db_connection() 
+        conexion = db["archivos_vinculacion"]
+        archivo = conexion.find_one({'_id': ObjectId(archivo_id)})
+
+        if archivo:
+            nombre = archivo['nombre']
+            datos = archivo['archivo']
+            documento_stream = io.BytesIO(datos)
+            documento_stream.seek(0)
+            extension = nombre.split('.')[-1].lower()  # Obtener la extensión del archivo
+            if extension == 'pdf':
+                mimetype = 'application/pdf'
+            elif extension in ['doc', 'docx']:
+                mimetype = 'application/msword'
+            elif extension in ['xls', 'xlsx']:
+                mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            else:
+                # Para otros tipos de archivos, establecer el tipo MIME como genérico
+                mimetype = 'application/octet-stream'
+            return send_file(documento_stream, as_attachment=False, mimetype=mimetype)
+        else:
+            return 'Archivo no encontrado', 404

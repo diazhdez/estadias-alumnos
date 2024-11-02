@@ -75,6 +75,10 @@ body {
     border-top: 4px solid #dc3545;
 }
 
+.card.devuelto {
+    border-top: 4px solid rgb(215, 206, 23);
+}
+
 .card-header h3 {
     font-size: 16px;
     margin: 8px 0;
@@ -99,6 +103,10 @@ body {
 
 .status.pendiente {
     color: #dc3545;
+}
+
+.status.devuelto {
+    color: rgb(215, 206, 23);
 }
 
 .status i {

@@ -4,20 +4,13 @@
 
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/alumnos_vista.css') }}">
+<script src="{{ url_for('static', filename='js/alerts.js') }}"></script>
+
 {% endblock %}
 
 {% block content %}
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-{% for category, message in messages %}
-<div style="width: 25%; position: fixed; top: 10%; right: 37.5%; z-index: 1050;"
-    class="alert alert-{{ category }} alert-dismissible fade show flash-message" role="alert">
-    {{ message }}
-</div>
-{% endfor %}
-{% endif %}
-{% endwith %}
+
 
 <div class="page-container">
     <!-- Contenido principal ajustado -->
@@ -48,7 +41,7 @@
                 {% for key, documento in documentos.items() %}
                 {% if key not in ['_id', 'id_usuario'] %}
                 <div
-                    class="card {% if documento.estado == 'aceptado' or documento.estado == 'entregado' %}completado{% else %}pendiente{% endif %}">
+                    class="card {% if documento.estado == 'aceptado' or documento.estado == 'entregado' %}completado{% elif documento.estado == 'devuelto' %}devuelto{% else %}pendiente{% endif %}">
                     <div class="card-header">
                         <h3 class="document-name">{{ key }}</h3>
                     </div>
@@ -59,6 +52,9 @@
                         {% elif documento.estado == 'entregado' %}
                         <span class="status completado">Entregado <i class="bi bi-check2-circle"
                                 style="color: green;"></i></span>
+                        {% elif documento.estado == 'devuelto' %}
+                        <span class="status devuelto">Devuelto <i class="bi bi-check2-circle"
+                                style="color: rgb(215, 206, 23);"></i></span>
                         {% elif documento.estado == 'activo' %}
                         <span class="status completado">Activo <i class="bi bi-check2-circle"
                                 style="color: green;"></i></span>
