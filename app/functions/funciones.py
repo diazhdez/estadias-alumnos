@@ -39,6 +39,11 @@ def obtener_usuario_por_correo(correo):
     usuario = db['Alumnos'].find_one({'Correo_Institucional': correo})
     return usuario
 
+def obtener_administrador_por_correo(correo):
+    db = current_app.get_db_connection()  # Obtener la conexión a la base de datos
+    admin = db['administradores'].find_one({'correo': correo})
+    return admin
+
 
 def obtener_documentos_alumno_uta(id_alumno):
     db = current_app.get_db_connection()  # Obtener la conexión a la base de datos

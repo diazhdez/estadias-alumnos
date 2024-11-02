@@ -1,5 +1,5 @@
 from flask import Blueprint, current_app, render_template, redirect, url_for, flash, session, request
-from app.functions.funciones import nocache, obtener_usuario_por_correo
+from app.functions.funciones import nocache, obtener_administrador_por_correo, obtener_usuario_por_correo
 import bcrypt
 
 session_routes = Blueprint('session', __name__)
@@ -24,8 +24,8 @@ def iniciar():
     # Buscar en la colección de Administradores
     login_departamentos = administracion.find_one({'correo': correo})
     if login_departamentos and bcrypt.checkpw(password.encode('utf-8'), login_departamentos['contraseña']):
-        session['correo'] = correo
         departamento = login_departamentos['departamento']
+        session['correo'] = correo
         
         if departamento == 'vinculacion':
             return redirect(url_for('Vinculacion.Home'))
@@ -48,6 +48,11 @@ def vista_alumno():
     alumno = obtener_usuario_por_correo(correo)
     return render_template('base_alumnos.html', alumno=alumno)
     
+@session_routes.route('/base')
+def vista_administracion():
+    correo = session.get('correo')
+    admin = obtener_administrador_por_correo(correo)
+    return render_template('base.html', administrador=admin)
 
 @session_routes.route('/logout')
 @nocache

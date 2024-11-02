@@ -1,7 +1,7 @@
 
 import bcrypt
 from flask import Blueprint, current_app, render_template, request, url_for, redirect, flash, session
-from app.functions.funciones import nocache, obtener_alumno, obtener_documentos_alumno, obtener_documentos_alumno_uta, asignar_actividades, progreso_alumno
+from app.functions.funciones import nocache, obtener_administrador_por_correo, obtener_alumno, obtener_documentos_alumno, obtener_documentos_alumno_uta, asignar_actividades, progreso_alumno
 from datetime import datetime
 from bson import Binary, ObjectId
 import pandas as pd
@@ -11,11 +11,12 @@ Vinculacion_routes = Blueprint('Vinculacion', __name__)
 @Vinculacion_routes.route("/EduLink/Vinculación/administrar_Alumnos/")
 @nocache
 def Home():
+    correo = session.get('correo')
     if 'correo' in session:
         db = current_app.get_db_connection()
         correo_usuario = session['correo']
         administradores = db["administradores"]
-        
+        admin = obtener_administrador_por_correo(correo)
         # Verifica si el correo está en la colección de administradores
         administrador = administradores.find_one({'correo': correo_usuario})  
         if administrador:     
@@ -46,12 +47,12 @@ def Home():
                 # Agregar a la lista de resultados
                 alumnos_con_progreso.append(alumno)
 
-            return render_template("vinculacion/alumnos.html", alumnos=alumnos_con_progreso, periodos=periodos)
+            return render_template("vinculacion/alumnos.html", alumnos=alumnos_con_progreso, periodos=periodos, administrador=admin)
         else:
             flash('Acceso denegado: No eres un administrador.', 'danger')
             return redirect(url_for('session.login'))
     else:
-        return redirect(url_for('session.login'))
+        return redirect(url_for('session.logout'))
     
 
 @Vinculacion_routes.route("/EduLink/Vinculación/DocumentoAlumno/")
