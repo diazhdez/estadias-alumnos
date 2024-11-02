@@ -47,7 +47,8 @@
                 <div class="profile_details">
                     <img src="{{ url_for('static', filename='img/LOGO-UTA.png') }}" alt="">
                     <div class="name_job">
-                        <div class="name">{{ alumno.Nombre }}</div>
+                        <div class="name">{{ alumno.Nombre }}
+                            {{ alumno.Apellido_Pat }} {{ alumno.Apellido_Mat }}</div>
                         <div class="job">{{ alumno['TSU/ING'] }}</div>
                     </div>
                 </div>
