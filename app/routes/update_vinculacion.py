@@ -1,5 +1,5 @@
 from flask import Blueprint, current_app, flash, redirect, session, url_for, request
-from app.functions.funciones import aceptar_documento, actualizar_estado_documento, subir_documento
+from app.functions.funciones import aceptar_documento, actualizar_estado_documento, devolver_documento, subir_documento
 from bson import Binary, ObjectId
 
 update_vinculacion_routes = Blueprint('update_vinculacion', __name__)
@@ -66,3 +66,24 @@ def upload_file():
         })
         flash('Archivo guardado exitosamento','success')
         return redirect(url_for('Vinculacion.archivos_vinculacion'))
+
+@update_vinculacion_routes.route('/devolver_Documento/', methods=['POST'])
+def devolver_documento_alumno():
+        db = current_app.get_db_connection()
+        id_alumno = request.form.get('id_alumno')
+        documento_nombre = request.form.get('Nombre_documento')
+        comentario = request.form['comentario']
+        
+        if devolver_documento(id_alumno, documento_nombre,comentario):
+            correo = session.get('correo')
+            if correo:
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo}, 
+                    {'$set': {'ultimo_movimiento': 'Devolvio un documento'}}
+                )
+            flash('Documento devuelto exitosamente.', 'success')
+        else:
+            flash('No se pudo devolver el documento intentelo de nuevo.', 'danger')
+        
+        return redirect(url_for('Vinculacion.documento_alumnos', id_alumno=id_alumno))

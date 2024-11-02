@@ -1,14 +1,8 @@
 from flask import Blueprint, current_app, render_template, redirect, url_for, flash, session, request
-from app.functions.funciones import nocache
+from app.functions.funciones import nocache, obtener_usuario_por_correo
 import bcrypt
 
 session_routes = Blueprint('session', __name__)
-
-
-@session_routes.route('/EduLink/login/')
-def login():
-    return render_template('login.html')
-
 
 
 @session_routes.route('/iniciar/', methods=['POST'])
@@ -47,6 +41,12 @@ def iniciar():
     flash('Correo o contraseña incorrectos', 'danger')
     return redirect(url_for('session.login'))
 
+
+@session_routes.route('/base_alumno')
+def vista_alumno():
+    correo = session.get('correo')
+    alumno = obtener_usuario_por_correo(correo)
+    return render_template('base_alumnos.html', alumno=alumno)
     
 
 @session_routes.route('/logout')

@@ -222,7 +222,7 @@
                 {% for key, documento in documentos.items() %}
                 {% if key not in ['_id', 'id_usuario'] %}
                 <div
-                    class="card {% if documento.estado == 'aceptado' or documento.estado == 'entregado' or documento.estado == 'activo'  %}completado{% else %}pendiente{% endif %}">
+                    class="card {% if documento.estado == 'aceptado' or documento.estado == 'entregado' or documento.estado == 'activo'  %}completado{% elif documento.estado == 'devuelto' %}devuelto{% else %}pendiente{% endif %}">
                     <div class="card-header">
                         <h3 class="document-name">{{ key }}</h3>
                     </div>
@@ -234,7 +234,7 @@
                         <span class="status completado">Entregado <i class="bi bi-check2-circle"
                                 style="color: green;"></i></span>
                         {% elif documento.estado == 'devuelto' %}
-                        <span class="status completado">Devuelto <i class="bi bi-check2-circle"
+                        <span class="status devuelto">Devuelto <i class="bi bi-check2-circle"
                                 style="color: rgb(215, 206, 23);"></i></span>
                         {% elif documento.estado == 'activo' %}
                         <span class="status completado">Activo <i class="bi bi-check2-circle"
@@ -271,7 +271,7 @@
                                         <h4 class="modal-title fs-5" id="editarModalLabel">Devolver Documento</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="#" method="POST">
+                                        <form action="{{ url_for('update_vinculacion.devolver_documento_alumno') }}" method="POST">
                                             <div class="form-group">
                                                 <label>Nombre del documento</label>
                                                 <input type="text" class="form-control" value="{{ key }}"
