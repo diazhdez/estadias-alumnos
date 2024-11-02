@@ -1,0 +1,297 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+/* Flash Message Styles */
+.flash-message {
+    max-width: 300px;
+    background-color: #28a745;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Button Styles */
+.btn-upload {
+    background-color: #0056b3;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-upload:hover {
+    background-color: #004080;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Specific Styles for Ver and Descargar buttons */
+.btn-view, .btn-download {
+    margin-top: 8px;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-view {
+    color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-view:hover {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.btn-download {
+    color: #198754;
+    border-color: #198754;
+}
+
+.btn-download:hover {
+    background-color: #198754;
+    color: white;
+}
+
+/* Card Styles */
+.file-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: #ffffff;
+    padding: 20px;
+    text-align: center;
+}
+
+.file-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.5rem;
+    text-transform: capitalize;
+}
+
+.card-text {
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 1rem;
+}
+
+/* Button Group for Ver and Descargar */
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Modal Styles for "Nuevo Archivo" */
+.modal-content {
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.modal-header {
+    background-color: #343a40;
+    color: #ffffff;
+    padding: 15px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.modal-header .modal-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.modal-body {
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.modal-footer {
+    background-color: #f1f1f1;
+    padding: 15px;
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Styling the file input */
+.form-label {
+    font-weight: 600;
+    color: #495057;
+}
+
+.form-control[type="file"] {
+    border: 1px solid #ced4da;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.form-control[type="file"]:hover {
+    border-color: #0056b3;
+}
+
+.form-control[type="file"]::file-selector-button {
+    padding: 8px 12px;
+    border: none;
+    background-color: #0056b3;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-control[type="file"]::file-selector-button:hover {
+    background-color: #004080;
+}
+
+/* Button styles in modal */
+.btn-secondary, .btn-primary {
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, box-shadow 0.2s ease;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary {
+    background-color: #0056b3;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:hover {
+    background-color: #004080;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom File Upload Styles */
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-upload-custom {
+    background-color: #0056b3;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.btn-upload-custom:hover {
+    background-color: #004080;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.archivo-name {
+    font-size: 0.9rem;
+    color: #777;
+    font-weight: 500;
+}
+
+/* Modal PDF Styles */
+.pdf-modal-content {
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.pdf-modal-header {
+    background-color: #343a40;
+    color: #fff;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pdf-modal-header .modal-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.pdf-modal-body {
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+.pdf-frame {
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.pdf-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 15px;
+    border-top: 1px solid #dee2e6;
+}
+
+.btn-close-modal {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    background-color: #6c757d;
+    color: white;
+    transition: background-color 0.2s ease;
+}
+
+.btn-close-modal:hover {
+    background-color: #5a6268;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .file-card {
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        font-size: 0.85rem;
+    }
+}
