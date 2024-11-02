@@ -68,11 +68,11 @@
                         <a href="{{ url_for('view.ver_archivo_alumno_uta', nombre_archivo=key, id_alumno=alumno._id) }}"
                             class="btn-visualizar">Visualizar</a>
                         {% elif documento.estado == 'desactivado' %}
-                        <p class="status-info">El documento no está habilitado
-                            para ser subido.</p>
+                        <p class="status-info">El documento no está habilitado para ser subido.</p>
                         {% else %}
-                        <h3 class="entregar-documento-title">Entregar
-                            Documento</h3>
+                        {% if documento.estado == 'devuelto' %}
+                        <p class="status-info">Comentario: {{ documento.comentario }}</p>
+                        {% endif %}
                         <div id="fileNameContainer-{{ key }}" class="file-name-container" style="display: none;">
                             <span id="fileName-{{ key }}"></span>
                         </div>
@@ -98,8 +98,7 @@
                                             <div class="modal-footer">
                                                 <input type="hidden" name="id_alumno" value="{{ alumno._id }}">
                                                 <button type="submit" class="btn-subir-archivo mb-3"
-                                                    id="upload-{{ key }}">Subir
-                                                    archivo</button>
+                                                    id="upload-{{ key }}">Entregar Documento</button>
                                             </div>
                                         </form>
                                     </div>
