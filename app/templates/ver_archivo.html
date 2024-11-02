@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Archivo</title>
+</head>
+<body>
+    <h2>{{ nombre }}</h2>
+
+    {% if extension == 'pdf' %}
+        <!-- Incrustar un visor de PDF -->
+        <embed src="data:application/pdf;base64,{{ datos }}" width="100%" height="600px" type="application/pdf">
+    {% else %}
+        <!-- Mostrar un enlace para descargar el archivo si no es un PDF -->
+        <a href="{{ url_for('descargar_archivo', archivo_id=archivo._id) }}" class="btn btn-primary">Descargar</a>
+    {% endif %}
+</body>
+</html>

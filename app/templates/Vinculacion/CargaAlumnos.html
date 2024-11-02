@@ -76,8 +76,12 @@
         
 {% endblock %}
 {% block scripts %}
-    <script src="{{ url_for('static', filename='js/cargaDexcel.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+<script>
+    function loadPDF(pdfId) {
+      document.getElementById('pdfFrame').src = `/Catalago_De_Empresas/ver/${pdfId}/`;
+    }
+  </script>
+    <script src="{{ url_for('static', filename='js/borrar.js') }}"></script>
 {% endblock %}
 
     

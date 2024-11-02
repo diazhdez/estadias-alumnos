@@ -38,3 +38,31 @@ def actualizar_estado_documento_nuevo(id_alumno, documento_nombre):
             flash('No se pudo actualizar el estado del documento.', 'danger')
         
         return redirect(url_for('Vinculacion.documento_alumnos', id_alumno=id_alumno))
+
+
+@update_vinculacion_routes.route('/Catalago_De_Empresas/upload/', methods=['POST'])
+def upload_file():
+        db = current_app.get_db_connection()
+        conexion = db["archivos_vinculacion"]
+        archivo = request.files['archivo']
+        descripcion = request.form["descripcion"]
+
+        if archivo:
+            if archivo.filename.endswith('.pdf') or archivo.filename.endswith('.doc') or archivo.filename.endswith('.docx') or archivo.filename.endswith('.xlsx') or archivo.filename.endswith('.xls'):
+                archivo_data = archivo.read()
+                archivo_nombre = archivo.filename  # Guarda el nombre del archivo
+                archivo_bin = Binary(archivo_data)  # Almacena el contenido del archivo como datos binarios en la base de datos
+            else:
+                flash('El archivo debe ser .pdf, .doc, .docx, .xlsx, .xls','warning')
+                return redirect(url_for('registerColaborador'))
+        else:
+            archivo_nombre = None
+            archivo_bin = None
+ 
+        conexion.insert_one({
+            'nombre': archivo_nombre,  # Guarda el nombre del archivo en la base de datos
+            'archivo': archivo_bin,
+            'descripcion': descripcion,
+        })
+        flash('Archivo guardado exitosamento','success')
+        return redirect(url_for('Vinculacion.archivos_vinculacion'))

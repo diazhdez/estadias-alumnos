@@ -82,12 +82,12 @@
                 </tr>
             </thead>
             <tbody id="table-body">
-                {% for alumno in alumnos %}
+                {% for alumno in alumnos|sort(attribute='Apellido_Pat') %}
                 <tr data-id="{{ alumno['_id'] }}" data-progreso="{{ alumno.progreso }}"
                     data-ultima-actividad="{{ alumno.ultima_actividad }}"
                     data-nombre="{{ alumno.Nombre }} {{ alumno.Apellido_Pat }}">
                     <td>{{ alumno['Matricula'] }}</td>
-                    <td>{{ alumno['Nombre'] }} {{ alumno['Apellido_Pat'] }} {{ alumno['Apellido_Mat'] }}</td>
+                    <td>{{ alumno['Apellido_Pat'] }} {{ alumno['Apellido_Mat'] }} {{ alumno['Nombre'] }}</td>
                     <td>{{ alumno['Telefono'] }}</td>
                     <td>{{ alumno['Carrera'] }}</td>
                     <td>{{ alumno['Grupo'] }}</td>
