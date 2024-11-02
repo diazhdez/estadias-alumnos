@@ -39,7 +39,7 @@ def iniciar():
 
     # Si el inicio de sesión falla, muestra un mensaje de error
     flash('Correo o contraseña incorrectos', 'danger')
-    return redirect(url_for('session.login'))
+    return redirect(url_for('session.logout'))
 
 
 @session_routes.route('/base_alumno')
