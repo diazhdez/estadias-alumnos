@@ -40,8 +40,7 @@
                 {% if documentos %}
                 {% for key, documento in documentos.items() %}
                 {% if key not in ['_id', 'id_usuario'] %}
-                <div
-                    class="card {% if documento.estado == 'aceptado' or documento.estado == 'entregado' %}completado{% elif documento.estado == 'devuelto' %}devuelto{% else %}pendiente{% endif %}">
+                <div class="card {% if documento.estado == 'aceptado' or documento.estado == 'entregado' or documento.estado == 'activo' %}completado{% elif documento.estado == 'devuelto' %}devuelto{% else %}pendiente{% endif %}">
                     <div class="card-header">
                         <h3 class="document-name">{{ key }}</h3>
                     </div>
@@ -77,9 +76,6 @@
                         <div id="fileNameContainer-{{ key }}" class="file-name-container" style="display: none;">
                             <span id="fileName-{{ key }}"></span>
                         </div>
-                        <button type="button" class="btn-subir-archivo" data-bs-toggle="modal"
-                            data-bs-target="#SubirArchivo{{key}}">Subir
-                            archivo</button>
                         <div class="modal fade" id="SubirArchivo{{key}}" tabindex="-1"
                             aria-labelledby="editarModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
