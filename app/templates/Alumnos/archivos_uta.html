@@ -78,11 +78,11 @@
                             <p>
                                 {% if archivo.extension == 'pdf' %}
                                 <a class="btn btn-info btn-sm"
-                                    href="{{ url_for('ver_archivo', archivo_id=archivo._id) }}"><i
+                                    href="{{ url_for('view.ver_archivo', archivo_id=archivo._id) }}"><i
                                         class="bi bi-eye-fill"></i> Ver</a>
                                 {% endif %}
                                 <input type="hidden" value="{{archivo._id}}" id="archivo_id">
-                                <a href="{{ url_for('descargar_archivo', archivo_id=archivo._id) }}"
+                                <a href="{{ url_for('view.descargar_archivo', archivo_id=archivo._id) }}"
                                     class="btn btn-success btn-sm"><i class="bi bi-download"></i> Descargar</a>
                         </div>
                     </div>
