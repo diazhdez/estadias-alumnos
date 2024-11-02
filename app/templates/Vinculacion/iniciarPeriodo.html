@@ -1,133 +1,129 @@
+<!-- templates/iniciar_periodo.html -->
+{% extends "base.html" %}
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/periodo.css') }}">
-    <script src="{{ url_for('static', filename='js/alerts.js') }}"></script>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/LOGO-UTA.png') }}">
-    <title>Iniciar Periodo</title>
-</head>
-<body style="background-color: #AFAFAF;">
+{% block title %}Iniciar Periodo{% endblock %}
 
-  
+{% block styles %}
+<!-- Incluir estilos específicos para esta página -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/periodo.css') }}">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='img/LOGO-UTA.png') }}">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='js/alerts.js') }}"></script>
+{% endblock %}
 
-    <div class="container">
-
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
+{% block content %}
+<div class="container mt-4 d-flex flex-column align-items-center">
+    {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-          {% for category, message in messages %}
-            <div style="width: 25%; position: fixed; top: 20%; right: 10%; z-index: 1050;" class="alert alert-{{ category }} alert-dismissible fade show flash-message" role="alert">
-                {{ message }}
-            </div>
-          {% endfor %}
+            {% for category, message in messages %}
+                <div style="width: 25%; position: fixed; top: 20%; right: 10%; z-index: 1050;" class="alert alert-{{ category }} alert-dismissible fade show flash-message" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
         {% endif %}
-      {% endwith %}
+    {% endwith %}
 
-
-        <div style="margin-top: 40px;"> 
-            <button class="custom-button"  data-bs-toggle="modal" data-bs-target="#exampleModal"><img src="{{ url_for('static', filename='img/plus.png') }}" alt=""></button>
-            <div class="row">
-                    {% for Periodos in Periodos %}
-                    <div class="col-md-3 mb-3">     
-                        <div class="card" style="width: 18rem; margin-top: 20px;">
-                                <div class="card-header">
-                                    <h5 class="text-center">Periodo actual</h5>
-                                </div>
-                                <div class="card-body">
-                                    <small>Nombre Del Periodo</small>
-                                    <input type="text" class="form-control" value="{{ Periodos.NombrePeriodo }}"  readonly>
-                                    <small>Duración</small>
-                                    <input type="text" class="form-control" value="{{ Periodos.Duracion }}" readonly>
-                                    <br>
-                                    <td><button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Terminar_periodo{{Periodos._id }}">Terminar</button></td>
-                                    <div class="modal fade" id="Terminar_periodo{{Periodos._id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar carrera</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                            Estas seguro de Terminar el "{{ Periodos.NombrePeriodo }}"
-                                            </div>
-                                            <div class="modal-footer">
-                                            <form action="#" method="POST">
-                                                <input type="hidden" name="idPeriodo" value="{{Periodos._id }}">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-danger"><i class="bi bi-trash3"> Terminar</i></button>
-                                            </form>
-                                            </div>
-                                        </div>
-                                        </div>
-                                    </div>
-                                </div>                               
-                        </div>  
-                    </div> 
-                    {% endfor %} 
-            </div>
-            
-        </div>
-    </div>
-
-
-
-
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Iniciar Nuevo periodo</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Contenedor de tarjetas de periodos -->
+    <div class="row mt-4 w-100 d-flex justify-content-center">
+        {% for Periodos in Periodos %}
+        <div class="col-md-4 mb-4">     
+            <div class="card h-100">
+                <div class="card-header text-center">
+                    <h5>Periodo actual</h5>
                 </div>
-                <div class="modal-body">
-                    <form action="#" method="POST">
-
-                        <div class="form-group">
-                            <label>Nombre del periodo</label>
-                            <select name="N_periodo" id="N_periodo" class="form-select me-2">
-                                <option value="Estadias T.S.U">Estadias T.S.U</option>
-                                <option value="Estadias Ingenieria">Estadias Ingenieria</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label >Duración del periodo</label>
-                            <br>
-                            <input type="month" id="fech1" oninput= cambio1()  required>
-                            <input type="month" id="fech2" oninput= cambio1()  required>
-                            <input type="text" id="periodo" name="periodo" readonly>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Crear periodo</button>
-                        </div>
-                    </form>
+                <div class="card-body">
+                    <label><small>Nombre Del Periodo</small></label>
+                    <input type="text" class="form-control mb-2" value="{{ Periodos.NombrePeriodo }}" readonly>
+                    <label><small>Duración</small></label>
+                    <input type="text" class="form-control mb-2" value="{{ Periodos.Duracion }}" readonly>
+                    <button type="button" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#Terminar_periodo{{ Periodos._id }}">Terminar</button>
                 </div>
             </div>
         </div>
+        {% endfor %}
     </div>
 
-    <script>
-        // Obtener la fecha actual en formato "yyyy-mm-dd"
-        var fechaActual = new Date().toISOString().split('T')[0];
-        // Establecer la fecha actual como el valor mínimo para el campo de fecha de inicio
-        document.getElementById("fech1").setAttribute("min", fechaActual);
+    <!-- Floating Action Button (FAB) para agregar nuevo periodo -->
+    <button class="custom-button" data-bs-toggle="modal" data-bs-target="#exampleModal" style="position: fixed; bottom: 2rem; right: 2rem;">
+        <i class="bi bi-plus-lg"></i>
+    </button>
+</div>
 
-        function cambio1(){
-        M1=MesNum_MesPalabra(SelecMes(document.getElementById("fech1").value ))
-        M2=MesNum_MesPalabra(SelecMes(document.getElementById("fech2").value ))
-        document.getElementById("periodo").value=M1+"-"+M2+" "+Anio(document.getElementById("fech2").value) 
-        } 
-    </script>
+<!-- Modal para terminar el periodo -->
+{% for Periodos in Periodos %}
+<div class="modal fade" id="Terminar_periodo{{ Periodos._id }}" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title text-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i> Terminar Periodo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>¿Estás seguro de que deseas terminar el periodo "<strong>{{ Periodos.NombrePeriodo }}</strong>"?</p>
+                <small class="text-muted">Esta acción no se puede deshacer.</small>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <form action="#" method="POST">
+                    <input type="hidden" name="idPeriodo" value="{{ Periodos._id }}">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash3-fill me-1"></i> Terminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
 
+<!-- Modal para iniciar un nuevo periodo -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Ajustamos el tamaño a modal-lg para mayor comodidad -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Iniciar Nuevo Periodo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="#" method="POST">
+                    <div class="form-group mb-4">
+                        <label class="form-label">Nombre del Periodo</label>
+                        <select name="N_periodo" id="N_periodo" class="form-select rounded-input">
+                            <option value="Estadias T.S.U">Estadias T.S.U</option>
+                            <option value="Estadias Ingenieria">Estadias Ingenieria</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-4">
+                        <label class="form-label">Duración del Periodo</label>
+                        <div class="d-flex gap-2">
+                            <input type="month" id="fech1" class="form-control rounded-input" oninput="cambio1()" required>
+                            <input type="month" id="fech2" class="form-control rounded-input" oninput="cambio1()" required>
+                        </div>
+                        <input type="text" id="periodo" name="periodo" class="form-control rounded-input mt-3" placeholder="Duración calculada" readonly>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Crear Periodo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
-    <script src="{{ url_for('static', filename='js/unir.js') }}"></script>
-</body>
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/alerts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/unir.js') }}"></script>
+<script>
+    // Código JavaScript para el manejo de fechas
+    var fechaActual = new Date().toISOString().split('T')[0];
+    document.getElementById("fech1").setAttribute("min", fechaActual);
 
-</html>
+    function cambio1(){
+        const M1 = MesNum_MesPalabra(SelecMes(document.getElementById("fech1").value));
+        const M2 = MesNum_MesPalabra(SelecMes(document.getElementById("fech2").value));
+        document.getElementById("periodo").value = M1 + "-" + M2 + " " + Anio(document.getElementById("fech2").value); 
+    } 
+</script>
+{% endblock %}

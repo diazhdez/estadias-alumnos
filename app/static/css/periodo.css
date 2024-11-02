@@ -1,23 +1,225 @@
-.custom-button {
-    width: 10rem; 
-    height: 10rem;
-    border-radius: 15%;
-    padding: 0%;
-    transition: transform 0.3s ease; /* Transición suave */
+/* Centrado y fondo */
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f8f9fa; /* Fondo claro */
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
 }
 
+/* Contenedor principal */
+.container {
+    max-width: 1200px;
+    padding: 2rem;
+}
 
-.custom-button img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+/* Floating Action Button (FAB) - Botón de agregar */
+.custom-button {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background-color: #007bff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    color: white;
+    font-size: 1.5rem;
 }
 
 .custom-button:hover {
-    transform: scale(1.1); /* Escalar al 110% en hover */
+    background-color: #0056b3;
+    transform: scale(1.1);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-.rounded-input {
+/* Estilos de la tarjeta */
+.card {
+    border-radius: 0.5rem;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: none;
+    background-color: #ffffff; /* Fondo ligeramente más suave */
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Encabezado de la tarjeta */
+.card-header {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    color: #333;
+    border-bottom: none;
+    text-align: center;
+    font-size: 1.1rem;
+    padding: 1rem;
+}
+
+/* Cuerpo de la tarjeta */
+.card-body {
+    padding: 1.5rem;
+    text-align: left;
+}
+
+/* Inputs en las tarjetas */
+.card-body input {
+    border-radius: 0.25rem;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    color: #495057;
+}
+
+/* Botón de "Terminar" */
+.btn-success {
+    background-color: #28a745;
+    border: none;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    width: 100%;
+    font-weight: bold;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal */
+.modal-content {
+    border-radius: 2rem;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+    border: none;
+}
+
+
+.modal-title {
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.modal-header, .modal-footer {
+    border: none;
+}
+
+.modal-footer .btn {
     border-radius: 0.25rem;
 }
 
+.modal-header {
+    background-color: #f1f1f1;
+    border-bottom: none;
+    padding: 1.5rem;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+}
+
+.modal-body {
+    font-size: 1rem;
+    color: #333;
+}
+
+.modal-body p {
+    font-weight: 500;
+}
+
+.modal-body small {
+    font-size: 0.85rem;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Ajuste de Espaciado en el Footer */
+.modal-footer {
+    border-top: none;
+    padding-top: 0;
+}
+
+.modal-footer .btn {
+    border-radius: 0.25rem;
+}
+
+/* Ajuste de márgenes */
+.mt-4, .mb-4 {
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+}
+
+/* Espaciado entre las tarjetas */
+.row {
+    gap: 1rem;
+}
+
+/* Estilo de los campos de entrada */
+.form-control, .form-select {
+    border-radius: 0.5rem;
+    border: 1px solid #ced4da;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #007bff;
+    box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.2);
+}
+
+/* Botones del Modal */
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-outline-secondary {
+    border-radius: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    color: #6c757d;
+    border-color: #6c757d;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-outline-secondary:hover {
+    color: #5a6268;
+    border-color: #5a6268;
+}
+
+/* Espaciado adicional */
+.form-group label {
+    font-weight: 500;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.d-flex.gap-2 > * {
+    flex: 1;
+}
