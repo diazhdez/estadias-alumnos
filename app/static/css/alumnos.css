@@ -223,8 +223,8 @@ body {
 .sidebar-progreso {
     position:fixed;
     top: 0;
-    right: -360px; /* Ocultar inicialmente */
-    width: 350px;
+    right: -460px; /* Ocultar inicialmente */
+    width: 450px;
     height: 100%;
     background-color: #ffffff;
     box-shadow: -4px 0 15px rgba(0, 0, 0, 0.3);
@@ -280,7 +280,7 @@ body {
 }
 
 .sidebar-progreso .contenido {
-    flex: 1;
+    flex: 2;
 }
 
 /* Separador después del nombre */
@@ -346,4 +346,24 @@ body {
 .sidebar-progreso .close-btn:hover {
     color: #ff4d4d;
     transition: color 0.3s ease;
+}
+
+/* Estilo para la celda del ícono PDF */
+.pdf-icon-cell {
+    text-align: center; /* Centrar el ícono en la celda */
+    padding: 8px; /* Espacio alrededor del ícono */
+    cursor: pointer; /* Cambia el cursor a pointer */
+}
+
+/* Estilo del ícono de PDF */
+.pdf-icon-cell i {
+    color: red;
+    font-size: 1.5em;
+    transition: transform 0.2s, color 0.2s; /* Transición suave para hover */
+}
+
+/* Efecto hover en el ícono de PDF */
+.pdf-icon-cell:hover i {
+    color: darkred; /* Cambia el color al pasar el cursor */
+    transform: scale(1.1); /* Aumenta el tamaño ligeramente */
 }

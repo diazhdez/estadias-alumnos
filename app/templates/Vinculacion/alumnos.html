@@ -102,7 +102,6 @@
     </div>
 </div>
 
-
 {% for alumno in alumnos %}
 
 <!-- Barra lateral de progreso para cada alumno -->
@@ -115,41 +114,47 @@
         <h4 id="nombreAlumno">{{ alumno.Nombre }} {{ alumno.Apellido_Pat }}</h4>
         <div class="progress">
             {% set progreso_total = alumno.progreso if alumno.progreso else 0 %}
-            {% set progreso_clase = 'bg-primary' if progreso_total < 100 else 'bg-success' %} <div
-                class="progress-bar {{ progreso_clase }}" role="progressbar" aria-valuenow="{{ progreso_total }}"
+            {% set progreso_clase = 'bg-primary' if progreso_total < 100 else 'bg-success' %}
+            <div class="progress-bar {{ progreso_clase }}" role="progressbar" aria-valuenow="{{ progreso_total }}"
                 aria-valuemin="0" aria-valuemax="100" style="width: {{ progreso_total }}%;">
                 {{ progreso_total | round(0) }}%
+            </div>
+        </div>
+        <div class="table-container">
+            <table class="alumnos-table">
+                <thead style="background-color: var(--primary-color);">
+                    <tr>
+                        <th>Actividad</th>
+                        <th>Estatus</th>
+                        <th>Documento</th> <!-- Mover "Documento" antes de "Acción" -->
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    {% for actividad in alumno.actividades %}
+                    <tr>
+                        {% if actividad.estatus == 'completado' %}
+                        <td>{{ actividad.nombre }}</td>
+                        <td>{{ actividad.estatus }}<i style="color: green;" class="bi bi-check2-circle"></i></td>
+                        <td class="pdf-icon-cell" title="Documento en PDF">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                        </td> <!-- Ícono de PDF -->
+                        <td><a href="{{ url_for('Vinculacion.documento_alumnos', id_alumno=alumno._id) }}"
+                                class="btn">ver</a></td>
+                        {% else %}
+                        <td>{{ actividad.nombre }}</td>
+                        <td>{{ actividad.estatus }} <i style="color: red;" class="bi bi-x-circle"></i></td>
+                        <td class="pdf-icon-cell" title="Documento en PDF">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                        </td> <!-- Ícono de PDF -->
+                        <td><button type="button" class="btn">Completar</button></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
-    <div class="table-container">
-        <table class="alumnos-table">
-            <thead style="background-color: var(--primary-color);">
-                <tr>
-                    <th>Actividad</th>
-                    <th>Estatus</th>
-                    <th>Accion</th>
-                </tr>
-            </thead>
-            <tbody id="table-body">
-                {% for actividad in alumno.actividades %}
-                <tr>
-                    {% if actividad.estatus == 'completado' %}
-                    <td>{{ actividad.nombre }}</td>
-                    <td>{{ actividad.estatus }}<i style="color: green;" class="bi bi-check2-circle"></i></td>
-                    <td><a href="{{ url_for('Vinculacion.documento_alumnos', id_alumno=alumno._id) }}"
-                            class="btn">ver</i></a></td>
-                    {% else %}
-                    <td>{{ actividad.nombre }}</td>
-                    <td>{{ actividad.estatus }} <i style="color: red;" class="bi bi-x-circle"></i></td>
-                    <td><button type="button" class="btn">Completar</button></td>
-                    {% endif %}
-
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
 </div>
 {% endfor %}
 
@@ -259,9 +264,6 @@
 
 </script>
 
-
-
-
 <script>
     function filterTable() {
         // Obtener el valor del cuadro de búsqueda
@@ -300,8 +302,10 @@
     }
 </script>
 
-
 <script>
+    // Variable para guardar el sidebar abierto actualmente
+    let sidebarAbierto = null;
+
     // Manejo del doble clic en las celdas de la tabla
     document.querySelectorAll('.alumnos-container .alumnos-table-list td').forEach(function (td) {
         td.addEventListener('dblclick', function () {
@@ -309,24 +313,33 @@
             var fila = this.closest('tr');
             var idAlumno = fila.getAttribute('data-id');
 
-
-            // Mostrar la barra lateral correspondiente al alumno
+            // Obtener la barra lateral correspondiente al alumno
             var barraLateral = document.getElementById('Progreso' + idAlumno);
+
             if (barraLateral) {
+                // Verificar si hay otra barra lateral abierta
+                if (sidebarAbierto && sidebarAbierto !== barraLateral) {
+                    // Cerrar la barra lateral abierta previamente
+                    sidebarAbierto.classList.remove('show');
+                }
 
-
-                // Mostrar la barra lateral
+                // Abrir la nueva barra lateral y actualizar el estado de sidebarAbierto
                 barraLateral.classList.add('show');
+                sidebarAbierto = barraLateral;
             }
         });
     });
-
 
     // Función para cerrar la barra lateral
     function cerrarBarra(idBarra) {
         var barraLateral = document.getElementById(idBarra);
         if (barraLateral) {
             barraLateral.classList.remove('show');
+
+            // Limpiar la referencia de sidebarAbierto si es el mismo que se está cerrando
+            if (sidebarAbierto === barraLateral) {
+                sidebarAbierto = null;
+            }
         }
     }
 
@@ -342,9 +355,4 @@
         };
     }); */
 </script>
-
-
-
-
-
 {% endblock %}
