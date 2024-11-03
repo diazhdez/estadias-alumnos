@@ -339,14 +339,14 @@
                     {% if actividad.estatus == 'completado' %}
                         <td>{{ actividad.nombre }}</td>
                         <td>{{ actividad.estatus }}<i style="color: green;" class="bi bi-check2-circle"></i></td>
-                        <td></td>
+                        <td><span>Actividad completada</span></td>
                     {% else %}
                         <td>{{ actividad.nombre }}</td>
                         <td>{{ actividad.estatus }} <i style="color: red;" class="bi bi-x-circle"></i></td>
                         {% if actividad.encargado == 'vinculacion' %}
                             <td><a href="#" class="btn">Completar</a></td>
                         {% else %}
-                            <td></td>
+                            <td><span>No disponible</span></td>
                         {% endif %}
                     {% endif %}
 
