@@ -270,6 +270,7 @@ def aceptar_documento_nuevo_uta():
                 "carta_liberación_de_memoria": {"estado": "desactivado", "archivo": None,"comentario":None}
             }
 
+            # Actualizar el estado del alumno y el tipo de estadía
             db['Alumnos'].update_one(
                 {'_id': ObjectId(id_alumno)},
                 {
@@ -280,7 +281,24 @@ def aceptar_documento_nuevo_uta():
                 }
             )
 
+            # Insertar los documentos especiales para el alumno
             db['documentos_foraneas'].insert_one(documentos_Foraneas_data)
+            
+            # Asignar las actividades foráneas al alumno
+            actividades_foraneas = db['Actividades'].find({"Tipo": "Foranea"})
+            alumno_actividades = []
+            for actividad in actividades_foraneas:
+                alumno_actividad = {
+                    "idAlumno": ObjectId(id_alumno),
+                    "idActividad": actividad["_id"],
+                    "estatus": "no iniciado"
+                }
+                alumno_actividades.append(alumno_actividad)
+            
+            # Insertar las asignaciones de actividades
+            if alumno_actividades:
+                db['Alumnos_Actividades'].insert_many(alumno_actividades)
+            
             flash(f'Se le asignó la estadía Foránea a {nombre} exitosamente', 'success')
             return redirect(url_for('Vinculacion.documento_alumnos', id_alumno=id_alumno))
         

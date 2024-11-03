@@ -329,23 +329,29 @@
                     <tr>
                         <th>Actividad</th>
                         <th>Estatus</th>
+                        <th>Accion</th>
 
                     </tr>
                 </thead>
                 <tbody id="table-body">
-                    {% for actividad in alumno.actividades %}
-                    <tr>
-                        {% if actividad.estatus == 'completado' %}
+                    {% for actividad in alumno.actividades  %}
+                <tr>
+                    {% if actividad.estatus == 'completado' %}
                         <td>{{ actividad.nombre }}</td>
                         <td>{{ actividad.estatus }}<i style="color: green;" class="bi bi-check2-circle"></i></td>
-
-                        {% else %}
+                        <td></td>
+                    {% else %}
                         <td>{{ actividad.nombre }}</td>
                         <td>{{ actividad.estatus }} <i style="color: red;" class="bi bi-x-circle"></i></td>
+                        {% if actividad.encargado == 'vinculacion' %}
+                            <td><a href="#" class="btn">Completar</a></td>
+                        {% else %}
+                            <td></td>
                         {% endif %}
+                    {% endif %}
 
-                    </tr>
-                    {% endfor %}
+                </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>
