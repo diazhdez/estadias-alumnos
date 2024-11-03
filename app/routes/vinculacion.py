@@ -58,8 +58,10 @@ def Home():
 @Vinculacion_routes.route("/EduLink/Vinculación/DocumentoAlumno/")
 @nocache
 def documento_alumnos():
+    correo = session.get('correo')
     if 'correo' in session:
         db = current_app.get_db_connection()
+        admin = obtener_administrador_por_correo(correo)
         correo_usuario = session['correo']
         administradores = db["administradores"]
         administrador = administradores.find_one({'correo': correo_usuario}) 
@@ -86,7 +88,7 @@ def documento_alumnos():
                 alumno["progreso"] = progreso
                 alumno["actividades"] = actividades_alumno
                 
-                return render_template('vinculacion/AlumnosDocumentos.html', alumno=alumno, documentos=documentos, periodos=periodos)
+                return render_template('vinculacion/AlumnosDocumentos.html', alumno=alumno, documentos=documentos, periodos=periodos, administrador=admin)
             else:
                 flash('Alumno no encontrado.', 'danger')
                 return redirect(url_for('Vinculacion.Home'))
@@ -100,8 +102,10 @@ def documento_alumnos():
 @Vinculacion_routes.route("/EduLink/Vinculación/Carga/")
 @nocache
 def carga():
+    correo = session.get('correo')
     if 'correo' in session:
         db = current_app.get_db_connection()
+        admin = obtener_administrador_por_correo(correo)
         correo_usuario = session['correo']
         administradores = db["administradores"]
         periodos=db['Periodos'].find()
@@ -111,7 +115,7 @@ def carga():
         if administrador:  
             
 
-            return render_template("vinculacion/CargaAlumnos.html", Periodos=periodos)
+            return render_template("vinculacion/CargaAlumnos.html", Periodos=periodos, administrador=admin)
         else:
          flash('Acceso denegado: No eres un administrador.', 'danger')
          return redirect(url_for('session.login'))
@@ -119,7 +123,7 @@ def carga():
         return redirect(url_for('session.login'))
     
 @Vinculacion_routes.route('/EduLink/Vinculación/Carga_Alumnos', methods=['POST'])
-def carga_alumnos():
+def carga_alumnos():    
     db = current_app.get_db_connection()
     archivo = request.files['archivo']
     alumno = db["Alumnos"]
@@ -353,7 +357,9 @@ def aceptar_documento_nuevo_uta():
 @Vinculacion_routes.route("/EduLink/Vinculación/Archivos_Universidad/")
 @nocache
 def archivos_vinculacion():
+    correo = session.get('correo')
     db = current_app.get_db_connection()
+    admin = obtener_administrador_por_correo(correo)
     if 'correo' in session:
         correo_usuario = session['correo']
         administradores = db["administradores"]
@@ -366,7 +372,7 @@ def archivos_vinculacion():
             archivos = list(conexion.find())  # Convertir el cursor a una lista de documentos
             for archivo in archivos:
                 archivo['extension'] = archivo['nombre'].split('.')[-1].lower()  # Obtener la extensión de cada archivo
-            return render_template("vinculacion/Archivos_vinculacion.html", archivos=archivos)
+            return render_template("vinculacion/Archivos_vinculacion.html", archivos=archivos, administrador=admin)
         else:
          flash('Acceso denegado: No eres un administrador.', 'danger')
          return redirect(url_for('session.login'))
@@ -376,18 +382,19 @@ def archivos_vinculacion():
 @Vinculacion_routes.route("/EduLink/Vinculación/Periodos/")
 @nocache
 def iniciarPeriodo():
+    correo = session.get('correo')
     db = current_app.get_db_connection()
     if 'correo' in session:
         correo_usuario = session['correo']
         administradores = db["administradores"]
-        
+        admin = obtener_administrador_por_correo(correo)
         # Verifica si el correo está en la colección de administradores
         administrador = administradores.find_one({'correo': correo_usuario})
         
         if administrador:
             conexion = db["Periodos"]
             Periodos = list(conexion.find({'Estatus': True}))
-            return render_template("Vinculacion/iniciarPeriodo.html", Periodos=Periodos)
+            return render_template("Vinculacion/iniciarPeriodo.html", Periodos=Periodos, administrador=admin)
         else:
             flash('Acceso denegado: No eres un administrador.', 'danger')
             return redirect(url_for('login'))
