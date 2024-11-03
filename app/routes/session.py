@@ -30,9 +30,9 @@ def iniciar():
         if departamento == 'vinculacion':
             return redirect(url_for('Vinculacion.Home'))
         elif departamento == 'servicios_escolares':
-            return redirect(url_for('servicios'))
+            return redirect(url_for('Servicios.Servicios'))
         elif departamento == 'finanzas':
-            return redirect(url_for('finanzas'))
+            return redirect(url_for('Finanzas.Finanzas'))
         else:
             flash('Departamento no reconocido.', 'danger')
             return redirect(url_for('session.login'))

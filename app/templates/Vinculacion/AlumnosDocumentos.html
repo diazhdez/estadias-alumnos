@@ -78,26 +78,25 @@
                     </div>
                     <div class="card-footer">
                         {% if alumno.formato_tres_opciones.estado == 'activo' %}
-                        <a href="#" class="btn btn-success" data-bs-toggle="modal"
-                            data-bs-target="#Aceptar_documento{{alumno._id}}">Aceptar</a>
                         {% elif alumno.formato_tres_opciones.estado == 'entregado' %}
-                        <a href="{{ url_for('view.ver_archivo_alumno_uta', nombre_archivo=key, id_alumno=alumno._id) }}"
+                        <a href="{{ url_for('view.ver_archivo_alumno_uta_0',id_alumno=alumno._id) }}"
                             class="btn-visualizar">Visualizar</a>
                         <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento_entregado">Devolver</a>
                         </div>
+                        <a type="button" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#Aceptar_documento{{alumno._id}}">Aceptar</a>
                         {% elif alumno.formato_tres_opciones.estado == 'aceptado' %}
-                        <a href="#" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
-
+                        <a href="{{ url_for('view.ver_archivo_alumno_uta_0',id_alumno=alumno._id) }}"
+                            class="btn-visualizar">Visualizar</a>
                         {% elif alumno.formato_tres_opciones.estado == 'devuelto' %}
                         <p class="status-info">El documento ha sido devuelto.</p>
                         {% else %}
-                        <a href="#" class="btn btn-warning">Activar</a>
                         {% endif %}
                     </div>
 
-                </div>
+            </div>
 
-                <div class="modal fade" id="Aceptar_documento{{alumno._id}}" tabindex="-1"
+            <div class="modal fade" id="Aceptar_documento{{alumno._id}}" tabindex="-1"
                     aria-labelledby="editarModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
@@ -126,12 +125,12 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                {%endif%}
-
-
             </div>
+
+            {%endif%}
+
+
+         
             {% else %}
             <div class="card-container">
                 {% if alumno %}
@@ -159,29 +158,9 @@
                         {% endif %}
                     </div>
                     <div class="card-footer">
-                        {% if alumno.formato_tres_opciones.estado == 'activo' %}
-                        <a href="#" class="btn btn-success" data-bs-toggle="modal"
-                            data-bs-target="#Aceptar_documento">Aceptar</a>
-                        
-                        {% elif alumno.formato_tres_opciones.estado == 'entregado' %}
-                        <a href="{{ url_for('view.ver_archivo_alumno_uta', nombre_archivo=key, id_alumno=alumno._id) }}"
+                        {% if alumno.formato_tres_opciones.estado == 'aceptado' %}
+                        <a href="{{ url_for('view.ver_archivo_alumno_uta_0',id_alumno=alumno._id) }}"
                             class="btn-visualizar">Visualizar</a>
-                        <a href="#" class="btn btn-success">Aceptar</a>
-                        <a type="button" class="btn btn-danger" data-bs-toggle="modal"
-                            data-bs-target="#devolver_documento_entregado">Devolver</a>
-
-                        <!-- Modal for "Entregado" status -->
-                        <div class="modal fade" id="devolver_documento_entregado" tabindex="-1"
-                            aria-labelledby="editarModalLabel" aria-hidden="true">
-                            <!-- Repeat modal content here as needed with unique ID -->
-                        </div>
-                        {% elif alumno.formato_tres_opciones.estado == 'aceptado' %}
-                        <a href="#" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
-
-                        {% elif alumno.formato_tres_opciones.estado == 'devuelto' %}
-                        <p class="status-info">El documento ha sido devuelto.</p>
-                        {% else %}
-                        <a href="#" class="btn btn-warning">Activar</a>
                         {% endif %}
                     </div>
 
@@ -344,7 +323,7 @@
                         <td>{{ actividad.nombre }}</td>
                         <td>{{ actividad.estatus }} <i style="color: red;" class="bi bi-x-circle"></i></td>
                         {% if actividad.encargado == 'vinculacion' %}
-                            <td><a href="#" class="btn">Completar</a></td>
+                            <td><a href="{{ url_for('update_vinculacion.actualizar_estado_Actividad', documento_id=actividad.idActividad, id_alumno=alumno._id) }}" class="btn">Completar</a></td>
                         {% else %}
                             <td><span>No disponible</span></td>
                         {% endif %}

@@ -1,5 +1,5 @@
 from flask import Blueprint, current_app, flash, redirect, session, url_for, request
-from app.functions.funciones import aceptar_documento, actualizar_estado_documento, devolver_documento, subir_documento
+from app.functions.funciones import aceptar_documento, actualizar_estado_documento, devolver_documento, subir_documento, estado_actividad
 from bson import Binary, ObjectId
 
 update_vinculacion_routes = Blueprint('update_vinculacion', __name__)
@@ -87,3 +87,25 @@ def devolver_documento_alumno():
             flash('No se pudo devolver el documento intentelo de nuevo.', 'danger')
         
         return redirect(url_for('Vinculacion.documento_alumnos', id_alumno=id_alumno))
+
+@update_vinculacion_routes.route('/actualizar_estado_Actividad/<id_alumno>/<documento_id>', methods=['GET', 'POST'])
+def actualizar_estado_Actividad(id_alumno, documento_id):
+    db = current_app.get_db_connection()
+    try:
+        # Intentar actualizar el estado de la actividad
+        if estado_actividad(ObjectId(id_alumno), ObjectId(documento_id)):
+            correo = session.get('correo')
+            if correo:
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo}, 
+                    {'$set': {'ultimo_movimiento': 'Completo una actividad'}}
+                )
+            flash('Estado del documento actualizado exitosamente.', 'success')
+        else:
+            flash('No se pudo actualizar el estado de la Actividad.', 'danger')
+    except Exception as e:
+        # Manejo de errores
+        flash(f'Ocurrió un error al actualizar el estado: {str(e)}', 'danger')
+    
+    return redirect(url_for('Vinculacion.documento_alumnos', id_alumno=id_alumno))

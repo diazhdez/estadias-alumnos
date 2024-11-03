@@ -246,3 +246,20 @@ def devolver_documento(id_alumno, documento_nombre, comentario):
                 )
                 return True
         return False
+
+
+def estado_actividad(id_alumno, documento_id):
+    db = current_app.get_db_connection()  # Obtener la conexión a la base de datos
+    # Buscar el documento específico de la actividad del alumno
+    documento = db['Alumnos_Actividades'].find_one({'idActividad': ObjectId(documento_id), 'idAlumno': ObjectId(id_alumno)})
+
+    # Comprobar si se encontró el documento
+    if documento:
+        # Actualizar el estado de la actividad a 'completado'
+        db['Alumnos_Actividades'].update_one(
+            {'idActividad': ObjectId(documento_id), 
+             'idAlumno': ObjectId(id_alumno)},
+            {'$set': {'estatus': 'completado'}}
+        )
+        return True  # Retornar True si la actualización fue exitosa
+    return False  # Retornar False si no se encontró el documento

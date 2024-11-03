@@ -32,7 +32,7 @@ def subir_documento_alumno_uta():
     else:
         flash('Alumno no encontrado en la base de datos', 'danger')
 
-    return redirect(url_for('alumno_vista', id_alumno=id_alumno))
+    return redirect(url_for('alumno.alumno_vista', id_alumno=id_alumno))
 
 
 @update_routes.route('/subir_documento_alumo/<id_alumno>/<documento_nombre>', methods=['GET', 'POST'])

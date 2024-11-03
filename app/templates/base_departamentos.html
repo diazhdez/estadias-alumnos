@@ -1,0 +1,63 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Boxicons CDN Link -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/LOGO-UTA.png') }}">
+    <title>{% block title %}Página Principal{% endblock %}</title>
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    <div class="sidebar active" >
+        <div class="logo_content">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/LOGO-UTA.png') }}" alt="">
+                <div class="logo_name">Menu</div>
+            </div>
+            <i class='bx bx-menu' id="btn"></i>
+        </div>
+        <ul class="nav_list">
+            <li>
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="Buscar...">
+                <span class="tooltip">Buscar</span>
+            </li>
+            <li>
+                <a href="#"><i class='bx bx-home'></i><span class="links_name">Inicio</span></a>
+                <span class="tooltip">Inicio</span>
+            </li>
+
+            </li>
+        </ul>
+        <div class="profile_content">
+            <div class="profile">
+                <div class="profile_details">
+                    <img src="{{ url_for('static', filename='img/LOGO-UTA.png') }}" alt=""> 
+                    <div class="name_job">
+                        {% if administrador %}
+                            <div class="name">{{administrador.administrador}}</div>
+                            <div class="job">{{administrador.departamento}}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <a href="{{ url_for('session.logout') }}"><i class="bx bx-log-out" id="log_out"></i></a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="home_content">
+        {% block content %}
+        <!-- El contenido principal se incluirá aquí -->
+        {% endblock %}
+    </div>
+    {% block scripts %}
+
+    {% endblock %}
+    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+</body>
+</html>

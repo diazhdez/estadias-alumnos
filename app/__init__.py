@@ -44,6 +44,12 @@ def create_app():
         from app.routes.vinculacion import Vinculacion_routes
         from app.routes.create_vinculacion import create_vinculacion_routes
         from app.routes.update_vinculacion import update_vinculacion_routes
+        from app.routes.Servicios import Servicios_routes
+        from app.routes.Biblioteca import Biblioteca_routes
+        from app.routes.Finanzas import Finanzas_routes
+        from app.routes.Juridico import Juridico_routes
+        from app.routes.Recursos import Recursos_routes
+
 
         app.register_blueprint(main_routes)
         app.register_blueprint(session_routes)
@@ -54,4 +60,9 @@ def create_app():
         app.register_blueprint(errors)
         app.register_blueprint(Vinculacion_routes)
         app.register_blueprint(create_vinculacion_routes)
+        app.register_blueprint(Servicios_routes)
+        app.register_blueprint(Biblioteca_routes)
+        app.register_blueprint(Finanzas_routes)
+        app.register_blueprint(Juridico_routes)
+        app.register_blueprint(Recursos_routes)
     return app
