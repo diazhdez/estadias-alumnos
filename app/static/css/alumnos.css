@@ -132,14 +132,14 @@ body {
 
 /* Estilo de la tabla */
 .table-container-list {
-    max-height: 55%; /* Ajusta la altura máxima según tus necesidades */
+    max-height: 40%; /* Ajusta la altura máxima según tus necesidades */
     overflow-y: auto;  /* Habilita el desplazamiento vertical */
     border: 1px solid #ddd; /* Opcional: añade un borde alrededor del contenedor */
     border-radius: 8px; /* Opcional: redondea las esquinas */
 }
 
 .table-container {
-    max-height: 55%; /* Ajusta la altura máxima según tus necesidades */
+    max-height: 40%; /* Ajusta la altura máxima según tus necesidades */
     overflow-y: auto;  /* Habilita el desplazamiento vertical */
     border: 1px solid #ddd; /* Opcional: añade un borde alrededor del contenedor */
     border-radius: 8px; /* Opcional: redondea las esquinas */
