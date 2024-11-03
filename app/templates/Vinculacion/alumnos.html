@@ -144,15 +144,19 @@
                                     <i style="color: red;" class="bi bi-x-circle"></i>
                                 {% endif %}
                             </td>
-                            <td>
+                            <td class="pdf-icon-cell">
                                 {% if actividad.estatus != 'completado' %}
                                     {% if actividad.encargado == 'vinculacion' %}
-                                        <a href="#" class="btn">Completar</a>
+                                            {% if actividad.nombre == 'Capacitación' %}
+                                                <a href="#" class="btn">Completar</a>
+                                            {% else %}
+                                                <a href="{{ url_for('Vinculacion.documento_alumnos', id_alumno=alumno._id) }}"><i class="bi bi-file-earmark-pdf"></i></a>
+                                            {% endif %}    
                                     {% else %}
                                         <span>No disponible</span>
                                     {% endif %}
                                 {% else %}
-                                    <a href="{{ url_for('Vinculacion.documento_alumnos', id_alumno=alumno._id) }}" class="btn">ver</a>
+                                    <a href="{{ url_for('Vinculacion.documento_alumnos', id_alumno=alumno._id) }}"><i class="bi bi-file-earmark-pdf"></i></a>
                                 {% endif %}
                             </td>
                         </tr>
@@ -319,6 +323,9 @@
 
 
 <script>
+    // Variable para guardar el sidebar abierto actualmente
+    let sidebarAbierto = null;
+
     // Manejo del doble clic en las celdas de la tabla
     document.querySelectorAll('.alumnos-container .alumnos-table-list td').forEach(function (td) {
         td.addEventListener('dblclick', function () {
@@ -326,17 +333,23 @@
             var fila = this.closest('tr');
             var idAlumno = fila.getAttribute('data-id');
 
-
-            // Mostrar la barra lateral correspondiente al alumno
+            // Obtener la barra lateral correspondiente al alumno
             var barraLateral = document.getElementById('Progreso' + idAlumno);
+
             if (barraLateral) {
+                // Verificar si hay otra barra lateral abierta
+                if (sidebarAbierto && sidebarAbierto !== barraLateral) {
+                    // Cerrar la barra lateral abierta previamente
+                    sidebarAbierto.classList.remove('show');
+                }
 
-
-                // Mostrar la barra lateral
+                // Abrir la nueva barra lateral y actualizar el estado de sidebarAbierto
                 barraLateral.classList.add('show');
+                sidebarAbierto = barraLateral;
             }
         });
     });
+
 
 
     // Función para cerrar la barra lateral
@@ -344,8 +357,15 @@
         var barraLateral = document.getElementById(idBarra);
         if (barraLateral) {
             barraLateral.classList.remove('show');
+
+            // Limpiar la referencia de sidebarAbierto si es el mismo que se está cerrando
+            if (sidebarAbierto === barraLateral) {
+                sidebarAbierto = null;
+            }
         }
     }
+
+    
 
     /* // (Opcional) Cerrar el modal al hacer clic en el botón de cerrar
     // Esto es redundante si usas data-bs-dismiss en el botón de cerrar de Bootstrap

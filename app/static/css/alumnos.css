@@ -130,19 +130,392 @@ body {
 }
 
 
+/* static/css/alumnos.css */
+
+:root {
+    --primary-color: #007bff; /* Azul claro */
+    --secondary-color: #28a745; /* Verde */
+    --accent-color: #fd7e14; /* Naranja */
+    --background-light: #f8f9fa; /* Fondo claro */
+    --background-dark: #343a40; /* Fondo oscuro */
+    --text-color: #212529; /* Color de texto */
+}
+
+/* Fondo y color de texto */
+body {
+    background-color: var(--background-light);
+    color: var(--text-color);
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Contenedor principal para los alumnos */
+.alumnos-container {
+    padding: 30px;
+    background-color: var(--background-light);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+}
+
+/* Título de la página */
+.alumnos-container h1 {
+    color: var(--secondary-color);
+    font-size: 2.2em;
+    margin-bottom: 20px;
+}
+
+/* Barra de búsqueda */
+.search-bar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.search-bar input,
+.search-bar select {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    font-size: 1em;
+    width: 200px;
+    background-color: white;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-bar input:focus,
+.search-bar select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Botón de agregar alumno */
+.search-bar .btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.search-bar .btn:hover {
+    background-color: var(--accent-color);
+}
+
+.alumnos-container .search-bar input:focus {
+    border-color: #66bb6a; /* Acento verde */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilo de la tabla */
+.alumnos-container .alumnos-table-list {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    overflow-y: auto;  /* Habilita el desplazamiento vertical */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.alumnos-container .alumnos-table-list thead {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.alumnos-table-list th,
+.alumnos-table-list td {
+    font-size: 15px;
+    padding: 15px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.alumnos-container .alumnos-table-list tbody tr:hover {
+    background-color: #f1f3f5; /* Fondo más claro al pasar el ratón */
+}
+
+.alumnos-container .alumnos-table-list tbody tr:nth-child(even) {
+    background-color: #d3d4d4; /* Alternar filas */
+}
+
+/* Fondo de la tabla */
+.alumnos-table-list,
+.search-bar {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Estilo de los encabezados de la tabla */
+.alumnos-table-list thead th {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+
+.sidebar {
+    z-index: 1000;
+}
+
+
 /* Estilo de la tabla */
 .table-container-list {
-    max-height: 40%; /* Ajusta la altura máxima según tus necesidades */
+    max-height: 45%; /* Ajusta la altura máxima según tus necesidades */
     overflow-y: auto;  /* Habilita el desplazamiento vertical */
     border: 1px solid #ddd; /* Opcional: añade un borde alrededor del contenedor */
     border-radius: 8px; /* Opcional: redondea las esquinas */
 }
 
 .table-container {
-    max-height: 40%; /* Ajusta la altura máxima según tus necesidades */
+    max-height: 45%; /* Ajusta la altura máxima según tus necesidades */
     overflow-y: auto;  /* Habilita el desplazamiento vertical */
     border: 1px solid #ddd; /* Opcional: añade un borde alrededor del contenedor */
     border-radius: 8px; /* Opcional: redondea las esquinas */
+}
+/* Oculta la barra de desplazamiento */
+.table-container::-webkit-scrollbar {
+    display: none; /* Oculta la barra de desplazamiento */
+}
+
+.alumnos-table-list {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.alumnos-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.alumnos-table thead th {
+    position: sticky; /* Hacer que el encabezado sea fijo */
+    top: 0; /* Fijar en la parte superior del contenedor */
+    background-color: var(--primary-color); /* Color de fondo */
+    color: white; /* Color del texto */
+    z-index: 10; /* Asegúrate de que esté encima del contenido */
+}
+
+.alumnos-table th, 
+.alumnos-table td {
+    font-size: 13px;
+    padding: 5px;
+    text-align: center;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.alumnos-table tbody tr:hover {
+    background-color: #f1f3f5; /* Fondo más claro al pasar el ratón */
+}
+
+.alumnos-table tbody tr:nth-child(even) {
+    background-color: #d3d4d4; /* Alternar filas */
+}
+
+.alumnos-table .btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 4px 4px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.alumnos-table .btn:hover {
+    background-color: var(--accent-color);
+}
+
+
+.form-group select {
+    margin-left: 1px;
+    width: 100%; /* Asegurarse de que ocupe todo el ancho del contenedor */
+    padding: 10px; /* Espaciado interno para una mejor apariencia */
+    font-size: 16px; /* Tamaño de fuente */
+    color: #555; /* Color del texto */
+    background-color: #f9f9f9; /* Color de fondo */
+    border: 1px solid rgb(160, 160, 160); /* Borde */
+    border-radius: 5px; /* Esquinas redondeadas */
+    appearance: none; /* Remover estilos predeterminados del navegador */
+    cursor: pointer; /* Cambiar el cursor para indicar que es interactivo */
+    
+}
+
+/* Estilo para el select al estar en foco */
+.form-group select:focus {
+    border-color: #6990f2; /* Cambiar color del borde al seleccionar */
+    outline: none; /* Remover borde adicional */
+}
+
+/* Ajuste para select con flecha */
+.form-group select {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjNjk5MGYyIiBoZWlnaHQ9IjEwIiB2aWV3Qm94PSIwIDAgMTEgNiIgd2lkdGg9IjEwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0wIDAgNSAzIDAgNmgxMWwtNS0zeiIvPjwvc3ZnPg==');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 10px;
+}
+
+/* Estilos para la barra lateral de progreso */
+.sidebar-progreso {
+    position:fixed;
+    top: 0;
+    right: -460px; /* Ocultar inicialmente */
+    width: 455px;
+    height: 100%;
+    background-color: #ffffff;
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.3);
+    transition: right 0.4s ease;
+    z-index: 1050;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+/* Mostrar la barra lateral */
+.sidebar-progreso.show {
+    right: 0;
+}
+
+
+
+/* Estilo del encabezado */
+.sidebar-progreso .header {
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-progreso .header h3 {
+    font-size: 1.1em;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-progreso .header h3::before {
+    content: "\f058"; /* Ícono de Font Awesome */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-right: 8px;
+}
+
+.sidebar-progreso .close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.sidebar-progreso .contenido {
+    flex: 2;
+}
+
+/* Separador después del nombre */
+.sidebar-progreso .contenido hr {
+    border: none;
+    border-top: 1px solid #e9ecef;
+    margin: 15px 0;
+}
+
+/* Estilo del nombre del alumno */
+.sidebar-progreso #nombreAlumno {
+    font-size: 1.4em;
+    color: #343a40;
+    margin-bottom: 15px;
+}
+
+/* Barra de progreso */
+.progress {
+    background-color: #e9ecef;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    height: 25px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+    height: 100%;
+    text-align: center;
+    line-height: 25px;
+    color: white;
+    border-radius: 20px;
+    transition: width 0.4s ease;
+}
+
+/* Colores de la barra de progreso */
+.bg-primary {
+    background: linear-gradient(90deg, #007bff 0%, #00d4ff 100%);
+}
+
+.bg-success {
+    background: linear-gradient(90deg, #28a745 0%, #85e085 100%);
+}
+
+/* Estilo de la última actividad */
+.sidebar-progreso .contenido p {
+    font-size: 1em;
+    color: #6c757d;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-progreso .contenido p::before {
+    content: "\f0ae"; /* Ícono de Font Awesome */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-right: 8px;
+    color: #28a745;
+}
+
+/* Efectos de hover en el botón de cerrar */
+.sidebar-progreso .close-btn:hover {
+    color: #ff4d4d;
+    transition: color 0.3s ease;
+}
+
+/* Estilo para la celda del ícono PDF */
+.pdf-icon-cell {
+    text-align: center; /* Centrar el ícono en la celda */
+    padding: 8px; /* Espacio alrededor del ícono */
+    cursor: pointer; /* Cambia el cursor a pointer */
+}
+
+/* Estilo del ícono de PDF */
+.pdf-icon-cell i {
+    color: red;
+    font-size: 1.5em;
+    transition: transform 0.2s, color 0.2s; /* Transición suave para hover */
+}
+
+/* Efecto hover en el ícono de PDF */
+.pdf-icon-cell:hover i {
+    color: darkred; /* Cambia el color al pasar el cursor */
+    transform: scale(1.1); /* Aumenta el tamaño ligeramente */
 }
 /* Oculta la barra de desplazamiento */
 .table-container::-webkit-scrollbar {

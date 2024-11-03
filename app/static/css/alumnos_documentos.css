@@ -316,10 +316,7 @@
     border-bottom-left-radius: 12px;
 }
 
-/* Mostrar la barra lateral */
-.sidebar-progreso.show {
-    right: 0;
-}
+
 
 
 
@@ -411,9 +408,10 @@
     transition: color 0.3s ease;
 }
 
-/* Estilo de la tabla */
+
+
 .table-container {
-    max-height: 55%; /* Ajusta la altura máxima según tus necesidades */
+    max-height: 45%; /* Ajusta la altura máxima según tus necesidades */
     overflow-y: auto;  /* Habilita el desplazamiento vertical */
     border: 1px solid #ddd; /* Opcional: añade un borde alrededor del contenedor */
     border-radius: 8px; /* Opcional: redondea las esquinas */
@@ -422,6 +420,17 @@
 .table-container::-webkit-scrollbar {
     display: none; /* Oculta la barra de desplazamiento */
 }
+
+.alumnos-table-list {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
 .alumnos-table {
     width: 100%;
     border-collapse: collapse;
