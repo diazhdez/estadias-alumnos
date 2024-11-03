@@ -147,7 +147,8 @@
                                 {% if actividad.estatus != 'completado' %}
                                     {% if actividad.encargado == 'finanzas' %}
                                             {% if actividad.nombre == 'Caja' %}
-                                                <a href="#" class="btn">Completar</a>
+                                            <a href="{{ url_for('update_vinculacion.actualizar_estado_Actividad', documento_id=actividad.idActividad, id_alumno=alumno._id, redirect_view='Finanzas.Finanzas', nombre=alumno.Nombre + ' ' + alumno.Apellido_Pat) }}" class="btn">Completar</a>
+
                                             {% else %}
                                             {% endif %}    
                                     {% else %}

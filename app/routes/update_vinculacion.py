@@ -91,6 +91,8 @@ def devolver_documento_alumno():
 @update_vinculacion_routes.route('/actualizar_estado_Actividad/<id_alumno>/<documento_id>', methods=['GET', 'POST'])
 def actualizar_estado_Actividad(id_alumno, documento_id):
     db = current_app.get_db_connection()
+    redirect_view = request.args.get('redirect_view')
+    nombre = request.args.get('nombre')
     try:
         # Intentar actualizar el estado de la actividad
         if estado_actividad(ObjectId(id_alumno), ObjectId(documento_id)):
@@ -101,11 +103,13 @@ def actualizar_estado_Actividad(id_alumno, documento_id):
                     {"correo": correo}, 
                     {'$set': {'ultimo_movimiento': 'Completo una actividad'}}
                 )
-            flash('Estado del documento actualizado exitosamente.', 'success')
+            flash(f'Actividad de {nombre} completada exitosamente.', 'success')
         else:
-            flash('No se pudo actualizar el estado de la Actividad.', 'danger')
+            flash(f'No se pudo actualizar el estado de la Actividad.', 'danger')
     except Exception as e:
         # Manejo de errores
         flash(f'Ocurrió un error al actualizar el estado: {str(e)}', 'danger')
     
-    return redirect(url_for('Vinculacion.documento_alumnos', id_alumno=id_alumno))
+    return redirect(url_for(redirect_view,id_alumno=id_alumno))
+
+

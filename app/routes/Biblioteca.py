@@ -10,7 +10,7 @@ Biblioteca_routes = Blueprint('Biblioteca', __name__)
 
 @Biblioteca_routes.route("/EduLink/Biblioteca/administrar_Alumnos/")
 @nocache
-def Home():
+def Biblioteca():
     correo = session.get('correo')
     if 'correo' in session:
         db = current_app.get_db_connection()

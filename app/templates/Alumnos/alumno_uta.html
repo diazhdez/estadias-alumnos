@@ -3,7 +3,7 @@
 {% block title %}Actividades del Alumno{% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/alumnos_documentos.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/alumnos_vista.css') }}">
 <script src="{{ url_for('static', filename='js/alerts.js') }}"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 {% endblock %}
@@ -294,7 +294,7 @@
                     <tr>
                         <th>Actividad</th>
                         <th>Estatus</th>
-
+    
                     </tr>
                 </thead>
                 <tbody id="table-body">
@@ -306,9 +306,9 @@
                     {% else %}
                         <td>{{ actividad.nombre }}</td>
                         <td>{{ actividad.estatus }} <i style="color: red;" class="bi bi-x-circle"></i></td>
-
+    
                     {% endif %}
-
+    
                 </tr>
                 {% endfor %}
                 </tbody>
@@ -316,6 +316,7 @@
         </div>
     </div>
 </div>
+
 </div>
 {% endblock %}
 
