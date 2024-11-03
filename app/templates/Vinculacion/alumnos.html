@@ -65,7 +65,7 @@
 
         <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar Alumno</button>
     </div>
-    <div class="table-container">
+    <div class="table-container-list">
         <table class="alumnos-table-list">
             <thead>
                 <tr>
@@ -108,29 +108,43 @@
 <div id="Progreso{{ alumno['_id'] }}" class="sidebar-progreso">
     <div class="header">
         <h3>Progreso del Estudiante</h3>
-        <button type="button" class="close-btn" onclick="cerrarBarra('Progreso{{ alumno['_id'] }}')">X</button>
+        <button type="button" class="close-btn" aria-label="Cerrar" onclick="cerrarBarra('Progreso{{ alumno['_id'] }}')">X</button>
     </div>
     <div class="contenido">
         <h4 id="nombreAlumno">{{ alumno.Nombre }} {{ alumno.Apellido_Pat }}</h4>
         <div class="progress">
             {% set progreso_total = alumno.progreso if alumno.progreso else 0 %}
+<<<<<<< HEAD
             {% set progreso_clase = 'bg-primary' if progreso_total < 100 else 'bg-success' %}
             <div class="progress-bar {{ progreso_clase }}" role="progressbar" aria-valuenow="{{ progreso_total }}"
                 aria-valuemin="0" aria-valuemax="100" style="width: {{ progreso_total }}%;">
                 {{ progreso_total | round(0) }}%
             </div>
         </div>
+=======
+            {% set progreso_clase = 'bg-primary' if progreso_total < 100 else 'bg-success' %} 
+            <div
+                class="progress-bar {{ progreso_clase }}" role="progressbar" aria-valuenow="{{ progreso_total }}"
+                aria-valuemin="0" aria-valuemax="100" style="width: {{ progreso_total }}%;">
+                {{ progreso_total | round(0) }}%
+            </div>
+        </div>    
+>>>>>>> 7924c4e04826215bb184704ebf842a58dd1b9e1b
         <div class="table-container">
             <table class="alumnos-table">
                 <thead style="background-color: var(--primary-color);">
                     <tr>
                         <th>Actividad</th>
                         <th>Estatus</th>
+<<<<<<< HEAD
                         <th>Documento</th> <!-- Mover "Documento" antes de "Acción" -->
+=======
+>>>>>>> 7924c4e04826215bb184704ebf842a58dd1b9e1b
                         <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
+<<<<<<< HEAD
                     {% for actividad in alumno.actividades %}
                     <tr>
                         {% if actividad.estatus == 'completado' %}
@@ -151,12 +165,48 @@
                         {% endif %}
                     </tr>
                     {% endfor %}
+=======
+                    {% if alumno.actividades %}
+                        {% for actividad in alumno.actividades %}
+                        <tr>
+                            <td>{{ actividad.nombre }}</td>
+                            <td>
+                                {{ actividad.estatus }} 
+                                {% if actividad.estatus == 'completado' %}
+                                    <i style="color: green;" class="bi bi-check2-circle"></i>
+                                {% else %}
+                                    <i style="color: red;" class="bi bi-x-circle"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if actividad.estatus != 'completado' %}
+                                    {% if actividad.encargado == 'vinculacion' %}
+                                        <a href="#" class="btn">Completar</a>
+                                    {% else %}
+                                        <span>No disponible</span>
+                                    {% endif %}
+                                {% else %}
+                                    <a href="{{ url_for('Vinculacion.documento_alumnos', id_alumno=alumno._id) }}" class="btn">ver</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr><td colspan="3">No hay actividades disponibles.</td></tr>
+                    {% endif %}
+>>>>>>> 7924c4e04826215bb184704ebf842a58dd1b9e1b
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7924c4e04826215bb184704ebf842a58dd1b9e1b
 {% endfor %}
+
+
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

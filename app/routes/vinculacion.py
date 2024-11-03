@@ -58,8 +58,10 @@ def Home():
 @Vinculacion_routes.route("/EduLink/Vinculación/DocumentoAlumno/")
 @nocache
 def documento_alumnos():
+    correo = session.get('correo')
     if 'correo' in session:
         db = current_app.get_db_connection()
+        admin = obtener_administrador_por_correo(correo)
         correo_usuario = session['correo']
         administradores = db["administradores"]
         administrador = administradores.find_one({'correo': correo_usuario}) 
@@ -86,7 +88,7 @@ def documento_alumnos():
                 alumno["progreso"] = progreso
                 alumno["actividades"] = actividades_alumno
                 
-                return render_template('vinculacion/AlumnosDocumentos.html', alumno=alumno, documentos=documentos, periodos=periodos)
+                return render_template('vinculacion/AlumnosDocumentos.html', alumno=alumno, documentos=documentos, periodos=periodos, administrador=admin)
             else:
                 flash('Alumno no encontrado.', 'danger')
                 return redirect(url_for('Vinculacion.Home'))
@@ -100,8 +102,10 @@ def documento_alumnos():
 @Vinculacion_routes.route("/EduLink/Vinculación/Carga/")
 @nocache
 def carga():
+    correo = session.get('correo')
     if 'correo' in session:
         db = current_app.get_db_connection()
+        admin = obtener_administrador_por_correo(correo)
         correo_usuario = session['correo']
         administradores = db["administradores"]
         periodos=db['Periodos'].find()
@@ -111,7 +115,7 @@ def carga():
         if administrador:  
             
 
-            return render_template("vinculacion/CargaAlumnos.html", Periodos=periodos)
+            return render_template("vinculacion/CargaAlumnos.html", Periodos=periodos, administrador=admin)
         else:
          flash('Acceso denegado: No eres un administrador.', 'danger')
          return redirect(url_for('session.login'))
@@ -119,7 +123,7 @@ def carga():
         return redirect(url_for('session.login'))
     
 @Vinculacion_routes.route('/EduLink/Vinculación/Carga_Alumnos', methods=['POST'])
-def carga_alumnos():
+def carga_alumnos():    
     db = current_app.get_db_connection()
     archivo = request.files['archivo']
     alumno = db["Alumnos"]
@@ -266,6 +270,7 @@ def aceptar_documento_nuevo_uta():
                 "carta_liberación_de_memoria": {"estado": "desactivado", "archivo": None,"comentario":None}
             }
 
+            # Actualizar el estado del alumno y el tipo de estadía
             db['Alumnos'].update_one(
                 {'_id': ObjectId(id_alumno)},
                 {
@@ -276,7 +281,24 @@ def aceptar_documento_nuevo_uta():
                 }
             )
 
+            # Insertar los documentos especiales para el alumno
             db['documentos_foraneas'].insert_one(documentos_Foraneas_data)
+            
+            # Asignar las actividades foráneas al alumno
+            actividades_foraneas = db['Actividades'].find({"Tipo": "Foranea"})
+            alumno_actividades = []
+            for actividad in actividades_foraneas:
+                alumno_actividad = {
+                    "idAlumno": ObjectId(id_alumno),
+                    "idActividad": actividad["_id"],
+                    "estatus": "no iniciado"
+                }
+                alumno_actividades.append(alumno_actividad)
+            
+            # Insertar las asignaciones de actividades
+            if alumno_actividades:
+                db['Alumnos_Actividades'].insert_many(alumno_actividades)
+            
             flash(f'Se le asignó la estadía Foránea a {nombre} exitosamente', 'success')
             return redirect(url_for('Vinculacion.documento_alumnos', id_alumno=id_alumno))
         
@@ -353,7 +375,9 @@ def aceptar_documento_nuevo_uta():
 @Vinculacion_routes.route("/EduLink/Vinculación/Archivos_Universidad/")
 @nocache
 def archivos_vinculacion():
+    correo = session.get('correo')
     db = current_app.get_db_connection()
+    admin = obtener_administrador_por_correo(correo)
     if 'correo' in session:
         correo_usuario = session['correo']
         administradores = db["administradores"]
@@ -366,7 +390,7 @@ def archivos_vinculacion():
             archivos = list(conexion.find())  # Convertir el cursor a una lista de documentos
             for archivo in archivos:
                 archivo['extension'] = archivo['nombre'].split('.')[-1].lower()  # Obtener la extensión de cada archivo
-            return render_template("vinculacion/Archivos_vinculacion.html", archivos=archivos)
+            return render_template("vinculacion/Archivos_vinculacion.html", archivos=archivos, administrador=admin)
         else:
          flash('Acceso denegado: No eres un administrador.', 'danger')
          return redirect(url_for('session.login'))
@@ -376,18 +400,19 @@ def archivos_vinculacion():
 @Vinculacion_routes.route("/EduLink/Vinculación/Periodos/")
 @nocache
 def iniciarPeriodo():
+    correo = session.get('correo')
     db = current_app.get_db_connection()
     if 'correo' in session:
         correo_usuario = session['correo']
         administradores = db["administradores"]
-        
+        admin = obtener_administrador_por_correo(correo)
         # Verifica si el correo está en la colección de administradores
         administrador = administradores.find_one({'correo': correo_usuario})
         
         if administrador:
             conexion = db["Periodos"]
             Periodos = list(conexion.find({'Estatus': True}))
-            return render_template("Vinculacion/iniciarPeriodo.html", Periodos=Periodos)
+            return render_template("Vinculacion/iniciarPeriodo.html", Periodos=Periodos, administrador=admin)
         else:
             flash('Acceso denegado: No eres un administrador.', 'danger')
             return redirect(url_for('login'))
