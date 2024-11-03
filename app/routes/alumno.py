@@ -61,14 +61,16 @@ def alumno_vista():
 @alumno_routes.route('/EduLink/Alumno/Archivos_Universidad/')
 @nocache
 def catalago():
+    correo = session.get('correo')
     if 'correo' in session:
         db = current_app.get_db_connection()  # Obtener la conexión a la base de datos
+        alumno = obtener_usuario_por_correo(correo)
         conexion = db['archivos_vinculacion']
         # Convertir el cursor a una lista de documentos
         archivos = list(conexion.find())
         for archivo in archivos:
             archivo['extension'] = archivo['nombre'].split('.')[-1].lower()  # Obtener la extensión de cada archivo
-        return render_template("Alumnos/Archivos_uta.html", archivos=archivos)
+        return render_template("Alumnos/Archivos_uta.html", archivos=archivos, alumno=alumno)
     else:
         flash('Acceso denegado: Debes de inciar sesion.', 'danger')
         return redirect(url_for('session.login'))

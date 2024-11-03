@@ -1,0 +1,220 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+/* Contenedor de tarjetas */
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    justify-items: center;
+}
+
+/* Estilo de las tarjetas */
+.card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    max-width: 300px;
+    min-height: 200px; /* Altura mínima para uniformidad */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Para que los botones siempre queden en la parte inferior */
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Título y descripción de la tarjeta */
+.card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.5rem;
+    text-transform: capitalize;
+}
+
+.card-text {
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 1rem;
+}
+
+/* Grupo de botones */
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Estilos de los botones */
+.btn {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid transparent;
+    width: 100%;
+    max-width: 120px;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* Botón "Ver" estilo outline (azul) */
+.btn-info {
+    background-color: #fff;
+    color: #00b5c4;
+    border: 1px solid #00b5c4;
+}
+
+.btn-info i {
+    color: #00b5c4;
+}
+
+.btn-info:hover {
+    background-color: #00b5c4;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.btn-info:hover i {
+    color: #fff;
+}
+
+/* Botón "Descargar" estilo outline (verde) */
+.btn-success {
+    background-color: #fff;
+    color: #28a745;
+    border: 1px solid #28a745;
+}
+
+.btn-success i {
+    color: #28a745;
+}
+
+.btn-success:hover {
+    background-color: #28a745;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.btn-success:hover i {
+    color: #fff;
+}
+
+/* Estilo para el FAB */
+.fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #00b5c4; /* Color cian del FAB */
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.fab:hover {
+    background-color: #0097a7; /* Color un poco más oscuro en hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos para el modal */
+.modal-dialog {
+    border: none;
+    outline: none;
+}
+
+/* Ajustes para el modal */
+.modal-content {
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border: none; /* Asegurarse de que no haya borde */
+    animation: fadeIn 0.4s ease-out;
+    position: relative;
+    outline: none; /* Elimina cualquier borde adicional del navegador */
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Estilos de la cabecera del modal */
+.modal-header {
+    border-bottom: none;
+    text-align: center;
+    padding-bottom: 0;
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+/* Estilo del cuerpo del modal */
+.modal-body {
+    padding-top: 10px;
+    text-align: center;
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Estilos para el botón de cerrar en el pie del modal */
+.modal-footer {
+    border-top: none;
+    display: flex;
+    justify-content: center;
+    padding-top: 0;
+}
+
+.modal-footer .btn-secondary {
+    background-color: #333;
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.modal-footer .btn-secondary:hover {
+    background-color: #555;
+}
