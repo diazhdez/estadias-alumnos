@@ -94,7 +94,7 @@ def documento_alumnos():
                 return redirect(url_for('Vinculacion.Home'))
         else:
             flash('Acceso denegado: No eres un administrador.', 'danger')
-            return redirect(url_for('session.login'))
+            return redirect(url_for('session.logout'))
     else:
         return redirect(url_for('session.login'))
 
@@ -418,3 +418,35 @@ def iniciarPeriodo():
             return redirect(url_for('login'))
     else:
         return redirect(url_for('login'))
+    
+
+
+@Vinculacion_routes.route("/agregar_Priodo/",methods=['POST'])
+@nocache
+def agregarPeriodo():
+        db = current_app.get_db_connection()
+        conexion = db["Periodos"]
+        nombre_periodo = request.form["N_periodo"]
+        duración = request.form["periodo"]
+        Status = True
+        estatus_existente = conexion.count_documents({'Estatus' : Status})
+
+        if estatus_existente < 2:
+            correo = session.get('correo')
+            if correo:
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo}, 
+                    {'$set': {'ultimo_movimiento': 'Agrego un periodo'}}
+                )
+            conexion.insert_one({
+                'NombrePeriodo': nombre_periodo,
+                'Duracion': duración,
+                'Estatus': Status
+                })
+            flash ('Periodo creado correctamente','success')
+            return redirect(url_for("Vinculacion.iniciarPeriodo"))
+        else:
+
+            flash ('Ya existe un periodo activo','danger')
+            return redirect(url_for("Vinculacion.iniciarPeriodo"))

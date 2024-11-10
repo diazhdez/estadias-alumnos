@@ -81,7 +81,7 @@
                         {% elif alumno.formato_tres_opciones.estado == 'entregado' %}
                         <a href="{{ url_for('view.ver_archivo_alumno_uta_0',id_alumno=alumno._id) }}"
                             class="btn-visualizar">Visualizar</a>
-                        <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento_entregado">Devolver</a>
+                        <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento">Devolver</a>
                         </div>
                         <a type="button" class="btn btn-success" data-bs-toggle="modal"
                             data-bs-target="#Aceptar_documento{{alumno._id}}">Aceptar</a>
@@ -125,6 +125,35 @@
                             </div>
                         </div>
                     </div>
+            </div>
+
+            <div class="modal fade" id="devolver_documento" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title fs-5" id="editarModalLabel">Devolver Documento</h4>
+                            
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ url_for('update_vinculacion.devolver_documento_alumno_uta') }}" method="POST">
+                            
+                                <div class="form-group">
+                                    <label>Nombre del documento</label>
+                                    <input type="text" class="form-control" value="formato_tres_opciones" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Razon de devolvicion</label>
+                                    <input type="text" class="form-control"  id="comentario" name="comentario" required>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="hidden" name="id_alumno" value="{{alumno._id }}">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Devolver</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {%endif%}
@@ -321,7 +350,7 @@
                         <td>{{ actividad.nombre }}</td>
                         <td>{{ actividad.estatus }} <i style="color: red;" class="bi bi-x-circle"></i></td>
                         {% if actividad.encargado == 'vinculacion' %}
-                            <td><a href="{{ url_for('update_vinculacion.actualizar_estado_Actividad', documento_id=actividad.idActividad, id_alumno=alumno._id) }}" class="btn">Completar</a></td>
+                            <td><a href="{{ url_for('update_vinculacion.actualizar_estado_Actividad', documento_id=actividad.idActividad, id_alumno=alumno._id, redirect_view='Vinculacion.documento_alumnos, nombre=alumno.Nombre + ' ' + alumno.Apellido_Pat') }}" class="btn">Completar</a></td>
                         {% else %}
                             <td><span>No disponible</span></td>
                         {% endif %}

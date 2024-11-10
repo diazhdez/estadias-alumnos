@@ -112,4 +112,48 @@ def actualizar_estado_Actividad(id_alumno, documento_id):
     
     return redirect(url_for(redirect_view,id_alumno=id_alumno))
 
+@update_vinculacion_routes.route('/terminar_Periodo/', methods=['POST'])
+def terminarPeriodo():
+        db = current_app.get_db_connection()
+        conexion = db['Periodos']
+        periodo_id = request.form['idPeriodo']
+        conexion.update_one({'_id': ObjectId(periodo_id)}, {'$set': {'Estatus': False}})
+        correo = session.get('correo')
+        if correo:
+            administracion = db['administradores']
+            administracion.update_one(
+                {"correo": correo}, 
+                {'$set': {'ultimo_movimiento': 'Finalizo un periodo'}}
+            )
+        return redirect(url_for('Vinculacion.iniciarPeriodo'))
 
+
+@update_vinculacion_routes.route('/devolver_Documento_uta/', methods=['POST'])#####Admin
+def devolver_documento_alumno_uta():
+        db = current_app.get_db_connection()
+        id_alumno = request.form.get('id_alumno')
+        comentario = request.form['comentario']
+        alumno = db['Alumnos'].find_one({'_id':ObjectId(id_alumno)})
+
+        if alumno:
+            correo = session.get('correo')
+            if correo:
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo}, 
+                    {'$set': {'ultimo_movimiento': 'Devolvio un documento'}}
+                )
+            db['usuarios'].update_one(
+                {'_id':ObjectId(id_alumno)},
+                {
+                    '$set':{
+                        'formato_tres_opciones.estado':'devuelto',
+                        'formato_tres_opciones.comentario':comentario
+                    }
+                }
+            )
+            flash('Documento devuellto exitosamente.', 'success')
+            return redirect(url_for('Vinculacion.documento_alumnos', id_alumno=id_alumno))
+        else:
+            flash('Alumno no encontrado en la base de datos','danger')
+        return redirect(url_for('Vinculacion.documento_alumnos', id_alumno=id_alumno))
