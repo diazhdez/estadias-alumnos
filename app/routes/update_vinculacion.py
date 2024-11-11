@@ -143,7 +143,7 @@ def devolver_documento_alumno_uta():
                     {"correo": correo}, 
                     {'$set': {'ultimo_movimiento': 'Devolvio un documento'}}
                 )
-            db['usuarios'].update_one(
+            db['Alumnos'].update_one(
                 {'_id':ObjectId(id_alumno)},
                 {
                     '$set':{

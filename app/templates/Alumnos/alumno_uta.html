@@ -102,7 +102,7 @@
                             {% elif alumno.formato_tres_opciones.estado == 'aceptado' %}
                                 <a href="{{ url_for('view.ver_archivo_alumno_uta_1', id_alumno=alumno._id) }}" class="btn-visualizar">Visualizar</a>
                             {% elif alumno.formato_tres_opciones.estado == 'devuelto' %}
-                                <p class="status-info">El documento ha sido devuelto.</p>
+                                <p class="status-info">Comentario: {{ alumno.formato_tres_opciones.comentario }}</p>
                             {% else %}
                                 <a href="#" class="btn btn-warning">Activar</a>
                             {% endif %}
