@@ -152,23 +152,33 @@
     background-color: #574b90;
 }
 
-/* Botón de visualizar */
+/* Botón Visualizar */
 .btn-visualizar {
-    padding: 10px;
-    font-size: 14px;
-    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Espacio entre el icono y el texto */
+    padding: 12px 20px;
+    font-size: 15px;
+    font-weight: 600;
     color: #fff;
-    background-color: #28a745;
+    background: linear-gradient(135deg,#2196F3, #42A5F5);
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
+    box-shadow: inset 0px 2px 4px rgba(255, 255, 255, 0.2), 0px 6px 12px rgba(0, 0, 0, 0.1);
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: 100%;
-    max-width: 150px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%; /* Tamaño uniforme */
+    max-width: 120px;
+    letter-spacing: 1px;
+    text-transform: lowercase;
 }
 
 .btn-visualizar:hover {
-    background-color: #218838;
+    transform: scale(1.05);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    text-decoration: none;
 }
 
 /* Sección de carga de archivos en el modal */
