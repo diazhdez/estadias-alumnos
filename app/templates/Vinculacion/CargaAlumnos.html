@@ -49,7 +49,9 @@
                                 <label>Seleccionar Periodo</label>
                                 <select name="Periodo" id="Periodo" class="form-select me-2">
                                     {% for periodos in Periodos %}
-                                    <option value="{{ periodos._id }}">{{ periodos.Duracion }}</option>
+                                        {% if periodos.Estatus == True %}
+                                            <option value="{{ periodos._id }}">{{ periodos.Duracion }}</option>
+                                        {%endif%}    
                                     {% endfor %}
                                 </select>
                             </div>

@@ -172,6 +172,7 @@
     max-width: 120px;
     letter-spacing: 1px;
     text-transform: lowercase;
+    text-decoration: none;
 }
 
 .btn-visualizar:hover {
