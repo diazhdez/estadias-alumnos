@@ -54,7 +54,7 @@
             <div class="card-container">
                 {% if alumno %}
                 <div
-                    class="card {% if alumno.formato_tres_opciones.estado == 'aceptado' or alumno.formato_tres_opciones.estado == 'entregado' %}completado{% else %}pendiente{% endif %}">
+                    class="card {% if alumno.formato_tres_opciones.estado == 'aceptado' or alumno.formato_tres_opciones.estado == 'entregado' %}completado{% elif alumno.formato_tres_opciones.estado == 'devuelto' %}devuelto{% else %}pendiente{% endif %}">
                     <div class="card-header">
                         <h3 class="document-name">formato_tres_opciones</h3>
                     </div>
@@ -63,13 +63,13 @@
                         <span class="status completado">Completado <i class="bi bi-check2-circle"
                                 style="color: green;"></i></span>
                         {% elif alumno.formato_tres_opciones.estado == 'entregado' %}
-                        <span class="status completado">Entregado <i class="bi bi-check2-circle"
+                        <span class="status entregado">Entregado <i class="bi bi-check2-circle"
                                 style="color: green;"></i></span>
                         {% elif alumno.formato_tres_opciones.estado == 'activo' %}
                         <span class="status completado">Activo <i class="bi bi-check2-circle"
                                 style="color: green;"></i></span>
                         {% elif alumno.formato_tres_opciones.estado == 'devuelto' %}
-                        <span class="status completado">Activo <i class="bi bi-check2-circle"
+                        <span class="status devuelto">devuelto <i class="bi bi-check2-circle"
                                 style="color: rgb(215, 206, 23);"></i></span>
                         {% else %}
                         <span class="status pendiente">Sin activar <i class="bi bi-x-circle"
@@ -168,7 +168,7 @@
             <div class="card-container">
                 {% if alumno %}
                 <div
-                    class="card {% if alumno.formato_tres_opciones.estado == 'aceptado' or alumno.formato_tres_opciones.estado == 'entregado' %}completado{% else %}pendiente{% endif %}">
+                    class="card {% if alumno.formato_tres_opciones.estado == 'aceptado' or alumno.formato_tres_opciones.estado == 'entregado' %}completado{% elif alumno.formato_tres_opciones.estado == 'devuelto' %}devuelto{% else %}pendiente{% endif %}">
                     <div class="card-header">
                         <h3 class="document-name">formato_tres_opciones</h3>
                     </div>
@@ -183,7 +183,7 @@
                         <span class="status completado">Activo <i class="bi bi-check2-circle"
                                 style="color: green;"></i></span>
                         {% elif alumno.formato_tres_opciones.estado == 'devuelto' %}
-                        <span class="status completado">Activo <i class="bi bi-check2-circle"
+                        <span class="status devuelto">devuelto <i class="bi bi-check2-circle"
                                 style="color: rgb(215, 206, 23);"></i></span>
                         {% else %}
                         <span class="status pendiente">Sin activar <i class="bi bi-x-circle"
