@@ -20,7 +20,7 @@ def aceptar_documento_nuevo(id_alumno, documento_nombre):
         else:
             flash('No se pudo aceptar el documento intentelo de nuevo.', 'danger')
         
-        return redirect(url_for('Vinculacion.documento_alumnos', id_alumno=id_alumno))
+        return redirect(url_for('vinculacion.documento_alumnos', id_alumno=id_alumno))
 
 @update_vinculacion_routes.route('/actualizar_estado_documento/<id_alumno>/<documento_nombre>', methods=['GET', 'POST'])
 def actualizar_estado_documento_nuevo(id_alumno, documento_nombre):
@@ -37,7 +37,7 @@ def actualizar_estado_documento_nuevo(id_alumno, documento_nombre):
         else:
             flash('No se pudo actualizar el estado del documento.', 'danger')
         
-        return redirect(url_for('Vinculacion.documento_alumnos', id_alumno=id_alumno))
+        return redirect(url_for('vinculacion.documento_alumnos', id_alumno=id_alumno))
 
 
 @update_vinculacion_routes.route('/Catalago_De_Empresas/upload/', methods=['POST'])
@@ -65,7 +65,7 @@ def upload_file():
             'descripcion': descripcion,
         })
         flash('Archivo guardado exitosamento','success')
-        return redirect(url_for('Vinculacion.archivos_vinculacion'))
+        return redirect(url_for('vinculacion.archivos_vinculacion'))
 
 @update_vinculacion_routes.route('/devolver_Documento/', methods=['POST'])
 def devolver_documento_alumno():
@@ -86,7 +86,7 @@ def devolver_documento_alumno():
         else:
             flash('No se pudo devolver el documento intentelo de nuevo.', 'danger')
         
-        return redirect(url_for('Vinculacion.documento_alumnos', id_alumno=id_alumno))
+        return redirect(url_for('vinculacion.documento_alumnos', id_alumno=id_alumno))
 
 @update_vinculacion_routes.route('/actualizar_estado_Actividad/<id_alumno>/<documento_id>', methods=['GET', 'POST'])
 def actualizar_estado_Actividad(id_alumno, documento_id):
@@ -125,7 +125,7 @@ def terminarPeriodo():
                 {"correo": correo}, 
                 {'$set': {'ultimo_movimiento': 'Finalizo un periodo'}}
             )
-        return redirect(url_for('Vinculacion.iniciarPeriodo'))
+        return redirect(url_for('vinculacion.iniciarPeriodo'))
 
 
 @update_vinculacion_routes.route('/devolver_Documento_uta/', methods=['POST'])#####Admin
@@ -156,4 +156,4 @@ def devolver_documento_alumno_uta():
             return redirect(url_for('Vinculacion.documento_alumnos', id_alumno=id_alumno))
         else:
             flash('Alumno no encontrado en la base de datos','danger')
-        return redirect(url_for('Vinculacion.documento_alumnos', id_alumno=id_alumno))
+        return redirect(url_for('vinculacion.documento_alumnos', id_alumno=id_alumno))

@@ -35,7 +35,7 @@ def iniciar():
             return redirect(url_for('Finanzas.Finanzas'))
         else:
             flash('Departamento no reconocido.', 'danger')
-            return redirect(url_for('session.login'))
+            return redirect(url_for('main.index'))
 
     # Si el inicio de sesión falla, muestra un mensaje de error
     flash('Correo o contraseña incorrectos', 'danger')

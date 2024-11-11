@@ -50,6 +50,6 @@ def Finanzas():
             return render_template("Finanzas/caja.html", alumnos=alumnos_con_progreso, periodos=periodos, administrador=admin)
         else:
             flash('Acceso denegado: No eres un administrador.', 'danger')
-            return redirect(url_for('session.login'))
+            return redirect(url_for('session.logout'))
     else:
         return redirect(url_for('session.logout'))

@@ -1,4 +1,3 @@
-
 from flask import current_app, flash, make_response, redirect, url_for
 
 import functools
