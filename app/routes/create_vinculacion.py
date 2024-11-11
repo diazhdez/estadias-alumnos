@@ -21,6 +21,7 @@ def agregarAlumno():
             if existing_alumno:
                 flash ('El correo o la matrícula ya están registrados.','warning')
                 return redirect(url_for('administrarAlumno'))
+            
             correo = session.get('correo')
             if correo:
                 administracion = db['administradores']
@@ -28,6 +29,7 @@ def agregarAlumno():
                     {"correo": correo}, 
                     {'$set': {'ultimo_movimiento': 'Asigno tipo de estadìa a alumno'}}
                 )
+
             nombre = request.form['Nombre']
             apellido_Pat = request.form['Apellido_Pat']
             apellido_Mat = request.form['Apellido_Mat']
@@ -58,7 +60,8 @@ def agregarAlumno():
                 "Folio_Finanzas": 'nan',
                 "Control_Estadía": 'nan',
                 'Periodo': periodo,
-                'TSU/ING': estadia
+                'TSU/ING': estadia,
+                'permisos': ["update", "view"] # Campo de permisos para alumnos agregados a mano
             }).inserted_id
             
             flash('Alumno registrado exitosamente.', 'success')
