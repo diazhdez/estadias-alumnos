@@ -78,16 +78,20 @@
                     </div>
                     <div class="card-footer">
                         {% if alumno.formato_tres_opciones.estado == 'activo' %}
+                        <!-- Si el estado es activo, no se muestran botones -->
                         {% elif alumno.formato_tres_opciones.estado == 'entregado' %}
+                        <!-- Orden: Visualizar, Aceptar, Devolver -->
                         <a href="{{ url_for('view.ver_archivo_alumno_uta_0',id_alumno=alumno._id) }}"
-                            class="btn-visualizar">Visualizar</a>
-                        <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento">Devolver</a>
-                        </div>
+                            class="btn-visualizar"><i class="fas fa-eye"></i>Visualizar</a>
                         <a type="button" class="btn btn-success" data-bs-toggle="modal"
-                            data-bs-target="#Aceptar_documento{{alumno._id}}">Aceptar</a>
+                            data-bs-target="#Aceptar_documento{{alumno._id}}"><i class="fas fa-check-circle"></i>Aceptar</a>
+                        </div>
+                        <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento"><i class="fas fa-times-circle"></i>Devolver</a>
+            
                         {% elif alumno.formato_tres_opciones.estado == 'aceptado' %}
+                        <!-- Solo muestra el botón Visualizar -->
                         <a href="{{ url_for('view.ver_archivo_alumno_uta_0',id_alumno=alumno._id) }}"
-                            class="btn-visualizar">Visualizar</a>
+                            class="btn-visualizar"><i class="fas fa-eye"></i>Visualizar</a>
                         {% elif alumno.formato_tres_opciones.estado == 'devuelto' %}
                         <p class="status-info">El documento ha sido devuelto.</p>
                         {% else %}
