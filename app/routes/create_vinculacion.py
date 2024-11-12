@@ -1,11 +1,13 @@
 from flask import Blueprint, current_app, render_template, request, url_for, redirect, flash, session
 from app.functions.funciones import nocache, obtener_documentos_alumno_uta, asignar_actividades, progreso_alumno
-
+from app.functions.utils import requiere_permisos
 import bcrypt
+
 create_vinculacion_routes = Blueprint('create_vinculacion', __name__)
 
 
 @create_vinculacion_routes.route("/agregar_Alumno/", methods=['POST'])
+@requiere_permisos(permisos_requeridos=["create"], departamento_requerido="vinculacion")
 def agregarAlumno():
         db = current_app.get_db_connection()
         alumnos = db["Alumnos"]

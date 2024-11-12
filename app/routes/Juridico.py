@@ -2,6 +2,7 @@
 import bcrypt
 from flask import Blueprint, current_app, render_template, request, url_for, redirect, flash, session
 from app.functions.funciones import nocache, obtener_administrador_por_correo, obtener_alumno, obtener_documentos_alumno, obtener_documentos_alumno_uta, asignar_actividades, progreso_alumno
+from app.functions.utils import requiere_permisos
 from datetime import datetime
 from bson import Binary, ObjectId
 import pandas as pd
@@ -10,6 +11,7 @@ Juridico_routes = Blueprint('Juridico', __name__)
 
 @Juridico_routes.route("/EduLink/Juridico/administrar_Alumnos/")
 @nocache
+@requiere_permisos(permisos_requeridos=["update", "view"], departamento_requerido="juridico")
 def Juridico():
     correo = session.get('correo')
     if 'correo' in session:

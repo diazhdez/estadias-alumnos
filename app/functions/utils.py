@@ -1,27 +1,47 @@
-from flask import session, redirect, url_for, flash
-from .funciones import obtener_usuario_por_correo 
+from flask import session, redirect, url_for, flash, current_app
 from functools import wraps
 
-def requiere_permiso(permisos_requeridos):
+def requiere_permisos(permisos_requeridos, departamento_requerido=None):
+    """
+    Decorador para verificar permisos y el departamento (si es necesario) del usuario o administrador.
+    """
     def decorator(f):
         @wraps(f)
-        def decorated_function(*args, **kwargs):
+        def wrapped(*args, **kwargs):
             correo = session.get('correo')
             if not correo:
-                flash('Inicia sesión para continuar', 'danger')
-                return redirect(url_for('session.logout'))
-                
-            alumno = obtener_usuario_por_correo(correo)
-            if alumno:
-                permisos_usuario = alumno.get("permisos", [])
-                # Verifica si el usuario tiene al menos uno de los permisos requeridos
-                if any(permiso in permisos_usuario for permiso in permisos_requeridos):
+                flash("Acceso denegado: Debes iniciar sesión.", "danger")
+                return redirect(url_for("session.logout"))
+
+            # Conectar a la base de datos
+            db = current_app.get_db_connection()
+
+            # Verificar si el usuario es un alumno
+            usuario = db["Alumnos"].find_one({"Correo_Institucional": correo})
+            if usuario:
+                # Verificar permisos del alumno
+                permisos_usuario = usuario.get("permisos", [])
+                if all(permiso in permisos_usuario for permiso in permisos_requeridos):
                     return f(*args, **kwargs)
                 else:
-                    flash('No tienes permisos para acceder a esta página.', 'danger')
-                    return redirect(url_for('session.logout'))
-            else:
-                flash('Alumno no encontrado.', 'danger')
-                return redirect(url_for('session.logout'))
-        return decorated_function
+                    flash("Acceso denegado: No tienes permisos suficientes.", "danger")
+                    return redirect(url_for("session.logout"))
+
+            # Verificar si el usuario es un administrador
+            admin = db["administradores"].find_one({"correo": correo})
+            if admin:
+                # Verificar permisos del administrador y su departamento
+                permisos_admin = admin.get("permisos", [])
+                departamento_admin = admin.get("departamento")
+                
+                if all(permiso in permisos_admin for permiso in permisos_requeridos) and (departamento_requerido is None or departamento_admin == departamento_requerido):
+                    return f(*args, **kwargs)
+                else:
+                    flash("Acceso denegado: No tienes permisos suficientes o perteneces a un departamento no autorizado.", "danger")
+                    return redirect(url_for("session.logout"))
+
+            flash("Acceso denegado: Usuario no autorizado.", "danger")
+            return redirect(url_for("session.logout"))
+
+        return wrapped
     return decorator

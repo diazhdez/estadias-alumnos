@@ -1,11 +1,13 @@
 from flask import Blueprint, current_app, flash, redirect, url_for, request
 from app.functions.funciones import subir_documento
+from app.functions.utils import requiere_permisos
 from bson import Binary, ObjectId
 
 update_routes = Blueprint('update', __name__)
 
 
 @update_routes.route('/subir_Documento_uta/', methods=['POST'])  # Alumno
+@requiere_permisos(permisos_requeridos=["update"])
 def subir_documento_alumno_uta():
     db = current_app.get_db_connection()  # Obtener la conexión a la base de datos
     id_alumno = request.form.get('id_alumno')
@@ -36,6 +38,7 @@ def subir_documento_alumno_uta():
 
 
 @update_routes.route('/subir_documento_alumo/<id_alumno>/<documento_nombre>', methods=['GET', 'POST'])
+@requiere_permisos(permisos_requeridos=["update"])
 def subir_documento_uta(id_alumno, documento_nombre):
     if request.method == 'POST':
         archivo = request.files['archivo']

@@ -2,6 +2,7 @@
 import bcrypt
 from flask import Blueprint, current_app, render_template, request, url_for, redirect, flash, session
 from app.functions.funciones import nocache, obtener_administrador_por_correo, obtener_alumno, obtener_documentos_alumno, obtener_documentos_alumno_uta, asignar_actividades, progreso_alumno
+from app.functions.utils import requiere_permisos
 from datetime import datetime
 from bson import Binary, ObjectId
 import pandas as pd
@@ -10,6 +11,7 @@ Vinculacion_routes = Blueprint('Vinculacion', __name__)
 
 @Vinculacion_routes.route("/EduLink/Vinculación/administrar_Alumnos/")
 @nocache
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def Home():
     correo = session.get('correo')
     if 'correo' in session:
@@ -59,6 +61,7 @@ def Home():
 
 @Vinculacion_routes.route("/EduLink/Vinculación/DocumentoAlumno/")
 @nocache
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def documento_alumnos():
     correo = session.get('correo')
     if 'correo' in session:
@@ -106,6 +109,7 @@ def documento_alumnos():
 
 @Vinculacion_routes.route("/EduLink/Vinculación/Carga/")
 @nocache
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def carga():
     correo = session.get('correo')
     if 'correo' in session:
@@ -128,6 +132,7 @@ def carga():
 
 
 @Vinculacion_routes.route('/EduLink/Vinculación/Carga_Alumnos', methods=['POST'])
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def carga_alumnos():
     db = current_app.get_db_connection()
     archivo = request.files['archivo']
@@ -216,6 +221,7 @@ def carga_alumnos():
 
 
 @Vinculacion_routes.route('/aceptar_documento_uta/', methods=['GET', 'POST'])
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def aceptar_documento_nuevo_uta():
     db = current_app.get_db_connection()
     id_alumno = request.form.get('id_alumno')
@@ -391,6 +397,7 @@ def aceptar_documento_nuevo_uta():
 
 @Vinculacion_routes.route("/EduLink/Vinculación/Archivos_Universidad/")
 @nocache
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def archivos_vinculacion():
     correo = session.get('correo')
     db = current_app.get_db_connection()
@@ -419,6 +426,7 @@ def archivos_vinculacion():
 
 @Vinculacion_routes.route("/EduLink/Vinculación/Periodos/")
 @nocache
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def iniciarPeriodo():
     correo = session.get('correo')
     db = current_app.get_db_connection()
@@ -442,6 +450,7 @@ def iniciarPeriodo():
 
 @Vinculacion_routes.route("/agregar_Priodo/", methods=['POST'])
 @nocache
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def agregarPeriodo():
     db = current_app.get_db_connection()
     conexion = db["Periodos"]

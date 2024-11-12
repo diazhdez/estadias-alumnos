@@ -1,11 +1,13 @@
 from flask import Blueprint, current_app, flash, redirect, session, url_for, request
 from app.functions.funciones import aceptar_documento, actualizar_estado_documento, devolver_documento, subir_documento, estado_actividad
+from app.functions.utils import requiere_permisos
 from bson import Binary, ObjectId
 
 update_vinculacion_routes = Blueprint('update_vinculacion', __name__)
 
 
 @update_vinculacion_routes.route('/aceptar_documento/<id_alumno>/<documento_nombre>', methods=['GET', 'POST'])
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def aceptar_documento_nuevo(id_alumno, documento_nombre):
         db = current_app.get_db_connection()
         if aceptar_documento(id_alumno, documento_nombre):
@@ -22,7 +24,9 @@ def aceptar_documento_nuevo(id_alumno, documento_nombre):
         
         return redirect(url_for('vinculacion.documento_alumnos', id_alumno=id_alumno))
 
+
 @update_vinculacion_routes.route('/actualizar_estado_documento/<id_alumno>/<documento_nombre>', methods=['GET', 'POST'])
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def actualizar_estado_documento_nuevo(id_alumno, documento_nombre):
         db = current_app.get_db_connection()
         if actualizar_estado_documento(id_alumno, documento_nombre):
@@ -41,6 +45,7 @@ def actualizar_estado_documento_nuevo(id_alumno, documento_nombre):
 
 
 @update_vinculacion_routes.route('/Catalago_De_Empresas/upload/', methods=['POST'])
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def upload_file():
         db = current_app.get_db_connection()
         conexion = db["archivos_vinculacion"]
@@ -67,7 +72,9 @@ def upload_file():
         flash('Archivo guardado exitosamento','success')
         return redirect(url_for('vinculacion.archivos_vinculacion'))
 
+
 @update_vinculacion_routes.route('/devolver_Documento/', methods=['POST'])
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def devolver_documento_alumno():
         db = current_app.get_db_connection()
         id_alumno = request.form.get('id_alumno')
@@ -89,6 +96,7 @@ def devolver_documento_alumno():
         return redirect(url_for('vinculacion.documento_alumnos', id_alumno=id_alumno))
 
 @update_vinculacion_routes.route('/actualizar_estado_Actividad/<id_alumno>/<documento_id>', methods=['GET', 'POST'])
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def actualizar_estado_Actividad(id_alumno, documento_id):
     db = current_app.get_db_connection()
     redirect_view = request.args.get('redirect_view')
@@ -112,7 +120,9 @@ def actualizar_estado_Actividad(id_alumno, documento_id):
     
     return redirect(url_for(redirect_view,id_alumno=id_alumno))
 
+
 @update_vinculacion_routes.route('/terminar_Periodo/', methods=['POST'])
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def terminarPeriodo():
         db = current_app.get_db_connection()
         conexion = db['Periodos']
@@ -129,6 +139,7 @@ def terminarPeriodo():
 
 
 @update_vinculacion_routes.route('/devolver_Documento_uta/', methods=['POST'])#####Admin
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def devolver_documento_alumno_uta():
         db = current_app.get_db_connection()
         id_alumno = request.form.get('id_alumno')
