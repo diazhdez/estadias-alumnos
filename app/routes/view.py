@@ -22,7 +22,7 @@ def ver_archivo_alumno_uta(nombre_archivo, id_alumno):
     return 'Archivo no encontrado', 404
 
 @view_routes.route('/EduLink/Vinculación/Validar/Documentos_Alumno/ver/<nombre_archivo>/<id_alumno>', methods=['GET'])
-@requiere_permisos(permisos_requeridos=["view"], departamento_requerido="vinculacion")
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def ver_archivo_alumno(nombre_archivo, id_alumno):
         alumno = obtener_usuario_por_matricula(id_alumno)
         if alumno:
@@ -63,7 +63,7 @@ def ver_archivo_alumno_uta_1(id_alumno):
     return 'Archivo no encontrado', 404
 
 @view_routes.route('/EduLink/Vinculación/Validar/Documentos_Alumno/ver/formato_tres_opciones/<id_alumno>', methods=['GET'])
-@requiere_permisos(permisos_requeridos=["view"], departamento_requerido="vinculacion")
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def ver_archivo_alumno_uta_0(id_alumno):
         db = current_app.get_db_connection() 
         try:
@@ -151,7 +151,7 @@ def descargar_archivo(archivo_id):
         return 'Archivo no encontrado', 404
 
 @view_routes.route('/Catalago_De_Empresas/ver/<archivo_id>/', methods=['GET'])
-@requiere_permisos(permisos_requeridos=["view"], departamento_requerido="vinculacion")
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def ver_archivo_vinculacion(archivo_id):
         db = current_app.get_db_connection() 
         conexion = db["archivos_vinculacion"]
