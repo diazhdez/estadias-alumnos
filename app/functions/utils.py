@@ -2,9 +2,6 @@ from flask import session, redirect, url_for, flash, current_app
 from functools import wraps
 
 def requiere_permisos(permisos_requeridos, departamento_requerido=None):
-    """
-    Decorador para verificar permisos y el departamento (si es necesario) del usuario o administrador.
-    """
     def decorator(f):
         @wraps(f)
         def wrapped(*args, **kwargs):
