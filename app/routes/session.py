@@ -33,6 +33,8 @@ def iniciar():
             return redirect(url_for('Servicios.Servicios'))
         elif departamento == 'finanzas':
             return redirect(url_for('Finanzas.Finanzas'))
+        elif departamento == 'Root':
+            return redirect(url_for('SuperAdmin.home'))
         else:
             flash('Departamento no reconocido.', 'danger')
             return redirect(url_for('main.index'))

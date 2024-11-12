@@ -49,6 +49,7 @@ def create_app():
         from app.routes.Finanzas import Finanzas_routes
         from app.routes.Juridico import Juridico_routes
         from app.routes.Recursos import Recursos_routes
+        from app.routes.SuperAdmin import SuperAdmmin_routes
 
 
         app.register_blueprint(main_routes)
@@ -65,4 +66,6 @@ def create_app():
         app.register_blueprint(Finanzas_routes)
         app.register_blueprint(Juridico_routes)
         app.register_blueprint(Recursos_routes)
+        app.register_blueprint(SuperAdmmin_routes)
+        
     return app

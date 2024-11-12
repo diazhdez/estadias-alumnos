@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Administracion</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylessA.css') }}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: blue;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .close {
+            color: rgb(0, 0, 0);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modalh2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .modal-content {
+            background-color: blue;
+            width: 350px;
+            padding: 10px;
+            margin: 7% auto;
+            color: white;
+            border-radius: 20px;
+        }
+
+        .formpost {
+            text-align: center;
+        }
+
+        .labelpost {
+            font-size: 15px;
+        }
+
+        .celda {
+            width: 300px;
+            border-radius: 3px;
+            border: 0px;
+            margin-bottom: 8px;
+        }
+
+        .agregar {
+            text-align: center;
+            border: 0px;
+            border-radius: 6px;
+            padding: 4px;
+            margin-top: 10px;
+            font-size: 17px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+    </header>
+
+    <nav>
+        <div class="espacio">
+            espacio
+        </div>
+        <ul>
+            <p class="efecto2">
+                <a href="{{ url_for('session.logout') }}" class="rutacolor2">Cerrar Sesión</a>
+            </p>
+
+        </ul>
+        <img src="{{ url_for('static', filename='img/LOGO-UTA.png') }}" alt="">
+    </nav>
+
+    <div class="clearfix"></div>
+
+    <aside>
+        <img src="{{ url_for('static', filename='img/fotodeperfil.webp') }}" alt="">
+        <h2>Ing. Victor Manuel Velázquez Martinez</h2>
+
+        <form action="">
+            <p class="efecto1">
+                <a href="{{ url_for('SuperAdmin.monitoreo') }}" class="rutacolor">
+                    Monitoreo
+                </a>
+            </p>
+            <p class="efecto1">
+                <a href="{{ url_for('SuperAdmin.home') }}" class="rutacolor">
+                    Administradores
+                </a>
+            </p>
+            <p class="efecto1">
+                <a href="permisos.html" class="rutacolor">
+                    Permisos
+                </a>
+            </p>
+        </form>
+    </aside>
+
+    <section id="content">
+        <h2>Administradores</h2>
+
+        <div class="agregarad" id="myBtn">
+            Agregar Administrador
+        </div>
+
+
+
+
+        <div id="myModal" class="modal">
+            <div class="modal-content" id="modalpost">
+                <span class="close">&times;</span>
+                <h2 class="modalh2">Agregar Administrador</h2>
+
+                <div id="error-message" style="color: rgb(255, 255, 255);"></div>
+
+                <form class="formpost" id="addForm" action="/add" method="post">
+                    <label class="labelpost" for="administrador">Nombre del Administrador:</label>
+                    <input class="celda" type="text" id="administrador" name="administrador" placeholder="" required>
+
+                    <label class="labelpost" for="correo">Correo Electrónico:</label>
+                    <input class="celda" type="email" id="correo" name="correo" placeholder="" required>
+
+                    <label class="labelpost" for="contraseña">Contraseña:</label>
+                    <input class="celda" type="password" id="contraseña" name="contraseña" placeholder="" required>
+
+                    <label class="labelpost" for="confirmar_contraseña">Confirmar Contraseña:</label>
+                    <input class="celda" type="password" id="confirmar_contraseña" name="confirmar_contraseña"
+                        placeholder="" required>
+
+                    <label class="labelpost" for="departamento">Departamento:</label>
+                    <input class="celda" type="text" id="departamento" name="departamento" placeholder="" required>
+
+                    <div class="agregar">
+                        <input class="agregar" type="submit" value="Agregar">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+
+        <div id="editModal" class="modal">
+            <div class="modal-content" id="modalpost">
+                <span class="close">&times;</span>
+                <h2 class="modalh2">Editar Administrador</h2>
+                <div id="error-message" style="color: rgb(255, 255, 255);"></div>
+
+                <form class="formpost" id="editForm" action="/edit/<id>" method="post">
+                    <label class="labelpost" for="edit_administrador">Nombre del Administrador:</label>
+                    <input class="celda" type="text" id="edit_administrador" name="administrador" required>
+
+                    <label class="labelpost" for="edit_correo">Correo Electrónico:</label>
+                    <input class="celda" type="email" id="edit_correo" name="correo" required>
+
+                    <label class="labelpost" for="edit_contraseña">Contraseña:</label>
+                    <input class="celda" type="password" id="edit_contraseña" name="contraseña" required>
+
+                    
+
+                    <label class="labelpost" for="edit_departamento">Departamento:</label>
+                    <input class="celda" type="text" id="edit_departamento" name="departamento" required>
+
+                    <div class="agregar">
+                        <input class="agregar" type="submit" value="Guardar">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+
+        <table>
+            <thead>
+                <tr>
+                    <th class="admin">Administrador</th>
+                    <th class="correo">Correo</th>
+                    <th class="contra">Contraseña</th>
+                    <th class="depa">Departamento</th>
+                    <th class="edit">Editar</th>
+                    <th class="elim">Eliminar</th>
+                </tr>
+            </thead>
+            <tbody class="cuerpo">
+                {% for admin in administradores %}
+                <tr class="espacito">
+                    <td class="admin2">{{ admin['administrador'] }}</td>
+                    <td class="admin3">{{ admin['correo'] }}</td>
+                    <td class="admin3">********</td>
+                    <td class="admin3">{{ admin['departamento'] }}</td>
+                    <td id="edit"><button class="editBtn" data-id="{{ admin['_id'] }}"
+                            data-administrador="{{ admin['administrador'] }}" data-correo="{{ admin['correo'] }}"
+                            data-contraseña="{{ admin['contraseña'] }}"
+                            data-departamento="{{ admin['departamento'] }}">Editar</button></td>
+                    <td id="elim"><button class="deleteBtn" data-id="{{ admin['_id'] }}">Eliminar</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <div class="clearfix"></div>
+
+
+    <script>
+        var addModal = document.getElementById("myModal");
+        var editModal = document.getElementById("editModal");
+        var addBtn = document.getElementById("myBtn");
+        var closeBtns = document.getElementsByClassName("close");
+        var addForm = document.getElementById("addForm");
+        var editForm = document.getElementById("editForm");
+
+        // Función para mostrar y ocultar modales
+        function toggleModal(modal) {
+            modal.style.display = (modal.style.display === "block") ? "none" : "block";
+        }
+
+        // Validación de contraseñas en el formulario de agregar y editar
+        function validatePasswords(contraseña, confirmarContraseña, errorMessage) {
+            if (contraseña !== confirmarContraseña) {
+                errorMessage.textContent = 'Las contraseñas no coinciden.';
+                return false; // Evita que el formulario se envíe
+            } else {
+                errorMessage.textContent = ''; // Borra el mensaje de error si las contraseñas coinciden
+                return true; // Permite el envío del formulario
+            }
+        }
+
+        // Evento submit para el formulario de agregar
+        addForm.onsubmit = function (event) {
+            var contraseña = document.getElementById('contraseña').value;
+            var confirmarContraseña = document.getElementById('confirmar_contraseña').value;
+            var errorMessage = document.getElementById('error-message');
+
+            if (!validatePasswords(contraseña, confirmarContraseña, errorMessage)) {
+                event.preventDefault(); // Evita que el formulario se envíe si las contraseñas no coinciden
+            }
+        };
+
+        // Evento submit para el formulario de editar
+        editForm.onsubmit = function (event) {
+            var contraseña = document.getElementById('edit_contraseña').value;
+            var confirmarContraseña = document.getElementById('edit_confirmar_contraseña').value;
+            var errorMessage = document.getElementById('error-message');
+
+            if (!validatePasswords(contraseña, confirmarContraseña, errorMessage)) {
+                event.preventDefault(); // Evita que el formulario se envíe si las contraseñas no coinciden
+            }
+        };
+
+        // Mostrar el modal de agregar al hacer clic en el botón correspondiente
+        addBtn.onclick = function () {
+            toggleModal(addModal);
+        };
+
+        // Cerrar los modales al hacer clic en los botones de cerrar
+        for (let i = 0; i < closeBtns.length; i++) {
+            closeBtns[i].onclick = function () {
+                toggleModal(addModal);
+                toggleModal(editModal);
+            };
+        }
+
+        // Cerrar el modal si se hace clic fuera de él
+        window.onclick = function (event) {
+            if (event.target === addModal) {
+                addModal.style.display = "none";
+            }
+            if (event.target === editModal) {
+                editModal.style.display = "none";
+            }
+        };
+
+        // Manejar el botón de editar
+        document.querySelectorAll('.editBtn').forEach(button => {
+            button.addEventListener('click', function () {
+                var id = this.getAttribute('data-id');
+                var administrador = this.getAttribute('data-administrador');
+                var correo = this.getAttribute('data-correo');
+                var contraseña = this.getAttribute('data-contraseña');
+                var departamento = this.getAttribute('data-departamento');
+
+                document.getElementById('edit_administrador').value = administrador;
+                document.getElementById('edit_correo').value = correo;
+                document.getElementById('edit_contraseña').value = contraseña;
+                document.getElementById('edit_departamento').value = departamento;
+
+                editForm.action = '/edit/' + id;
+                toggleModal(editModal);
+            });
+        });
+
+
+
+        // Manejar el botón de eliminar
+        document.querySelectorAll('.deleteBtn').forEach(button => {
+            button.addEventListener('click', function () {
+                if (confirm("¿Estás seguro de que deseas eliminar este administrador?")) {
+                    var id = this.getAttribute('data-id');
+                    window.location.href = '/delete/' + id;
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
