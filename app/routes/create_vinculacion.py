@@ -7,7 +7,7 @@ create_vinculacion_routes = Blueprint('create_vinculacion', __name__)
 
 
 @create_vinculacion_routes.route("/agregar_Alumno/", methods=['POST'])
-@requiere_permisos(permisos_requeridos=["create"], departamento_requerido="vinculacion")
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def agregarAlumno():
         db = current_app.get_db_connection()
         alumnos = db["Alumnos"]
