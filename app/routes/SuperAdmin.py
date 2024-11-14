@@ -4,12 +4,15 @@ from app.functions.funciones import nocache, obtener_administrador_por_correo, o
 from datetime import datetime
 from bson import Binary, ObjectId
 import pandas as pd
+from app.functions.utils import requiere_permisos
 SuperAdmmin_routes = Blueprint('SuperAdmin', __name__)
 
 
 
 
 @SuperAdmmin_routes.route('/add', methods=['POST'])
+@nocache
+@requiere_permisos(permisos_requeridos=["create", "delete"], departamento_requerido="Root")
 def add_document():
     db = current_app.get_db_connection()
     administrador = request.form['administrador']
@@ -46,6 +49,8 @@ def add_document():
 
 
 @SuperAdmmin_routes.route('/edit/<id>', methods=['POST'])
+@nocache
+@requiere_permisos(permisos_requeridos=["create", "delete"], departamento_requerido="Root")
 def edit_document(id):
     db = current_app.get_db_connection()
     administrador = request.form['administrador']
@@ -73,6 +78,8 @@ def edit_document(id):
     return redirect(url_for('SuperAdmin.home'))
 
 @SuperAdmmin_routes.route('/delete/<id>')
+@nocache
+@requiere_permisos(permisos_requeridos=["create", "delete"], departamento_requerido="Root")
 def delete_document(id):
     db = current_app.get_db_connection()
     db['administradores'].delete_one({'_id': ObjectId(id)})
@@ -88,6 +95,8 @@ def delete_document(id):
 
 
 @SuperAdmmin_routes.route('/monitoreo')
+@nocache
+@requiere_permisos(permisos_requeridos=["create", "delete"], departamento_requerido="Root")
 def monitoreo():
     db = current_app.get_db_connection()
     administradores = list(db['administradores'].find({}, {
@@ -100,6 +109,8 @@ def monitoreo():
     return render_template('SuperAdmin/monitoreo.html', administradores=administradores)
 
 @SuperAdmmin_routes.route('/home')
+@nocache
+@requiere_permisos(permisos_requeridos=["create", "delete"], departamento_requerido="Root")
 def home():
     db = current_app.get_db_connection()
     administradores = list(db['administradores'].find())

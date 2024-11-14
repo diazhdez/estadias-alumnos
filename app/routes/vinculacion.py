@@ -163,8 +163,7 @@ def carga_alumnos():
                 existe_carga = carga.find_one(
                     {'periodo': Periodo, 'TSU_ING': TSU_ING})
                 if existe_carga:
-                    flash(f'Ya existe una carga de alumnos para el periodo "{
-                          Periodo}" y tipo "{TSU_ING}".', 'warning')
+                    flash(f'Ya existe una carga de alumnos para el periodo "{Periodo}" y tipo "{TSU_ING}".', 'warning')
                     return redirect(url_for('Vinculacion.carga'))
 
                 # Almacenar el archivo en binario
