@@ -1,5 +1,6 @@
-from flask import Flask, g
+from flask import Flask, current_app, g
 from pymongo import MongoClient
+import pymongo
 from config import Config
 import certifi
 
@@ -13,12 +14,8 @@ def create_app():
 
     def get_db_connection():
         if 'db' not in g:
-            try:
-                client = MongoClient(Config.MONGO_URI, tlsCAFile=ca)
-                g.db = client["Universidad_Estadias"]
-            except Exception as e:
-                print(f"Error de conexión con la base de datos: {e}")
-                g.db = None
+            client = pymongo.MongoClient(current_app.config['MONGO_URI'])
+            g.db = client[current_app.config['DATABASE_NAME']]
         return g.db
 
     @app.teardown_appcontext

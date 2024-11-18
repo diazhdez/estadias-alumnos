@@ -96,7 +96,6 @@ def devolver_documento_alumno():
         return redirect(url_for('vinculacion.documento_alumnos', id_alumno=id_alumno))
 
 @update_vinculacion_routes.route('/actualizar_estado_Actividad/<id_alumno>/<documento_id>', methods=['GET', 'POST'])
-@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def actualizar_estado_Actividad(id_alumno, documento_id):
     db = current_app.get_db_connection()
     redirect_view = request.args.get('redirect_view')
@@ -138,7 +137,7 @@ def terminarPeriodo():
         return redirect(url_for('vinculacion.iniciarPeriodo'))
 
 
-@update_vinculacion_routes.route('/devolver_Documento_uta/', methods=['POST'])#####Admin
+@update_vinculacion_routes.route('/devolver_Documento_uta/', methods=['POST'])
 @requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def devolver_documento_alumno_uta():
         db = current_app.get_db_connection()

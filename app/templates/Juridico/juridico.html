@@ -1,7 +1,7 @@
 <!-- templates/alumnos.html -->
 {% extends 'base_departamentos.html' %}
 
-{% block title %}Recursos Materiales{% endblock %}
+{% block title %}Juridico{% endblock %}
 
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/alumnos.css') }}">
@@ -145,9 +145,10 @@
                             </td>
                             <td class="pdf-icon-cell">
                                 {% if actividad.estatus != 'completado' %}
-                                    {% if actividad.encargado == 'recursos_materiales' %}
-                                            {% if actividad.nombre == 'Recursos Materiales' %}
-                                            <a href="{{ url_for('update_vinculacion.actualizar_estado_Actividad', documento_id=actividad.idActividad, id_alumno=alumno._id, redirect_view='Recursos.Recursos', nombre=alumno.Nombre + ' ' + alumno.Apellido_Pat) }}" class="btn">Completar</a>
+                                    {% if actividad.encargado == 'juridico' %}
+                                            {% if actividad.nombre == 'Juridico' %}
+                                            <a href="{{ url_for('update_vinculacion.actualizar_estado_Actividad', documento_id=actividad.idActividad, id_alumno=alumno._id, redirect_view='Servicios.Servicios', nombre=alumno.Nombre + ' ' + alumno.Apellido_Pat) }}" class="btn">Completar</a>
+
                                             {% else %}
                                             {% endif %}    
                                     {% else %}

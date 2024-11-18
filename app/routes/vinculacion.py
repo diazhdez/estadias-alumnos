@@ -54,9 +54,10 @@ def Home():
             return render_template("vinculacion/alumnos.html", alumnos=alumnos_con_progreso, periodos=periodos, administrador=admin)
         else:
             flash('Acceso denegado: No eres un administrador.', 'danger')
-            return redirect(url_for('session.logout'))
+            return redirect(url_for('main.index'))
     else:
-        return redirect(url_for('session.logout'))
+        flash('Acceso denegado: No eres un administrador.', 'danger')
+        return redirect(url_for('main.index'))
 
 
 @Vinculacion_routes.route("/EduLink/Vinculación/DocumentoAlumno/")
@@ -102,9 +103,10 @@ def documento_alumnos():
                 return redirect(url_for('Vinculacion.Home'))
         else:
             flash('Acceso denegado: No eres un administrador.', 'danger')
-            return redirect(url_for('session.logout'))
+            return redirect(url_for('main.index'))
     else:
-        return redirect(url_for('session.logout'))
+        flash('Acceso denegado: No eres un administrador.', 'danger')
+        return redirect(url_for('main.index'))
 
 
 @Vinculacion_routes.route("/EduLink/Vinculación/Carga/")
@@ -126,9 +128,10 @@ def carga():
             return render_template("vinculacion/CargaAlumnos.html", Periodos=periodos, administrador=admin)
         else:
             flash('Acceso denegado: No eres un administrador.', 'danger')
-            return redirect(url_for('session.logout'))
+            return redirect(url_for('main.index'))
     else:
-        return redirect(url_for('session.logout'))
+        flash('Acceso denegado: No eres un administrador.', 'danger')
+        return redirect(url_for('main.index'))
 
 
 @Vinculacion_routes.route('/EduLink/Vinculación/Carga_Alumnos', methods=['POST'])
@@ -404,7 +407,7 @@ def archivos_vinculacion():
     if 'correo' in session:
         correo_usuario = session['correo']
         administradores = db["administradores"]
-        periodos = db['Periodos'].find()
+
 
         # Verifica si el correo está en la colección de administradores
         administrador = administradores.find_one({'correo': correo_usuario})
@@ -418,9 +421,10 @@ def archivos_vinculacion():
             return render_template("vinculacion/Archivos_vinculacion.html", archivos=archivos, administrador=admin)
         else:
             flash('Acceso denegado: No eres un administrador.', 'danger')
-            return redirect(url_for('session.logout'))
+            return redirect(url_for('smain.index'))
     else:
-        return redirect(url_for('session.logout'))
+        flash('Acceso denegado: No eres un administrador.', 'danger')
+        return redirect(url_for('main.index'))
 
 
 @Vinculacion_routes.route("/EduLink/Vinculación/Periodos/")
@@ -442,9 +446,10 @@ def iniciarPeriodo():
             return render_template("Vinculacion/iniciarPeriodo.html", Periodos=Periodos, administrador=admin)
         else:
             flash('Acceso denegado: No eres un administrador.', 'danger')
-            return redirect(url_for('session.logout'))
+            return redirect(url_for('main.index'))
     else:
-        return redirect(url_for('session.logout'))
+        flash('Acceso denegado: No eres un administrador.', 'danger')
+        return redirect(url_for('main.index'))
 
 
 @Vinculacion_routes.route("/agregar_Priodo/", methods=['POST'])

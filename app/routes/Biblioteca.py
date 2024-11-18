@@ -52,6 +52,7 @@ def Biblioteca():
             return render_template("Biblioteca/biblioteca.html", alumnos=alumnos_con_progreso, periodos=periodos, administrador=admin)
         else:
             flash('Acceso denegado: No eres un administrador.', 'danger')
-            return redirect(url_for('session.logout'))
+            return redirect(url_for('main.index'))
     else:
-        return redirect(url_for('session.logout'))
+        flash('Acceso denegado: No eres un administrador.', 'danger')
+        return redirect(url_for('main.index'))

@@ -13,18 +13,19 @@ SuperAdmmin_routes = Blueprint('SuperAdmin', __name__)
 @SuperAdmmin_routes.route('/add', methods=['POST'])
 @nocache
 @requiere_permisos(permisos_requeridos=["create", "delete"], departamento_requerido="Root")
-def add_document():
+def add_admin():
     db = current_app.get_db_connection()
     administrador = request.form['administrador']
     correo = request.form['correo']
     contraseña = request.form['contraseña']
     confirmar_contraseña = request.form['confirmar_contraseña']
     departamento = request.form['departamento']
+    permisos = request.form.getlist('permisos')
     hashpass = bcrypt.hashpw(contraseña.encode('utf-8'), bcrypt.gensalt())
 
     if contraseña != confirmar_contraseña:
-        error_messaje = 'Las contraseñas no coinciden.'
-        return render_template('login.html', error_messaje=error_messaje)
+        flash('Contraseñas no coinciden.', 'danger')
+        return redirect(url_for('SuperAdmin.home'))
 
     new_admin = {
         'administrador': administrador,
@@ -33,8 +34,8 @@ def add_document():
         'departamento': departamento,
         'en_linea':"",
         'ultima_conexion':"",
-        'ultimo_movimiento':""
-        
+        'ultimo_movimiento':"",
+        'permisos' : permisos   
     }
     db['administradores'].insert_one(new_admin)
     

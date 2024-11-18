@@ -22,7 +22,7 @@ def requiere_permisos(permisos_requeridos, departamento_requerido=None):
                     return f(*args, **kwargs)
                 else:
                     flash("Acceso denegado: No tienes permisos suficientes.", "danger")
-                    return redirect(url_for("session.logout"))
+                    return redirect(url_for("main.index"))
 
             # Verificar si el usuario es un administrador
             admin = db["administradores"].find_one({"correo": correo})
@@ -35,10 +35,10 @@ def requiere_permisos(permisos_requeridos, departamento_requerido=None):
                     return f(*args, **kwargs)
                 else:
                     flash("Acceso denegado: No tienes permisos suficientes o perteneces a un departamento no autorizado.", "danger")
-                    return redirect(url_for("session.logout"))
+                    return redirect(url_for("main.index"))
 
             flash("Acceso denegado: Usuario no autorizado.", "danger")
-            return redirect(url_for("session.logout"))
+            return redirect(url_for("main.index"))
 
         return wrapped
     return decorator

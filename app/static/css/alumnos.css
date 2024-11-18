@@ -738,3 +738,10 @@ body {
     color: #ff4d4d;
     transition: color 0.3s ease;
 }
+
+#permisos {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-top: 8px;
+}

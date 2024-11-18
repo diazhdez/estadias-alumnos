@@ -1,7 +1,7 @@
 <!-- templates/alumnos.html -->
 {% extends 'base_departamentos.html' %}
 
-{% block title %}Información de Alumnos{% endblock %}
+{% block title %}Biblioteca{% endblock %}
 
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/alumnos.css') }}">
@@ -145,8 +145,8 @@
                             </td>
                             <td class="pdf-icon-cell">
                                 {% if actividad.estatus != 'completado' %}
-                                    {% if actividad.encargado == 'finanzas' %}
-                                            {% if actividad.nombre == 'Caja' %}
+                                    {% if actividad.encargado == 'biblioteca' %}
+                                            {% if actividad.nombre == 'Biblioteca' %}
                                             <a href="{{ url_for('update_vinculacion.actualizar_estado_Actividad', documento_id=actividad.idActividad, id_alumno=alumno._id, redirect_view='Biblioteca.Biblioteca', nombre=alumno.Nombre + ' ' + alumno.Apellido_Pat) }}" class="btn">Completar</a>
 
                                             {% else %}
@@ -179,10 +179,7 @@
 {% block scripts %}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-
     });
-
-
 </script>
 
 

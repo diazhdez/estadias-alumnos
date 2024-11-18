@@ -9,9 +9,9 @@ import pandas as pd
 Recursos_routes = Blueprint('Recursos', __name__)
 
 
-@Recursos_routes.route("/EduLink/Vinculación/administrar_Alumnos/")
+@Recursos_routes.route("/EduLink/Recursos_materiales/administrar_Alumnos/")
 @nocache
-@requiere_permisos(permisos_requeridos=["update", "view"], departamento_requerido="recursos")
+@requiere_permisos(permisos_requeridos=["view", "update"], departamento_requerido="recursos_materiales")
 def Recursos():
     correo = session.get('correo')
     if 'correo' in session:
@@ -52,6 +52,7 @@ def Recursos():
             return render_template("Recursos/recursos.html", alumnos=alumnos_con_progreso, periodos=periodos, administrador=admin)
         else:
             flash('Acceso denegado: No eres un administrador.', 'danger')
-            return redirect(url_for('session.logout'))
+            return redirect(url_for('main.index'))
     else:
-        return redirect(url_for('session.logout'))
+        flash('Acceso denegado: No eres un administrador.', 'danger')
+        return redirect(url_for('main.index'))
