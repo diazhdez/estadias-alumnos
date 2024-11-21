@@ -132,9 +132,9 @@
                 </thead>
                 <tbody id="table-body">
                     {% if alumno.actividades %}
-                        {% for actividad in alumno.actividades %}
+                        {% for actividad in alumno.actividades%}
                         <tr>
-                            <td>{{ actividad.nombre }}</td>
+                            <td>{{actividad.orden}} {{ actividad.nombre }}</td>
                             <td>
                                 {{ actividad.estatus }} 
                                 {% if actividad.estatus == 'completado' %}

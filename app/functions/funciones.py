@@ -116,7 +116,7 @@ def progreso_alumno(id_alumno):
     Actividades = db["Actividades"]
 
     # Obtener todas las actividades desde la colección `Actividades` y ordenarlas por el campo `orden`
-    lista_actividades = list(Actividades.find({}).sort("orden", 1))
+    lista_actividades = list(Actividades.find({}))
 
     # Crear un diccionario para acceder al nombre de la actividad y al encargado por su ID
     actividades_dict = {actividad["_id"]: {
@@ -176,7 +176,7 @@ def asignar_actividades():
         Alumnos_Act = db["Alumnos_Actividades"]
         Alumnos = db["Alumnos"]
 
-        lista_actividades = list(Actividades.find().sort("Orden", 1))  # Convertir a lista para evitar múltiples consultas
+        lista_actividades = list(Actividades.find({}).sort("Orden", 1))  # Convertir a lista para evitar múltiples consultas
 
         # Obtener todos los IDs de los alumnos
         id_alumnos = [alumno["_id"] for alumno in Alumnos.find({}, {"_id": 1})]
