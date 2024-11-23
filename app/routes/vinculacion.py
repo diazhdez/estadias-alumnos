@@ -202,6 +202,13 @@ def carga_alumnos():
 
                 # Insertar los registros en la base de datos
                 alumno.insert_many(data_json)
+                correo = session.get('correo')
+                if correo:
+                    administracion = db['administradores']
+                    administracion.update_one(
+                        {"correo": correo}, 
+                        {'$set': {'ultimo_movimiento': 'Hizo la carga de alumnos'}}
+                    )
 
                 # Llamar a la función para registrar actividades
                 if asignar_actividades():
@@ -268,6 +275,19 @@ def aceptar_documento_nuevo_uta():
             }
         )
 
+        correo = session.get('correo')
+        if correo:
+            administracion = db['administradores']
+            administracion.update_one(
+                {"correo": correo},
+                {'$push': {  # Usa $push para agregar un nuevo movimiento al arreglo
+                    'movimientos': {
+                        'tipo': f'Asignó un tipo de estadía a {nombre}',
+                        'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                    }
+                }}
+            )
+
         db['documentos_especiales'].insert_one(documentos_Especiales_data)
         flash(f'Se le asignó la estadía Especial a {nombre} exitosamente', 'success')
         return redirect(url_for('Vinculacion.documento_alumnos', id_alumno=id_alumno))
@@ -305,6 +325,7 @@ def aceptar_documento_nuevo_uta():
             }
         )
 
+        
         # Insertar los documentos especiales para el alumno
         db['documentos_foraneas'].insert_one(documentos_Foraneas_data)
 
@@ -322,6 +343,19 @@ def aceptar_documento_nuevo_uta():
         # Insertar las asignaciones de actividades
         if alumno_actividades:
             db['Alumnos_Actividades'].insert_many(alumno_actividades)
+
+        correo = session.get('correo')
+        if correo:
+            administracion = db['administradores']
+            administracion.update_one(
+                {"correo": correo},
+                {'$push': {  # Usa $push para agregar un nuevo movimiento al arreglo
+                    'movimientos': {
+                        'tipo': f'Asignó un tipo de estadía a {nombre}',
+                        'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                    }
+                }}
+            )
 
         flash(f'Se le asignó la estadía Foránea a {nombre} exitosamente', 'success')
         return redirect(url_for('Vinculacion.documento_alumnos', id_alumno=id_alumno))
@@ -358,6 +392,27 @@ def aceptar_documento_nuevo_uta():
             }
         )
 
+        correo = session.get('correo')
+        if correo:
+                    administracion = db['administradores']
+                    administracion.update_one(
+                        {"correo": correo}, 
+                        {'$set': {'ultimo_movimiento': 'asigno un tipo de estadia a {nombre} '}}
+                    )
+
+        correo = session.get('correo')
+        if correo:
+            administracion = db['administradores']
+            administracion.update_one(
+                {"correo": correo},
+                {'$push': {  # Usa $push para agregar un nuevo movimiento al arreglo
+                    'movimientos': {
+                        'tipo': f'Asignó un tipo de estadía a {nombre}',
+                        'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                    }
+                }}
+            )
+
         db['documentos_TSU'].insert_one(documentosTSU_data)
         flash(f'Se le asignó la estadía Normal en TSU a {nombre} exitosamente', 'success')
         return redirect(url_for('Vinculacion.documento_alumnos', id_alumno=id_alumno))
@@ -391,6 +446,19 @@ def aceptar_documento_nuevo_uta():
                 }
             }
         )
+
+        correo = session.get('correo')
+        if correo:
+            administracion = db['administradores']
+            administracion.update_one(
+                {"correo": correo},
+                {'$push': {  # Usa $push para agregar un nuevo movimiento al arreglo
+                    'movimientos': {
+                        'tipo': f'Asignó un tipo de estadía a {nombre}',
+                        'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                    }
+                }}
+            )
 
         db['documentos_LIC_ING'].insert_one(documentosLIC_ING_data)
         flash(f'Se le asignó la estadía Normal en LIC.ING. a {nombre} exitosamente', 'success')
@@ -469,7 +537,12 @@ def agregarPeriodo():
             administracion = db['administradores']
             administracion.update_one(
                 {"correo": correo},
-                {'$set': {'ultimo_movimiento': 'Agrego un periodo'}}
+                {'$push': {  # Usa $push para agregar un nuevo movimiento al arreglo
+                    'movimientos': {
+                        'tipo': 'Inicio un periodo nuevo',
+                        'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                    }
+                }}
             )
         conexion.insert_one({
             'NombrePeriodo': nombre_periodo,

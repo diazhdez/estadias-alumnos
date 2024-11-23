@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Blueprint, current_app, flash, redirect, session, url_for, request
 from app.functions.funciones import aceptar_documento, actualizar_estado_documento, devolver_documento, subir_documento, estado_actividad
 from app.functions.utils import requiere_permisos
@@ -15,8 +16,13 @@ def aceptar_documento_nuevo(id_alumno, documento_nombre):
             if correo:
                 administracion = db['administradores']
                 administracion.update_one(
-                    {"correo": correo}, 
-                    {'$set': {'ultimo_movimiento': 'Acepto un documento'}}
+                    {"correo": correo},
+                    {'$push': {  # Usa $push para agregar un nuevo movimiento al arreglo
+                        'movimientos': {
+                            'tipo': 'Acepto un documento',
+                            'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                        }
+                    }}
                 )
             flash('Documento aceptado exitosamente.', 'success')
         else:
@@ -34,9 +40,15 @@ def actualizar_estado_documento_nuevo(id_alumno, documento_nombre):
             if correo:
                 administracion = db['administradores']
                 administracion.update_one(
-                    {"correo": correo}, 
-                    {'$set': {'ultimo_movimiento': 'Activo un documento de estadia'}}
+                    {"correo": correo},
+                    {'$push': {  # Usa $push para agregar un nuevo movimiento al arreglo
+                        'movimientos': {
+                            'tipo': 'Activo un documento de estadia',
+                            'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                        }
+                    }}
                 )
+                
             flash('Estado del documento actualizado exitosamente.', 'success')
         else:
             flash('No se pudo actualizar el estado del documento.', 'danger')
@@ -51,6 +63,7 @@ def upload_file():
         conexion = db["archivos_vinculacion"]
         archivo = request.files['archivo']
         descripcion = request.form["descripcion"]
+        correo = session.get('correo')
 
         if archivo:
             if archivo.filename.endswith('.pdf') or archivo.filename.endswith('.doc') or archivo.filename.endswith('.docx') or archivo.filename.endswith('.xlsx') or archivo.filename.endswith('.xls'):
@@ -69,6 +82,18 @@ def upload_file():
             'archivo': archivo_bin,
             'descripcion': descripcion,
         })
+
+        if correo:
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo},
+                    {'$push': {  # Usa $push para agregar un nuevo movimiento al arreglo
+                        'movimientos': {
+                            'tipo': 'Subio un documento',
+                            'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                        }
+                    }}
+                )
         flash('Archivo guardado exitosamento','success')
         return redirect(url_for('vinculacion.archivos_vinculacion'))
 
@@ -86,8 +111,13 @@ def devolver_documento_alumno():
             if correo:
                 administracion = db['administradores']
                 administracion.update_one(
-                    {"correo": correo}, 
-                    {'$set': {'ultimo_movimiento': 'Devolvio un documento'}}
+                    {"correo": correo},
+                    {'$push': {  # Usa $push para agregar un nuevo movimiento al arreglo
+                        'movimientos': {
+                            'tipo': 'Devolvio un documento',
+                            'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                        }
+                    }}
                 )
             flash('Documento devuelto exitosamente.', 'success')
         else:
@@ -107,8 +137,13 @@ def actualizar_estado_Actividad(id_alumno, documento_id):
             if correo:
                 administracion = db['administradores']
                 administracion.update_one(
-                    {"correo": correo}, 
-                    {'$set': {'ultimo_movimiento': 'Completo una actividad'}}
+                    {"correo": correo},
+                    {'$push': {  # Usa $push para agregar un nuevo movimiento al arreglo
+                        'movimientos': {
+                            'tipo': 'Completo una actividad',
+                            'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                        }
+                    }}
                 )
             flash(f'Actividad de {nombre} completada exitosamente.', 'success')
         else:
@@ -129,12 +164,17 @@ def terminarPeriodo():
         conexion.update_one({'_id': ObjectId(periodo_id)}, {'$set': {'Estatus': False}})
         correo = session.get('correo')
         if correo:
-            administracion = db['administradores']
-            administracion.update_one(
-                {"correo": correo}, 
-                {'$set': {'ultimo_movimiento': 'Finalizo un periodo'}}
-            )
-        return redirect(url_for('vinculacion.iniciarPeriodo'))
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo},
+                    {'$push': {  # Usa $push para agregar un nuevo movimiento al arreglo
+                        'movimientos': {
+                            'tipo': 'Finalizo un periodo',
+                            'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                        }
+                    }}
+                )
+        return redirect(url_for('Vinculacion.iniciarPeriodo'))
 
 
 @update_vinculacion_routes.route('/devolver_Documento_uta/', methods=['POST'])
@@ -150,8 +190,13 @@ def devolver_documento_alumno_uta():
             if correo:
                 administracion = db['administradores']
                 administracion.update_one(
-                    {"correo": correo}, 
-                    {'$set': {'ultimo_movimiento': 'Devolvio un documento'}}
+                    {"correo": correo},
+                    {'$push': {  # Usa $push para agregar un nuevo movimiento al arreglo
+                        'movimientos': {
+                            'tipo': 'Devolvio un documento',
+                            'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                        }
+                    }}
                 )
             db['Alumnos'].update_one(
                 {'_id':ObjectId(id_alumno)},

@@ -10,7 +10,7 @@ SuperAdmmin_routes = Blueprint('SuperAdmin', __name__)
 
 
 
-@SuperAdmmin_routes.route('/add', methods=['POST'])
+@SuperAdmmin_routes.route('/Edulink/SuperAdmin/add', methods=['POST'])
 @nocache
 @requiere_permisos(permisos_requeridos=["create", "delete"], departamento_requerido="Root")
 def add_admin():
@@ -32,87 +32,102 @@ def add_admin():
         'correo': correo,
         'contraseña': hashpass,
         'departamento': departamento,
-        'en_linea':"",
-        'ultima_conexion':"",
-        'ultimo_movimiento':"",
+        'en_linea':False,
+        'ultima_conexion': None,  # Utiliza None para representar la ausencia de datos
+        'movimientos': [  # Arreglo para registrar múltiples movimientos
+        {
+            'tipo': 'Creación de cuenta',
+            'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        }
+    ],
         'permisos' : permisos   
     }
     db['administradores'].insert_one(new_admin)
     
     #Esta parte es el "ultimo movimiento"
-    if 'admin_id' in session:
-        db['administradores'].update_one(
-            {'_id': ObjectId(session['admin_id'])},
-            {'$set': {'ultimo_movimiento': 'Agregó admin'}}
+    correo = session.get('correo')
+    if correo:
+        administracion = db['administradores']
+        administracion.update_one(
+            {"correo": correo},
+            {'$push': {  # Usa $push para agregar un nuevo movimiento al arreglo
+                'movimientos': {
+                    'tipo': 'Agrego a un administrador',
+                    'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                }
+            }}
         )
     
     return redirect(url_for('SuperAdmin.home'))
 
 
-@SuperAdmmin_routes.route('/edit/<id>', methods=['POST'])
+@SuperAdmmin_routes.route('/Edulink/SuperAdmin/edit/', methods=['POST'])
 @nocache
 @requiere_permisos(permisos_requeridos=["create", "delete"], departamento_requerido="Root")
-def edit_document(id):
+def edit_document():
     db = current_app.get_db_connection()
+    adminId = request.form['idAdmin']
     administrador = request.form['administrador']
     correo = request.form['correo']
     contraseña = request.form['contraseña']
-    departamento = request.form['departamento']
-
-    
+   
     updated_admin = {
         'administrador': administrador,
         'correo': correo,
         'contraseña': contraseña,
-        'departamento': departamento,
         
     }
-    db['administradores'].update_one({'_id': ObjectId(id)}, {'$set': updated_admin})
+    db['administradores'].update_one({'_id': ObjectId(adminId)}, {'$set': updated_admin})
     
     #También esto es el "ultimo movimiento"
-    if 'admin_id' in session:
-        db['administradores'].update_one(
-            {'_id': ObjectId(session['admin_id'])},
-            {'$set': {'ultimo_movimiento': 'Editó admin'}}
+    correo = session.get('correo')
+    if correo:
+        administracion = db['administradores']
+        administracion.update_one(
+            {"correo": correo},
+            {'$push': {  # Usa $push para agregar un nuevo movimiento al arreglo
+                'movimientos': {
+                    'tipo': 'Edito a un administrador',
+                    'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                }
+            }}
         )
-    
+    flash('Información del administrador editada exitosamente.', 'success')
     return redirect(url_for('SuperAdmin.home'))
 
-@SuperAdmmin_routes.route('/delete/<id>')
+@SuperAdmmin_routes.route('/Edulink/SuperAdmin/Delete',methods=['POST'])
 @nocache
 @requiere_permisos(permisos_requeridos=["create", "delete"], departamento_requerido="Root")
-def delete_document(id):
+def delete_Admin():
     db = current_app.get_db_connection()
-    db['administradores'].delete_one({'_id': ObjectId(id)})
+    id = session.get('_id')
+    adminId = request.form['idAdmin']
+    db['administradores'].delete_one({'_id': ObjectId(adminId)})
     
     #Esto igual "ultimo movimiento"
-    if 'admin_id' in session:
-        db['administradores'].update_one(
-            {'_id': ObjectId(session['admin_id'])},
-            {'$set': {'ultimo_movimiento': 'Eliminó admin'}}
+    correo = session.get('correo')
+    if correo:
+        administracion = db['administradores']
+        administracion.update_one(
+            {"correo": correo},
+            {'$push': {  # Usa $push para agregar un nuevo movimiento al arreglo
+                'movimientos': {
+                    'tipo': 'Elimino a un administrador',
+                    'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                }
+            }}
         )
-    
+    flash('Administrador eliminado exitosamente.', 'success')
     return redirect(url_for('SuperAdmin.home'))
 
 
-@SuperAdmmin_routes.route('/monitoreo')
-@nocache
-@requiere_permisos(permisos_requeridos=["create", "delete"], departamento_requerido="Root")
-def monitoreo():
-    db = current_app.get_db_connection()
-    administradores = list(db['administradores'].find({}, {
-        'administrador': 1,
-        'departamento': 1,
-        'en_linea': 1,
-        'ultima_conexion': 1,
-        'ultimo_movimiento': 1  
-    }))
-    return render_template('SuperAdmin/monitoreo.html', administradores=administradores)
 
-@SuperAdmmin_routes.route('/home')
+@SuperAdmmin_routes.route('/Edulink/SuperAdmin/home')
 @nocache
 @requiere_permisos(permisos_requeridos=["create", "delete"], departamento_requerido="Root")
 def home():
     db = current_app.get_db_connection()
+    correo = session.get('correo')
+    admin = obtener_administrador_por_correo(correo)
     administradores = list(db['administradores'].find())
-    return render_template('SuperAdmin/index.html', administradores=administradores)
+    return render_template('SuperAdmin/index.html', administradores=administradores, administrador=admin)
