@@ -202,6 +202,34 @@ def asignar_actividades():
 
         return True
 
+def asignar_actividades(id_alumno):
+        # Colecciones
+        db = current_app.get_db_connection()
+        Actividades = db["Actividades"]
+        Alumnos_Act = db["Alumnos_Actividades"]
+        
+        lista_actividades = list(Actividades.find().sort("Orden", 1))  # Convertir a lista para evitar múltiples consultas
+        
+        # Crear registros en Alumnos_Actividades para el nuevo alumno
+        alumno_actividades = []  # Crea un arreglo para las actividades del alumno
+        for actividad in lista_actividades:
+                if actividad["Tipo"] == "Normal":
+                # Verificar si la actividad es la de orden 1
+                    estatus = "completado" if actividad["Orden"] == "1" else "no iniciado"
+
+                    alumno_actividad = {
+                        "idAlumno": id_alumno,
+                        "idActividad": actividad["_id"],
+                        "estatus": estatus  # Establecer el estatus según el orden de la actividad
+                    }
+                    alumno_actividades.append(alumno_actividad)  # Inserta en el arreglo alumno_actividad
+
+            # Inserta las actividades a un alumno y regresa para seguir con otro alumno
+        if alumno_actividades:
+            Alumnos_Act.insert_many(alumno_actividades)
+
+        return True
+
 def obtener_alumno(id_alumno):
     db = current_app.get_db_connection()
     usuario = db['Alumnos'].find_one({'_id': ObjectId(id_alumno)})

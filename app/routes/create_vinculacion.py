@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Blueprint, current_app, render_template, request, url_for, redirect, flash, session
 from app.functions.funciones import nocache, obtener_documentos_alumno_uta, asignar_actividades, progreso_alumno
 from app.functions.utils import requiere_permisos
@@ -6,7 +7,7 @@ import bcrypt
 create_vinculacion_routes = Blueprint('create_vinculacion', __name__)
 
 
-@create_vinculacion_routes.route("/agregar_Alumno/", methods=['POST'])
+@create_vinculacion_routes.route("/EduLink/Vinculación/agregar_Alumno/", methods=['POST'])
 @requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def agregarAlumno():
         db = current_app.get_db_connection()
@@ -24,13 +25,7 @@ def agregarAlumno():
                 flash ('El correo o la matrícula ya están registrados.','warning')
                 return redirect(url_for('administrarAlumno'))
             
-            correo = session.get('correo')
-            if correo:
-                administracion = db['administradores']
-                administracion.update_one(
-                    {"correo": correo}, 
-                    {'$set': {'ultimo_movimiento': 'Asigno tipo de estadìa a alumno'}}
-                )
+            
 
             nombre = request.form['Nombre']
             apellido_Pat = request.form['Apellido_Pat']
@@ -63,6 +58,7 @@ def agregarAlumno():
                 "Control_Estadía": 'nan',
                 'Periodo': periodo,
                 'TSU/ING': estadia,
+                "formato_tres_opciones": {"estado": "activo", "archivo": None, "comentario": None},
                 'permisos': ["update", "view"] # Campo de permisos para alumnos agregados a mano
             }).inserted_id
             
@@ -70,9 +66,22 @@ def agregarAlumno():
             
             # Llamar a la función para asignar actividades al nuevo alumno
             asignar_actividades(nuevo_alumno_id)
-            return redirect(url_for('administrarAlumno'))
+            correo = session.get('correo')
+            if correo:
+                    administracion = db['administradores']
+                    administracion.update_one(
+                        {"correo": correo},
+                        {'$push': {  # Usa $push para agregar un nuevo movimiento al arreglo
+                            'movimientos': {
+                                'tipo': 'Registro un Alumno Nuevo',
+                                'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                            }
+                        }}
+                    )
+            flash('Alumno Registrado exitosamente.', 'success')
+            return redirect(url_for('Vinculacion.Home'))
         
         else:
             flash('El alumno no se pudo registrar.', 'danger')
         
-        return redirect(url_for('administrarAlumno'))
+        return redirect(url_for('Vinculacion.Home'))

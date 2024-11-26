@@ -202,12 +202,18 @@ def carga_alumnos():
 
                 # Insertar los registros en la base de datos
                 alumno.insert_many(data_json)
+
                 correo = session.get('correo')
                 if correo:
                     administracion = db['administradores']
                     administracion.update_one(
-                        {"correo": correo}, 
-                        {'$set': {'ultimo_movimiento': 'Hizo la carga de alumnos'}}
+                        {"correo": correo},
+                        {'$push': {  # Usa $push para agregar un nuevo movimiento al arreglo
+                            'movimientos': {
+                                'tipo': 'hizo la carga de alumno',
+                                'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                            }
+                        }}
                     )
 
                 # Llamar a la función para registrar actividades

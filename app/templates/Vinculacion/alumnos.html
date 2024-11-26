@@ -185,7 +185,7 @@
                 <form action="{{ url_for('create_vinculacion.agregarAlumno') }}" method="POST">
                     <div class="form-group">
                         <label for="matricula_Alum">Matricula del Alumno</label>
-                        <input type="text" class="form-control" id="Matricula" name="Matricula"
+                        <input type="number" class="form-control" id="Matricula" name="Matricula"
                             placeholder="Introduce Matricula" required maxlength="9" minlength="9">
                     </div>
                     <div class="form-group">
@@ -220,22 +220,30 @@
                     </div>
                     <div class="form-group">
                         <label for="telefono_alumno">Cuatrimestre:</label>
-                        <input type="text" class="form-control" id="cuatrimestre" name="Cuatrimestre"
-                            placeholder="Introduce Cuatrimestre" required>
+                        <select class="form-select me-2" id="cuatrimestre" name="Cuatrimestre">
+                            <option value="6to">6to</option>
+                            <option value="11vo">11vo</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="telefono_alumno">Grupo:</label>
-                        <input type="text" class="form-control" id="grupo" name="Grupo" placeholder="Introduce Grupo"
-                            required>
+                        <select class="form-select me-2" id="grupo" name="Grupo">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="G">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="idCarrera">Carrera:</label>
 
                         <select class="form-select me-2" id="Carrera" name="Carrera">
-                            <option value="MANTENIMIENTO">MANTENIMIENTO</option>
+                            <option value="MANTO">MANTENIMIENTO</option>
                             <option value="DESARROLLO">DESARROLLO</option>
                             <option value="TICS">TICS</option>
-                            <option value="GASTRONOMIA">GASTRONOMIA</option>
+                            <option value="GASTRO">GASTRONOMIA</option>
                         </select>
 
                     </div>
@@ -244,7 +252,10 @@
 
                         <select class="form-select me-2" id="idPeriodo" name="idPeriodo">
                             {% for periodos in periodos %}
-                            <option value="{{ periodos._id }}">{{ periodos.Duracion }}</option>
+                                {%if periodos.Estatus == true%}
+                                <option value="{{ periodos._id }}">{{ periodos.Duracion }}</option>
+                                {%else%}
+                                {%endif%}
                             {% endfor %}
                         </select>
 
