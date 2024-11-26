@@ -150,6 +150,7 @@ def descargar_archivo(archivo_id):
     else:
         return 'Archivo no encontrado', 404
 
+
 @view_routes.route('/Catalago_De_Empresas/ver/<archivo_id>/', methods=['GET'])
 @requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def ver_archivo_vinculacion(archivo_id):
