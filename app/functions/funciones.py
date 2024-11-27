@@ -169,7 +169,7 @@ def progreso_alumno(id_alumno):
     return progreso, actividades_alumno_ordenadas
 
 
-def asignar_actividades():
+def asignar_actividades1():
     # Colecciones
         db = current_app.get_db_connection()
         Actividades = db["Actividades"]

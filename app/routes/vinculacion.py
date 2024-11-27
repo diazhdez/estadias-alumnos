@@ -1,7 +1,7 @@
 
 import bcrypt
 from flask import Blueprint, current_app, render_template, request, url_for, redirect, flash, session
-from app.functions.funciones import nocache, obtener_administrador_por_correo, obtener_alumno, obtener_documentos_alumno, obtener_documentos_alumno_uta, asignar_actividades, progreso_alumno
+from app.functions.funciones import asignar_actividades1, nocache, obtener_administrador_por_correo, obtener_alumno, obtener_documentos_alumno, obtener_documentos_alumno_uta, asignar_actividades, progreso_alumno
 from app.functions.utils import requiere_permisos
 from datetime import datetime
 from bson import Binary, ObjectId
@@ -217,7 +217,7 @@ def carga_alumnos():
                     )
 
                 # Llamar a la función para registrar actividades
-                if asignar_actividades():
+                if asignar_actividades1():
                     flash('Alumnos cargados exitosamente', 'success')
                 else:
                     flash(
