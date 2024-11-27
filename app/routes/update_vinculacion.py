@@ -95,7 +95,7 @@ def upload_file():
                     }}
                 )
         flash('Archivo guardado exitosamento','success')
-        return redirect(url_for('vinculacion.archivos_vinculacion'))
+        return redirect(url_for('Vinculacion.archivos_vinculacion'))
 
 
 @update_vinculacion_routes.route('/devolver_Documento/', methods=['POST'])
