@@ -70,11 +70,12 @@ def edit_document():
     administrador = request.form['administrador']
     correo = request.form['correo']
     contraseña = request.form['contraseña']
+    hashpass = bcrypt.hashpw(contraseña.encode('utf-8'), bcrypt.gensalt())
    
     updated_admin = {
         'administrador': administrador,
         'correo': correo,
-        'contraseña': contraseña,
+        'contraseña': hashpass,
         
     }
     db['administradores'].update_one({'_id': ObjectId(adminId)}, {'$set': updated_admin})

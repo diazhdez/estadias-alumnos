@@ -1,5 +1,4 @@
 from flask import Flask, current_app, g
-from pymongo import MongoClient
 import pymongo
 from config import Config
 import certifi

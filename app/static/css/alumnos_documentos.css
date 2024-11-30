@@ -74,6 +74,10 @@
     border-top: 4px solid #28a745;
 }
 
+.card.entregado {
+    border-top: 4px solid #ffa500;
+}
+
 .card.pendiente {
     border-top: 4px solid #dc3545;
 }
