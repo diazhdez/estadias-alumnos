@@ -167,10 +167,6 @@ def progreso_alumno(id_alumno):
         progreso = 0
 
     return progreso, actividades_alumno_ordenadas
-<<<<<<< HEAD
-
-=======
->>>>>>> 09f629c3adb585c6386dc44366062542e1697401
 
 
 def asignar_actividades1():

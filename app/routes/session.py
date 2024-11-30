@@ -21,7 +21,7 @@ def iniciar():
     # Verificar si es un alumno
     login_alumno = alumno.find_one({'Correo_Institucional': correo})
     if login_alumno:
-        if login_alumno.get('en_linea'):
+        if login_alumno.get('en_linea') == True:
             flash('El usuario ya tiene una sesión activa.', 'warning')
             return redirect(url_for('main.index'))
 
@@ -39,7 +39,7 @@ def iniciar():
     login_departamentos = administracion.find_one({'correo': correo})
 
     if login_departamentos:
-        if login_departamentos.get('en_linea'):
+        if login_departamentos.get('en_linea') == True:
             flash('El usuario ya tiene una sesión activa.', 'warning')
             return redirect(url_for('main.index'))
 
