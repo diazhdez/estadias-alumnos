@@ -217,7 +217,7 @@
 /* Botón Aceptar */
 .btn-aceptar {
     display: flex;
-    align-items: center;
+    align-items: center; 
     justify-content: center;
     gap: 8px;
     padding: 12px 20px;
@@ -374,7 +374,7 @@
     position:fixed;
     top: 0;
     right: -10px; /* Ocultar inicialmente */
-    width: 330px;
+    width: 340px;
     height: 100%;
     background-color: #f4f4f4;
 

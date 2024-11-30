@@ -109,7 +109,6 @@
 </div>
 
 {% for alumno in alumnos %}
-
 <!-- Barra lateral de progreso para cada alumno -->
 <div id="Progreso{{ alumno['_id'] }}" class="sidebar-progreso">
     <div class="header">
@@ -118,64 +117,35 @@
     </div>
     <div class="contenido">
         <h4 id="nombreAlumno">{{ alumno.Nombre }} {{ alumno.Apellido_Pat }}</h4>
+
+        <!-- Barra de progreso -->
         <div class="progress">
             {% set progreso_total = alumno.progreso if alumno.progreso else 0 %}
-<<<<<<< HEAD
             {% set progreso_clase = 'bg-primary' if progreso_total < 100 else 'bg-success' %}
             <div class="progress-bar {{ progreso_clase }}" role="progressbar" aria-valuenow="{{ progreso_total }}"
                 aria-valuemin="0" aria-valuemax="100" style="width: {{ progreso_total }}%;">
                 {{ progreso_total | round(0) }}%
             </div>
-        </div>
-=======
-            {% set progreso_clase = 'bg-primary' if progreso_total < 100 else 'bg-success' %} 
-            <div
-                class="progress-bar {{ progreso_clase }}" role="progressbar" aria-valuenow="{{ progreso_total }}"
-                aria-valuemin="0" aria-valuemax="100" style="width: {{ progreso_total }}%;">
-                {{ progreso_total | round(0) }}%
-            </div>
         </div>    
->>>>>>> 09f629c3adb585c6386dc44366062542e1697401
+
+        <!-- Tabla de actividades -->
         <div class="table-container">
             <table class="alumnos-table">
                 <thead style="background-color: var(--primary-color);">
                     <tr>
                         <th>Actividad</th>
                         <th>Estatus</th>
-<<<<<<< HEAD
-                        <th>Documento</th> <!-- Mover "Documento" antes de "Acción" -->
-=======
->>>>>>> 09f629c3adb585c6386dc44366062542e1697401
                         <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
-<<<<<<< HEAD
-                    {% for actividad in alumno.actividades %}
-                    <tr>
-                        {% if actividad.estatus == 'completado' %}
-                        <td>{{ actividad.nombre }}</td>
-                        <td>{{ actividad.estatus }}<i style="color: green;" class="bi bi-check2-circle"></i></td>
-                        <td class="pdf-icon-cell" title="Documento en PDF">
-                            <i class="bi bi-file-earmark-pdf"></i>
-                        </td> <!-- Ícono de PDF -->
-                        <td><a href="{{ url_for('Vinculacion.documento_alumnos', id_alumno=alumno._id) }}"
-                                class="btn">ver</a></td>
-                        {% else %}
-                        <td>{{ actividad.nombre }}</td>
-                        <td>{{ actividad.estatus }} <i style="color: red;" class="bi bi-x-circle"></i></td>
-                        <td class="pdf-icon-cell" title="Documento en PDF">
-                            <i class="bi bi-file-earmark-pdf"></i>
-                        </td> <!-- Ícono de PDF -->
-                        <td><button type="button" class="btn">Completar</button></td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
-=======
                     {% if alumno.actividades %}
                         {% for actividad in alumno.actividades %}
                         <tr>
+                            <!-- Nombre de la actividad -->
                             <td>{{ actividad.nombre }}</td>
+
+                            <!-- Estatus de la actividad -->
                             <td>
                                 {{ actividad.estatus }} 
                                 {% if actividad.estatus == 'completado' %}
@@ -184,37 +154,39 @@
                                     <i style="color: red;" class="bi bi-x-circle"></i>
                                 {% endif %}
                             </td>
+
+                            <!-- Acción -->
                             <td class="pdf-icon-cell">
                                 {% if actividad.estatus != 'completado' %}
                                     {% if actividad.encargado == 'vinculacion' %}
-                                            {% if actividad.nombre == 'Capacitación' %}
+                                        {% if actividad.nombre == 'Capacitación' %}
                                             <a href="{{ url_for('update_vinculacion.actualizar_estado_Actividad', documento_id=actividad.idActividad, id_alumno=alumno._id, redirect_view='Vinculacion.Home', nombre=alumno.Nombre + ' ' + alumno.Apellido_Pat) }}" class="btn">Completar</a>
-                                            {% else %}
-                                                <a href="{{ url_for('Vinculacion.documento_alumnos', id_alumno=alumno._id) }}"><i class="bi bi-file-earmark-pdf"></i></a>
-                                            {% endif %}    
+                                        {% else %}
+                                            <a href="{{ url_for('Vinculacion.documento_alumnos', id_alumno=alumno._id) }}">
+                                                <i class="bi bi-file-earmark-pdf"></i>
+                                            </a>
+                                        {% endif %}
                                     {% else %}
                                         <span>No disponible</span>
                                     {% endif %}
                                 {% else %}
-                                <span>Actividad completada</span>
+                                    <span>Actividad completada</span>
                                 {% endif %}
                             </td>
                         </tr>
                         {% endfor %}
                     {% else %}
-                        <tr><td colspan="3">No hay actividades disponibles.</td></tr>
+                        <tr>
+                            <td colspan="3">No hay actividades disponibles.</td>
+                        </tr>
                     {% endif %}
->>>>>>> 09f629c3adb585c6386dc44366062542e1697401
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-<<<<<<< HEAD
-=======
-
->>>>>>> 09f629c3adb585c6386dc44366062542e1697401
 {% endfor %}
+
 
 
 
@@ -401,11 +373,6 @@
         });
     });
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 09f629c3adb585c6386dc44366062542e1697401
     // Función para cerrar la barra lateral
     function cerrarBarra(idBarra) {
         var barraLateral = document.getElementById(idBarra);

@@ -6,12 +6,23 @@ Configuración
 
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/configuracion.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/alerts.css') }}">
 {% endblock %}
 
 {% block content %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div style="width: 25%; position: fixed; top: 15%; right: 30%; z-index: 1050;"
+            class="alert alert-{{ category }} alert-dismissible fade show flash-message" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+    {% endwith %}
 <div class="configuracion-container">
     <h2 class="titulo-configuracion"><i class="bx bx-cog"></i> Configuración de Usuario</h2>
-    <form id="configuracion-form">
+    <form id="configuracion-form" action="{{ url_for('update.cambiar_contraseña') }}" method="POST">
         <!-- Información del Usuario -->
         <div class="section">
             <h3 class="subtitulo-configuracion"><i class="bx bx-user"></i>Información Personal</h3>
@@ -63,10 +74,10 @@ Configuración
                 </div>
             </div>
         </div>
-
         <!-- Botón Guardar -->
         <div class="form-group">
-            <button type="button" id="guardar-configuracion"><i class="bx bx-save"></i> Guardar Cambios</button>
+            <input type="hidden" name="id_alumno" value="{{ alumno._id }}">
+            <button type="submit" id="guardar-configuracion"><i class="bx bx-save"></i> Guardar Cambios</button>
         </div>
     </form>
 </div>
