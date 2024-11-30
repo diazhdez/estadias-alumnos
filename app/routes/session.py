@@ -18,15 +18,31 @@ def iniciar():
     alumno = db['Alumnos'] 
     administracion = db['administradores']
 
+    # Verificar si es un alumno
     login_alumno = alumno.find_one({'Correo_Institucional': correo})
-    if login_alumno and bcrypt.checkpw(password.encode('utf-8'), login_alumno['Contraseña']):
-        # Autenticación exitosa
-        session['correo'] = correo
-        flash('Inicio de sesión exitoso como alumno.', 'success')
-        return redirect(url_for('alumno.alumno_vista'))
+    if login_alumno:
+        if login_alumno.get('en_linea'):
+            flash('El usuario ya tiene una sesión activa.', 'warning')
+            return redirect(url_for('main.index'))
+
+        if bcrypt.checkpw(password.encode('utf-8'), login_alumno['Contraseña']):
+            # Autenticación exitosa
+            session['correo'] = correo
+            alumno.update_one(
+                {"Correo_Institucional": correo},
+                {'$set': {'en_linea': True, 'ultima_conexion': datetime.now().strftime('%Y-%m-%d %H:%M:%S')}}
+            )
+            flash('Inicio de sesión exitoso como alumno.', 'success')
+            return redirect(url_for('alumno.alumno_vista'))
     
     # Buscar en la colección de Administradores
     login_departamentos = administracion.find_one({'correo': correo})
+
+    if login_departamentos:
+        if login_departamentos.get('en_linea'):
+            flash('El usuario ya tiene una sesión activa.', 'warning')
+            return redirect(url_for('main.index'))
+
     if login_departamentos and bcrypt.checkpw(password.encode('utf-8'), login_departamentos['contraseña']):
         departamento = login_departamentos['departamento']
         session['correo'] = correo

@@ -1,7 +1,7 @@
 
 import bcrypt
 from flask import Blueprint, current_app, render_template, request, url_for, redirect, flash, session
-from app.functions.funciones import nocache, obtener_administrador_por_correo, obtener_alumno, obtener_documentos_alumno, obtener_documentos_alumno_uta, asignar_actividades, progreso_alumno
+from app.functions.funciones import asignar_actividades1, nocache, obtener_administrador_por_correo, obtener_alumno, obtener_documentos_alumno, obtener_documentos_alumno_uta, asignar_actividades, progreso_alumno
 from app.functions.utils import requiere_permisos
 from datetime import datetime
 from bson import Binary, ObjectId
@@ -196,22 +196,30 @@ def carga_alumnos():
                     lambda x: {"estado": "activo", "archivo": None, "comentario": None}, axis=1)
                 alumnos['permisos'] = alumnos.apply(
                     lambda x: ["update", "view"], axis=1)
+                alumnos['en_linea']="False"
+                alumnos['ultima_conexion']= None
 
                 # Convertir los datos a JSON para insertarlos en MongoDB
                 data_json = alumnos.to_dict(orient='records')
 
                 # Insertar los registros en la base de datos
                 alumno.insert_many(data_json)
+
                 correo = session.get('correo')
                 if correo:
                     administracion = db['administradores']
                     administracion.update_one(
-                        {"correo": correo}, 
-                        {'$set': {'ultimo_movimiento': 'Hizo la carga de alumnos'}}
+                        {"correo": correo},
+                        {'$push': {  # Usa $push para agregar un nuevo movimiento al arreglo
+                            'movimientos': {
+                                'tipo': 'hizo la carga de alumno',
+                                'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                            }
+                        }}
                     )
 
                 # Llamar a la función para registrar actividades
-                if asignar_actividades():
+                if asignar_actividades1():
                     flash('Alumnos cargados exitosamente', 'success')
                 else:
                     flash(

@@ -20,45 +20,57 @@ def add_admin():
     contraseña = request.form['contraseña']
     confirmar_contraseña = request.form['confirmar_contraseña']
     departamento = request.form['departamento']
-    permisos = request.form.getlist('permisos')
-    hashpass = bcrypt.hashpw(contraseña.encode('utf-8'), bcrypt.gensalt())
 
+    # Validación de contraseñas
     if contraseña != confirmar_contraseña:
-        flash('Contraseñas no coinciden.', 'danger')
+        flash('Las contraseñas no coinciden.', 'danger')
         return redirect(url_for('SuperAdmin.home'))
 
+    # Hashear la contraseña
+    hashpass = bcrypt.hashpw(contraseña.encode('utf-8'), bcrypt.gensalt())
+    
+    # Asignar permisos
+    if departamento in ["vinculacion", "Root"]:
+        permisos = ["update", "view", "create", "delete"]
+    else:
+        permisos = ["update", "view"]
+
+    # Crear nuevo administrador
     new_admin = {
         'administrador': administrador,
         'correo': correo,
         'contraseña': hashpass,
         'departamento': departamento,
-        'en_linea':False,
-        'ultima_conexion': None,  # Utiliza None para representar la ausencia de datos
-        'movimientos': [  # Arreglo para registrar múltiples movimientos
-        {
-            'tipo': 'Creación de cuenta',
-            'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        }
-    ],
-        'permisos' : permisos   
+        'en_linea': False,
+        'ultima_conexion': None,
+        'movimientos': [
+            {
+                'tipo': 'Creación de cuenta',
+                'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            }
+        ],
+        'permisos': permisos
     }
     db['administradores'].insert_one(new_admin)
-    
-    #Esta parte es el "ultimo movimiento"
-    correo = session.get('correo')
-    if correo:
-        administracion = db['administradores']
-        administracion.update_one(
-            {"correo": correo},
-            {'$push': {  # Usa $push para agregar un nuevo movimiento al arreglo
-                'movimientos': {
-                    'tipo': 'Agrego a un administrador',
-                    'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    # Registrar movimiento del administrador actual
+    correo_actual = session.get('correo')
+    if correo_actual:
+        db['administradores'].update_one(
+            {"correo": correo_actual},
+            {
+                '$push': {
+                    'movimientos': {
+                        'tipo': 'Agregó un nuevo administrador',
+                        'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                    }
                 }
-            }}
+            }
         )
     
+    flash('Administrador agregado con éxito.', 'success')
     return redirect(url_for('SuperAdmin.home'))
+
 
 
 @SuperAdmmin_routes.route('/Edulink/SuperAdmin/edit/', methods=['POST'])
