@@ -74,3 +74,22 @@ def catalago():
     else:
         flash('Acceso denegado: Debes de inciar sesion.', 'danger')
         return redirect(url_for('session.login'))
+    
+@alumno_routes.route("/configuracion/")
+def configuracion_alumno():
+    # Obtén el correo del usuario desde la sesión
+    correo = session.get('correo')
+    if not correo:
+        # Si no hay sesión activa, redirige al login
+        flash('Debes iniciar sesión para acceder a esta página.', 'danger')
+        return redirect(url_for('session.login'))
+
+    # Obtén los datos del alumno
+    alumno = obtener_usuario_por_correo(correo)
+    if not alumno:
+        # Si no se encuentra el alumno, redirige al login
+        flash('No se encontró la información del usuario.', 'danger')
+        return redirect(url_for('session.login'))
+
+    # Renderiza la plantilla dinámica con los datos del alumno
+    return render_template("configuracion/config_alumno.html", alumno=alumno)

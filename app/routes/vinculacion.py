@@ -418,3 +418,7 @@ def iniciarPeriodo():
             return redirect(url_for('login'))
     else:
         return redirect(url_for('login'))
+    
+@Vinculacion_routes.route("/configuracion/")
+def configuracion_vinculacion():
+    return render_template("configuracion/configuracion.html")

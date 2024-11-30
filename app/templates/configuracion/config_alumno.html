@@ -1,0 +1,77 @@
+{% extends "base_alumnos.html" %}
+
+{% block title %}
+Configuración
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/configuracion.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="configuracion-container">
+    <h2 class="titulo-configuracion"><i class="bx bx-cog"></i> Configuración de Usuario</h2>
+    <form id="configuracion-form">
+        <!-- Información del Usuario -->
+        <div class="section">
+            <h3 class="subtitulo-configuracion"><i class="bx bx-user"></i>Información Personal</h3>
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" value="{{ alumno.Nombre }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="apellido">Apellido:</label>
+                <input type="text" id="apellido" name="apellido" value="{{ alumno.Apellido_Pat }} {{ alumno.Apellido_Mat }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="correo">Correo Institucional:</label>
+                <input type="email" id="correo" name="correo" value="{{ alumno.correo }}" readonly>
+            </div>
+        </div>
+
+       <!-- Cambiar Contraseña -->
+        <div class="section">
+            <h3 class="subtitulo-configuracion"><i class="bx bx-lock"></i> Cambiar Contraseña</h3>
+            
+            <!-- Nueva Contraseña -->
+            <div class="form-group">
+                <label for="nueva_contraseña">Nueva Contraseña:</label>
+                <div class="password-container">
+                    <input type="password" id="nueva_contraseña" name="nueva_contraseña" placeholder="Ingresa tu nueva contraseña">
+                    <button type="button" class="toggle-password"><i class="bx bx-show"></i></button>
+                </div>
+                <div id="strength-indicator" class="strength-indicator">
+                    <span class="strength-text"></span>
+                </div>
+                <div class="password-requirements">
+                    <strong>Para una contraseña fuerte:</strong>
+                    <ul>
+                        <li>Mínimo 8 caracteres</li>
+                        <li>Incluye mayúsculas y minúsculas</li>
+                        <li>Debe contener números</li>
+                        <li>Usa caracteres especiales (@, #, $, etc.)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Confirmar Contraseña -->
+            <div class="form-group">
+                <label for="confirmar_contraseña">Confirmar Contraseña:</label>
+                <div class="password-container">
+                    <input type="password" id="confirmar_contraseña" name="confirmar_contraseña" placeholder="Confirma tu nueva contraseña">
+                    <button type="button" class="toggle-password"><i class="bx bx-show"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botón Guardar -->
+        <div class="form-group">
+            <button type="button" id="guardar-configuracion"><i class="bx bx-save"></i> Guardar Cambios</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/configuracion.js') }}"></script>
+{% endblock %}
