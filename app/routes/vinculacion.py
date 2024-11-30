@@ -196,6 +196,8 @@ def carga_alumnos():
                     lambda x: {"estado": "activo", "archivo": None, "comentario": None}, axis=1)
                 alumnos['permisos'] = alumnos.apply(
                     lambda x: ["update", "view"], axis=1)
+                alumnos['en_linea']="False"
+                alumnos['ultima_conexion']= None
 
                 # Convertir los datos a JSON para insertarlos en MongoDB
                 data_json = alumnos.to_dict(orient='records')
