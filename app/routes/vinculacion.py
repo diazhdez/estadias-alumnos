@@ -563,3 +563,10 @@ def agregarPeriodo():
 
         flash('Ya existe un periodo activo', 'danger')
         return redirect(url_for("Vinculacion.iniciarPeriodo"))
+    
+
+@Vinculacion_routes.route("/configuracion/")
+@nocache
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
+def configuracion_vinculacion():
+    return render_template("configuracion/configuracion.html")
