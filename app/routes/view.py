@@ -1,6 +1,7 @@
 from flask import Blueprint, current_app, send_file
 from bson import ObjectId
 from app.functions.funciones import obtener_usuario_por_matricula, ver_documento_alumno_uta
+from app.functions.utils import requiere_permisos
 import io
 
 view_routes = Blueprint('view', __name__)
@@ -8,6 +9,7 @@ view_routes = Blueprint('view', __name__)
 
 # Ruta para mostrar el PDF en una nueva ventana o modal
 @view_routes.route('/EduLink/Alumno/ver/<nombre_archivo>/<id_alumno>', methods=['GET'])
+@requiere_permisos(permisos_requeridos=["view"])
 def ver_archivo_alumno_uta(nombre_archivo, id_alumno):
     alumno = obtener_usuario_por_matricula(id_alumno)
     if alumno:
@@ -20,6 +22,7 @@ def ver_archivo_alumno_uta(nombre_archivo, id_alumno):
     return 'Archivo no encontrado', 404
 
 @view_routes.route('/EduLink/Vinculación/Validar/Documentos_Alumno/ver/<nombre_archivo>/<id_alumno>', methods=['GET'])
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def ver_archivo_alumno(nombre_archivo, id_alumno):
         alumno = obtener_usuario_por_matricula(id_alumno)
         if alumno:
@@ -32,6 +35,7 @@ def ver_archivo_alumno(nombre_archivo, id_alumno):
         return 'Archivo no encontrado', 404
 
 @view_routes.route('/EduLink/Alumno/ver/formato_tres_opciones/<id_alumno>', methods=['GET'])
+@requiere_permisos(permisos_requeridos=["view"])
 def ver_archivo_alumno_uta_1(id_alumno):
 
     try:
@@ -41,7 +45,7 @@ def ver_archivo_alumno_uta_1(id_alumno):
 
     # Busca el documento del alumno
     db = current_app.get_db_connection()  # Obtener la conexión a la base de datos
-    alumno_documento = db['usuarios'].find_one({'_id': id_alumno})
+    alumno_documento = db['Alumnos'].find_one({'_id': id_alumno})
 
     if alumno_documento and 'formato_tres_opciones' in alumno_documento:
         formato_tres_opciones = alumno_documento['formato_tres_opciones']
@@ -58,8 +62,39 @@ def ver_archivo_alumno_uta_1(id_alumno):
 
     return 'Archivo no encontrado', 404
 
+@view_routes.route('/EduLink/Vinculación/Validar/Documentos_Alumno/ver/formato_tres_opciones/<id_alumno>', methods=['GET'])
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
+def ver_archivo_alumno_uta_0(id_alumno):
+        db = current_app.get_db_connection() 
+        try:
+            id_alumno = ObjectId(id_alumno)
+        except Exception as e:
+            return 'ID de alumno inválido', 400
+
+        # Busca el documento del alumno
+        alumno_documento = db['Alumnos'].find_one({'_id': id_alumno})
+        
+
+        if alumno_documento and 'formato_tres_opciones' in alumno_documento:
+            formato_tres_opciones = alumno_documento['formato_tres_opciones']
+            
+
+            if formato_tres_opciones and 'archivo' in formato_tres_opciones:
+                archivo = formato_tres_opciones['archivo']
+                
+
+                if archivo:
+                    datos = archivo
+                    documento_stream = io.BytesIO(datos)
+                    documento_stream.seek(0)
+                    mimetype = 'application/pdf'
+                    return send_file(documento_stream, as_attachment=False, mimetype=mimetype)
+
+        return 'Archivo no encontrado', 404
+
 
 @view_routes.route('/EduLink/Alumno/Archivos_Universidad/ver/<archivo_id>/', methods=['GET'])
+@requiere_permisos(permisos_requeridos=["view"])
 def ver_archivo(archivo_id):
     db = current_app.get_db_connection()  # Obtener la conexión a la base de datos
     conexion = db["archivos_vinculacion"]
@@ -87,6 +122,7 @@ def ver_archivo(archivo_id):
 
 
 @view_routes.route('/Catalago_De_Empresas/descargar/<archivo_id>/', methods=['GET'])
+@requiere_permisos(permisos_requeridos=["view"])
 def descargar_archivo(archivo_id):
     db = current_app.get_db_connection()  # Obtener la conexión a la base de datos
     conexion = db["archivos_vinculacion"]
@@ -114,7 +150,9 @@ def descargar_archivo(archivo_id):
     else:
         return 'Archivo no encontrado', 404
 
+
 @view_routes.route('/Catalago_De_Empresas/ver/<archivo_id>/', methods=['GET'])
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def ver_archivo_vinculacion(archivo_id):
         db = current_app.get_db_connection() 
         conexion = db["archivos_vinculacion"]

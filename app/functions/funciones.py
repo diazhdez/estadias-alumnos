@@ -1,4 +1,3 @@
-
 from flask import current_app, flash, make_response, redirect, url_for
 
 import functools
@@ -117,7 +116,7 @@ def progreso_alumno(id_alumno):
     Actividades = db["Actividades"]
 
     # Obtener todas las actividades desde la colección `Actividades` y ordenarlas por el campo `orden`
-    lista_actividades = list(Actividades.find({}).sort("orden", 1))
+    lista_actividades = list(Actividades.find({}))
 
     # Crear un diccionario para acceder al nombre de la actividad y al encargado por su ID
     actividades_dict = {actividad["_id"]: {
@@ -168,16 +167,20 @@ def progreso_alumno(id_alumno):
         progreso = 0
 
     return progreso, actividades_alumno_ordenadas
+<<<<<<< HEAD
+
+=======
+>>>>>>> 09f629c3adb585c6386dc44366062542e1697401
 
 
-def asignar_actividades():
+def asignar_actividades1():
     # Colecciones
         db = current_app.get_db_connection()
         Actividades = db["Actividades"]
         Alumnos_Act = db["Alumnos_Actividades"]
         Alumnos = db["Alumnos"]
 
-        lista_actividades = list(Actividades.find().sort("Orden", 1))  # Convertir a lista para evitar múltiples consultas
+        lista_actividades = list(Actividades.find({}).sort("Orden", 1))  # Convertir a lista para evitar múltiples consultas
 
         # Obtener todos los IDs de los alumnos
         id_alumnos = [alumno["_id"] for alumno in Alumnos.find({}, {"_id": 1})]
@@ -200,6 +203,34 @@ def asignar_actividades():
             # Inserta las actividades a un alumno y regresa para seguir con otro alumno
             if alumno_actividades:
                 Alumnos_Act.insert_many(alumno_actividades)
+
+        return True
+
+def asignar_actividades(id_alumno):
+        # Colecciones
+        db = current_app.get_db_connection()
+        Actividades = db["Actividades"]
+        Alumnos_Act = db["Alumnos_Actividades"]
+        
+        lista_actividades = list(Actividades.find().sort("Orden", 1))  # Convertir a lista para evitar múltiples consultas
+        
+        # Crear registros en Alumnos_Actividades para el nuevo alumno
+        alumno_actividades = []  # Crea un arreglo para las actividades del alumno
+        for actividad in lista_actividades:
+                if actividad["Tipo"] == "Normal":
+                # Verificar si la actividad es la de orden 1
+                    estatus = "completado" if actividad["Orden"] == "1" else "no iniciado"
+
+                    alumno_actividad = {
+                        "idAlumno": id_alumno,
+                        "idActividad": actividad["_id"],
+                        "estatus": estatus  # Establecer el estatus según el orden de la actividad
+                    }
+                    alumno_actividades.append(alumno_actividad)  # Inserta en el arreglo alumno_actividad
+
+            # Inserta las actividades a un alumno y regresa para seguir con otro alumno
+        if alumno_actividades:
+            Alumnos_Act.insert_many(alumno_actividades)
 
         return True
 
@@ -246,3 +277,20 @@ def devolver_documento(id_alumno, documento_nombre, comentario):
                 )
                 return True
         return False
+
+
+def estado_actividad(id_alumno, documento_id):
+    db = current_app.get_db_connection()  # Obtener la conexión a la base de datos
+    # Buscar el documento específico de la actividad del alumno
+    documento = db['Alumnos_Actividades'].find_one({'idActividad': ObjectId(documento_id), 'idAlumno': ObjectId(id_alumno)})
+
+    # Comprobar si se encontró el documento
+    if documento:
+        # Actualizar el estado de la actividad a 'completado'
+        db['Alumnos_Actividades'].update_one(
+            {'idActividad': ObjectId(documento_id), 
+             'idAlumno': ObjectId(id_alumno)},
+            {'$set': {'estatus': 'completado'}}
+        )
+        return True  # Retornar True si la actualización fue exitosa
+    return False  # Retornar False si no se encontró el documento

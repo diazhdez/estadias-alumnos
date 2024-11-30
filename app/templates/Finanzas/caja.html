@@ -1,5 +1,5 @@
 <!-- templates/alumnos.html -->
-{% extends 'base.html' %}
+{% extends 'base_departamentos.html' %}
 
 {% block title %}Información de Alumnos{% endblock %}
 
@@ -36,21 +36,15 @@
             oninput="filterTable()">
         <select id="filtroEstadia" class="form-select me-2">
             <option value="">Todas las estadias</option>
-            <option value="TSU">T.S.U</option>
-            <option value="ING">Ingeniería/Licenciatura</option>
+            <option value="TSU">Estadias T.S.U</option>
+            <option value="ING">Ingeniería</option>
         </select>
         <select id="filtroCarrera" class="form-select me-2" oninput="filterTable()">
             <option value="">Todas las carreras</option>
-            <!--Faltan carreras del ocotito-->
-            <option value="MANTO">T.S.U MANTENIMIENTO</option>
-            <option value="GASTRO">T.S.U GASTRONOMIA</option>
-            <option value="TICS">T.S.U TECNOLOGIAS</option>
-            <option value="DESARROLLO">T.S.U DESARROLLO</option>
-        <!--LICENCIATURA/INGENIERIA-->
-            <option value="MANTO">ING. MANTENIMIENTO</option>
-            <option value="GASTRO">LIC. GASTRONOMIA</option>
-            <option value="TICS">ING. TECNOLOGIAS</option>
-            <option value="DESARROLLO">LIC. DESARROLLO</option>
+            <option value="MANTO">MANTENIMIENTO</option>
+            <option value="GASTRO">GASTRONOMIA</option>
+            <option value="TICS">TECNOLOGIAS</option>
+            <option value="DESARROLLO">DESARROLLO</option>
         </select>
 
         <select id="filtroCuatri" class="form-select me-2" oninput="filterTable()">
@@ -69,7 +63,6 @@
             <option value="F">F</option>
         </select>
 
-        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar Alumno</button>
     </div>
     <div class="table-container-list">
         <table class="alumnos-table-list">
@@ -108,6 +101,7 @@
     </div>
 </div>
 
+
 {% for alumno in alumnos %}
 
 <!-- Barra lateral de progreso para cada alumno -->
@@ -120,14 +114,6 @@
         <h4 id="nombreAlumno">{{ alumno.Nombre }} {{ alumno.Apellido_Pat }}</h4>
         <div class="progress">
             {% set progreso_total = alumno.progreso if alumno.progreso else 0 %}
-<<<<<<< HEAD
-            {% set progreso_clase = 'bg-primary' if progreso_total < 100 else 'bg-success' %}
-            <div class="progress-bar {{ progreso_clase }}" role="progressbar" aria-valuenow="{{ progreso_total }}"
-                aria-valuemin="0" aria-valuemax="100" style="width: {{ progreso_total }}%;">
-                {{ progreso_total | round(0) }}%
-            </div>
-        </div>
-=======
             {% set progreso_clase = 'bg-primary' if progreso_total < 100 else 'bg-success' %} 
             <div
                 class="progress-bar {{ progreso_clase }}" role="progressbar" aria-valuenow="{{ progreso_total }}"
@@ -135,43 +121,16 @@
                 {{ progreso_total | round(0) }}%
             </div>
         </div>    
->>>>>>> 09f629c3adb585c6386dc44366062542e1697401
         <div class="table-container">
             <table class="alumnos-table">
                 <thead style="background-color: var(--primary-color);">
                     <tr>
                         <th>Actividad</th>
                         <th>Estatus</th>
-<<<<<<< HEAD
-                        <th>Documento</th> <!-- Mover "Documento" antes de "Acción" -->
-=======
->>>>>>> 09f629c3adb585c6386dc44366062542e1697401
                         <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
-<<<<<<< HEAD
-                    {% for actividad in alumno.actividades %}
-                    <tr>
-                        {% if actividad.estatus == 'completado' %}
-                        <td>{{ actividad.nombre }}</td>
-                        <td>{{ actividad.estatus }}<i style="color: green;" class="bi bi-check2-circle"></i></td>
-                        <td class="pdf-icon-cell" title="Documento en PDF">
-                            <i class="bi bi-file-earmark-pdf"></i>
-                        </td> <!-- Ícono de PDF -->
-                        <td><a href="{{ url_for('Vinculacion.documento_alumnos', id_alumno=alumno._id) }}"
-                                class="btn">ver</a></td>
-                        {% else %}
-                        <td>{{ actividad.nombre }}</td>
-                        <td>{{ actividad.estatus }} <i style="color: red;" class="bi bi-x-circle"></i></td>
-                        <td class="pdf-icon-cell" title="Documento en PDF">
-                            <i class="bi bi-file-earmark-pdf"></i>
-                        </td> <!-- Ícono de PDF -->
-                        <td><button type="button" class="btn">Completar</button></td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
-=======
                     {% if alumno.actividades %}
                         {% for actividad in alumno.actividades %}
                         <tr>
@@ -186,11 +145,11 @@
                             </td>
                             <td class="pdf-icon-cell">
                                 {% if actividad.estatus != 'completado' %}
-                                    {% if actividad.encargado == 'vinculacion' %}
-                                            {% if actividad.nombre == 'Capacitación' %}
-                                            <a href="{{ url_for('update_vinculacion.actualizar_estado_Actividad', documento_id=actividad.idActividad, id_alumno=alumno._id, redirect_view='Vinculacion.Home', nombre=alumno.Nombre + ' ' + alumno.Apellido_Pat) }}" class="btn">Completar</a>
+                                    {% if actividad.encargado == 'finanzas' %}
+                                            {% if actividad.nombre == 'Caja' %}
+                                            <a href="{{ url_for('update_vinculacion.actualizar_estado_Actividad', documento_id=actividad.idActividad, id_alumno=alumno._id, redirect_view='Finanzas.Finanzas', nombre=alumno.Nombre + ' ' + alumno.Apellido_Pat) }}" class="btn">Completar</a>
+
                                             {% else %}
-                                                <a href="{{ url_for('Vinculacion.documento_alumnos', id_alumno=alumno._id) }}"><i class="bi bi-file-earmark-pdf"></i></a>
                                             {% endif %}    
                                     {% else %}
                                         <span>No disponible</span>
@@ -204,125 +163,16 @@
                     {% else %}
                         <tr><td colspan="3">No hay actividades disponibles.</td></tr>
                     {% endif %}
->>>>>>> 09f629c3adb585c6386dc44366062542e1697401
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-<<<<<<< HEAD
-=======
 
->>>>>>> 09f629c3adb585c6386dc44366062542e1697401
 {% endfor %}
 
 
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Alumno</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ url_for('create_vinculacion.agregarAlumno') }}" method="POST">
-                    <div class="form-group">
-                        <label for="matricula_Alum">Matricula del Alumno</label>
-                        <input type="number" class="form-control" id="Matricula" name="Matricula"
-                            placeholder="Introduce Matricula" required maxlength="9" minlength="9">
-                    </div>
-                    <div class="form-group">
-                        <label for="Nombre_Alumn">Nombre(s) del Alumno</label>
-                        <input type="text" class="form-control" id="Nombre" name="Nombre"
-                            placeholder="Introduce Nombre(s)" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="apellidos_Alum">Apellidos Paterno</label>
-                        <input type="text" class="form-control" id="apellidos_Alum" name="Apellido_Pat"
-                            placeholder="Introduce Apllido Paterno" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="apellidos_Alum">Apellidos Materno</label>
-                        <input type="text" class="form-control" id="apellidos_Alum" name="Apellido_Mat"
-                            placeholder="Introduce Apllido Materno" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="correoAlumn">Correo:</label>
-                        <input type="email" class="form-control" id="correoAlumn" name="Correo"
-                            placeholder="Introduce Correo Institucional" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="contraseñaAlumn">Contraseña:</label>
-                        <input type="password" class="form-control" id="contraseñaAlumn" name="Contraseña"
-                            placeholder="Introduce Contraseña" minlength="8" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="telefono_alumno">Numero de telefono:</label>
-                        <input type="text" class="form-control" id="telefonoAlumno" name="Telefono"
-                            placeholder="Introduce telefono" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="telefono_alumno">Cuatrimestre:</label>
-                        <select class="form-select me-2" id="cuatrimestre" name="Cuatrimestre">
-                            <option value="6to">6to</option>
-                            <option value="11vo">11vo</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="telefono_alumno">Grupo:</label>
-                        <select class="form-select me-2" id="grupo" name="Grupo">
-                            <option value="A">A</option>
-                            <option value="B">B</option>
-                            <option value="C">C</option>
-                            <option value="G">D</option>
-                            <option value="E">E</option>
-                            <option value="F">F</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="idCarrera">Carrera:</label>
-
-                        <select class="form-select me-2" id="Carrera" name="Carrera">
-                            <option value="MANTO">MANTENIMIENTO</option>
-                            <option value="DESARROLLO">DESARROLLO</option>
-                            <option value="TICS">TICS</option>
-                            <option value="GASTRO">GASTRONOMIA</option>
-                        </select>
-
-                    </div>
-                    <div class="form-group">
-                        <label for="idPeriodo">Periodo:</label>
-
-                        <select class="form-select me-2" id="idPeriodo" name="idPeriodo">
-                            {% for periodos in periodos %}
-                                {%if periodos.Estatus == true%}
-                                <option value="{{ periodos._id }}">{{ periodos.Duracion }}</option>
-                                {%else%}
-                                {%endif%}
-                            {% endfor %}
-                        </select>
-
-                    </div>
-                    <div class="form-group">
-                        <label for="estadia">Estadia del alumno</label>
-                        <select class="form-select me-2" id="Estadia" name="Estadia">
-                            <option value="TSU">T.S.U</option>
-                            <option value="ING">Ingenieria</option>
-                        </select>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Agregar Alumno</button>
-                    </div>
-                </form>
-
-            </div>
-
-        </div>
-    </div>
-</div>
 
 {% endblock %}
 
@@ -334,6 +184,9 @@
 
 
 </script>
+
+
+
 
 <script>
     function filterTable() {
@@ -373,6 +226,7 @@
     }
 </script>
 
+
 <script>
     // Variable para guardar el sidebar abierto actualmente
     let sidebarAbierto = null;
@@ -401,11 +255,8 @@
         });
     });
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> 09f629c3adb585c6386dc44366062542e1697401
     // Función para cerrar la barra lateral
     function cerrarBarra(idBarra) {
         var barraLateral = document.getElementById(idBarra);
@@ -433,4 +284,9 @@
         };
     }); */
 </script>
+
+
+
+
+
 {% endblock %}

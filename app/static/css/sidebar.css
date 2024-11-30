@@ -182,12 +182,13 @@ body{
     bottom: 0;
     left: 0;
     width: 100%;
+    
 }
 
 .sidebar .profile_content .profile{
     position: relative;
     padding: 10px 6px;
-    height: 60px;
+    height: 70px;
     background: none;
     transition: all 0.4s ease;
 }
@@ -220,12 +221,13 @@ body{
 }
 
 .profile .profile_details .name{
-    font-size: 15px;
+    font-size: 10px;
     font-weight: 400;
+
 }
 
 .profile .profile_details .job{
-    font-size: 12px;
+    font-size: 10px;
 }
 
 .profile #log_out{

@@ -21,7 +21,7 @@
                 <div style="width: 25%; position: fixed; top: 20%; right: 10%; z-index: 1050;" class="alert alert-{{ category }} alert-dismissible fade show flash-message" role="alert">
                     {{ message }}
                 </div>
-            {% endfor %}
+            {% endfor %} 
         {% endif %}
     {% endwith %}
 
@@ -58,14 +58,14 @@
         <div class="modal-content">
             <div class="modal-header bg-light">
                 <h5 class="modal-title text-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i> Terminar Periodo</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
             </div>
             <div class="modal-body text-center">
                 <p>¿Estás seguro de que deseas terminar el periodo "<strong>{{ Periodos.NombrePeriodo }}</strong>"?</p>
                 <small class="text-muted">Esta acción no se puede deshacer.</small>
             </div>
             <div class="modal-footer justify-content-center">
-                <form action="#" method="POST">
+                <form action="{{ url_for('update_vinculacion.terminarPeriodo') }}" method="POST">
                     <input type="hidden" name="idPeriodo" value="{{ Periodos._id }}">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-danger"><i class="bi bi-trash3-fill me-1"></i> Terminar</button>
@@ -82,15 +82,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Iniciar Nuevo Periodo</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
             </div>
             <div class="modal-body">
-                <form action="#" method="POST">
+                <form action="{{ url_for('Vinculacion.agregarPeriodo') }}" method="POST">
                     <div class="form-group mb-4">
                         <label class="form-label">Nombre del Periodo</label>
                         <select name="N_periodo" id="N_periodo" class="form-select rounded-input">
-                            <option value="Estadias T.S.U">Estadias T.S.U</option>
-                            <option value="Estadias Ingenieria">Estadias Ingenieria</option>
+                            <option value="TSU">Estadias T.S.U</option>
+                            <option value="ING">Estadias Ingenieria</option>
                         </select>
                     </div>
                     <div class="form-group mb-4">

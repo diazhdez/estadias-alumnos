@@ -1,11 +1,13 @@
 from flask import Blueprint, current_app, render_template, request, url_for, redirect, flash, session
 from app.functions.funciones import nocache, obtener_documentos_alumno_uta, obtener_usuario_por_correo, progreso_alumno
+from app.functions.utils import requiere_permisos
 
 alumno_routes = Blueprint('alumno', __name__)
 
 
 @alumno_routes.route('/EduLink/Alumno/')
 @nocache
+@requiere_permisos(permisos_requeridos=["update", "view"])
 def alumno_vista():
     correo = session.get('correo')
     if correo:
@@ -54,12 +56,13 @@ def alumno_vista():
             )
         else:
             flash('No se encontró al alumno.', 'danger')
-    return redirect(url_for('session.login'))
+    return redirect(url_for('session.logout'))
 
 
 
 @alumno_routes.route('/EduLink/Alumno/Archivos_Universidad/')
 @nocache
+@requiere_permisos(permisos_requeridos=["view"])
 def catalago():
     correo = session.get('correo')
     if 'correo' in session:

@@ -1,0 +1,304 @@
+<!-- Super -->
+{% extends 'base_departamentos.html' %}
+
+{% block title %}Administradores{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/alumnos.css') }}">
+<script src="{{ url_for('static', filename='js/alerts.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/BarraDProgreso.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+{% endblock %}
+
+{% block content %}
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div style="width: 25%; position: fixed; top: 20%; right: 10%; z-index: 1050;"
+    class="alert alert-{{ category }} alert-dismissible fade show flash-message" role="alert">
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="alumnos-container">
+    <div class="search-bar">
+        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar Administrador</button>
+
+    </div>
+    <div class="table-container-list">
+        <table class="alumnos-table-list">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Departamento</th>
+                    <th>Estatus</th>
+                    <th>Ultima conexion</th>
+                    <th>Eliminar</th>
+                    <th>editar</th>
+
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                {% for Admins in administradores|sort(attribute='Apellido_Pat') %}
+                <tr data-id="{{ Admins['_id'] }}" 
+                    data-ultima-actividad="{{ Admins.ultima_actividad }}"
+                    data-nombre="{{ Admins.Nombre }} {{ Admins.Apellido_Pat }}">
+                    <td>{{ Admins['administrador'] }}</td>
+                    <td>{{ Admins['correo'] }}</td>
+                    <td>{{ Admins['departamento'] }}</td>
+                    {% if Admins.en_linea == True %}
+                        <td>En Linea <i class="bi bi-circle-fill" style="color: rgb(5, 255, 5);"></i></i></td>
+                    {% else %}
+                    <td >Desconectado <i class="bi bi-circle-fill" style="color: rgb(250, 0, 0);"></i></td>
+                    {% endif %}    
+                    <td>{{ Admins['ultima_conexion']}}</td>
+                    <td><button type="button" class="btn btn-danger w-90" data-bs-toggle="modal" data-bs-target="#Eliminar_admin{{ Admins['_id'] }}"><i class="bi bi-trash"></i></button></td>
+                    <td><button type="button" class="btn btn-primary w-90" data-bs-toggle="modal" data-bs-target="#Editar_admin{{ Admins['_id'] }}"><i class="bi bi-pencil-square"></i></button></td>
+                
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% for Admins in administradores %}
+
+<!-- Barra lateral de progreso para cada alumno -->
+<div id="Progreso{{ Admins['_id'] }}" class="sidebar-progreso">
+    <div class="header">
+        <h3>Acciones del Administrador</h3>
+        <button type="button" class="close-btn" aria-label="Cerrar" onclick="cerrarBarra('Progreso{{ Admins['_id'] }}')">X</button>
+    </div>
+    <div class="contenido">
+        <h4 id="nombreAlumno">{{ Admins.administrador }}</h4>    
+        <div class="table-container">
+            <table class="alumnos-table">
+                <thead style="background-color: var(--primary-color);">
+                    <tr>
+                        <th>Acciones</th>
+                        <th>fecha</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    {% for movimiento in Admins['movimientos'] %}
+                    <tr>
+                        <td>{{ movimiento['tipo'] }}</td>
+                        <td>{{ movimiento['fecha'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!---Eliminar admin-->
+<div class="modal fade" id="Eliminar_admin{{ Admins['_id'] }}" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title text-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i> Eliminar Administrador</h5>
+
+            </div>
+            <div class="modal-body text-center">
+                <p>¿Estás seguro de que deseas Eliminar al administrador "<strong>{{Admins.administrador }}</strong>"?</p>
+                <small class="text-muted">Esta acción no se puede deshacer.</small>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <form action="{{ url_for('SuperAdmin.delete_Admin') }}" method="POST">
+                    <input type="hidden" name="idAdmin" value="{{ Admins._id }}">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash3-fill me-1"></i> Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Editar_admin{{ Admins['_id'] }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Administrador</h1>
+
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('SuperAdmin.edit_document') }}" method="POST">
+                    <div class="form-group">
+                        <label for="administrador">Nombre del Administrador</label>
+                        <input type="text" class="form-control" id="administrador" name="administrador" value="{{Admins.administrador}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="coreo">Correo del administrador</label>
+                        <input type="text" class="form-control" id="correo" name="correo" value="{{Admins.correo}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contraseñaAdmin">Contraseña:</label>
+                        <input type="password" class="form-control" id="contraseña" name="contraseña"
+                        value="{{Admins.contraseña}}" minlength="8" required>
+                    </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="idCarrera">Departamento:</label>
+                        <input type="text" class="form-control" id="administrador" value="{{Admins.departamento}}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="permisos">Permisos</label>
+                        <input type="text" class="form-control" id="administrador" value="{{Admins.permisos}}" readonly>
+                    </div>                    
+
+                    <div class="modal-footer">
+                        <input type="hidden" name="idAdmin" value="{{ Admins._id }}">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Administrador</h1>
+
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('SuperAdmin.add_admin') }}" method="POST">
+                    <div class="form-group">
+                        <label for="administrador">Nombre del Administrador</label>
+                        <input type="text" class="form-control" id="administrador" name="administrador"
+                            placeholder="Nombre">
+                    </div>
+                    <div class="form-group">
+                        <label for="coreo">Correo del administrador</label>
+                        <input type="text" class="form-control" id="correo" name="correo"
+                            placeholder="Introduce correo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contraseñaAdmin">Contraseña:</label>
+                        <input type="password" class="form-control" id="contraseña" name="contraseña"
+                            placeholder="Introduce Contraseña" minlength="8" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmar_contraseña">Confirmar Contraseña:</label>
+                        <input type="password" class="form-control" id="confirmar_contraseña" name="confirmar_contraseña"
+                            placeholder="Confirma Contraseña" minlength="8" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="idCarrera">Departamento:</label>
+
+                        <select class="form-select me-2" id="departamento" name="departamento" required>
+                            <option value="vinculacion">Vinculación</option>
+                            <option value="servicios_escolares">Servicios Escoles</option>
+                            <option value="finanzas">finanzas</option>
+                            <option value="recursos_materiales">Recursos Materiales</option>
+                            <option value="biblioteca">Biblioteca</option>
+                            <option value="juridico">juridico</option>
+                        </select>
+
+                    </div>                    
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Agregar Administrador</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    });
+</script>
+<script>
+    // Variable para guardar el sidebar abierto actualmente
+    let sidebarAbierto = null;
+
+    // Manejo del doble clic en las celdas de la tabla
+    document.querySelectorAll('.alumnos-container .alumnos-table-list td').forEach(function (td) {
+        td.addEventListener('dblclick', function () {
+            // Obtener el ID del alumno desde el atributo data-id de la fila
+            var fila = this.closest('tr');
+            var idAlumno = fila.getAttribute('data-id');
+
+            // Obtener la barra lateral correspondiente al alumno
+            var barraLateral = document.getElementById('Progreso' + idAlumno);
+
+            if (barraLateral) {
+                // Verificar si hay otra barra lateral abierta
+                if (sidebarAbierto && sidebarAbierto !== barraLateral) {
+                    // Cerrar la barra lateral abierta previamente
+                    sidebarAbierto.classList.remove('show');
+                }
+
+                // Abrir la nueva barra lateral y actualizar el estado de sidebarAbierto
+                barraLateral.classList.add('show');
+                sidebarAbierto = barraLateral;
+            }
+        });
+    });
+
+
+
+    // Función para cerrar la barra lateral
+    function cerrarBarra(idBarra) {
+        var barraLateral = document.getElementById(idBarra);
+        if (barraLateral) {
+            barraLateral.classList.remove('show');
+
+            // Limpiar la referencia de sidebarAbierto si es el mismo que se está cerrando
+            if (sidebarAbierto === barraLateral) {
+                sidebarAbierto = null;
+            }
+        }
+    }
+
+    
+
+    /* // (Opcional) Cerrar el modal al hacer clic en el botón de cerrar
+    // Esto es redundante si usas data-bs-dismiss en el botón de cerrar de Bootstrap
+    document.querySelectorAll('.close-btn').forEach(function(btn) {
+        btn.onclick = function() {
+            var modal = this.closest('.modal');
+            var bootstrapModal = bootstrap.Modal.getInstance(modal);
+            if (bootstrapModal) {
+                bootstrapModal.hide();
+            }
+        };
+    }); */
+</script>
+
+
+
+
+
+{% endblock %}

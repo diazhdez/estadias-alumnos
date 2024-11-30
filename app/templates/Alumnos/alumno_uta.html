@@ -4,8 +4,11 @@
 
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/alumnos_vista.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/alerts.css') }}">
 <script src="{{ url_for('static', filename='js/alerts.js') }}"></script>
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script src="{{ url_for('static', filename='css/alerts.css') }}"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 {% endblock %}
 
 {% block content %}
@@ -13,6 +16,16 @@
 
 
 <div class="page-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div style="width: 25%; position: fixed; top: 15%; right: 30%; z-index: 1050;"
+        class="alert alert-{{ category }} alert-dismissible fade show flash-message" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
     <!-- Contenido principal ajustado -->
     <div class="main-content">
         <div class="projects-container">
@@ -36,11 +49,216 @@
                 {% endif %}
             </div>
 
+
+            {%if documentos is none %}
             <div class="card-container">
+                {% if alumno %}
+                <div class="card 
+                        {% if alumno.formato_tres_opciones.estado == 'aceptado' %}completado
+                        {% elif alumno.formato_tres_opciones.estado == 'entregado' %}entregado
+                        {% elif alumno.formato_tres_opciones.estado == 'devuelto' %}devuelto
+                        {% else %}pendiente{% endif %}">
+
+                    <div class="card-header">
+                        <h3 class="document-name">formato_tres_opciones</h3>
+                    </div>
+
+                    <div class="card-status">
+                        {% if alumno.formato_tres_opciones.estado == 'aceptado' %}
+                        <span class="status completado">Completado <i class="bi bi-check2-circle"
+                                style="color: green;"></i></span>
+                        {% elif alumno.formato_tres_opciones.estado == 'entregado' %}
+                        <span class="status entregado">Entregado <i class="bi bi-check2-circle"
+                                style="color: #ffa500;"></i></span>
+                        {% elif alumno.formato_tres_opciones.estado == 'activo' %}
+                        <span class="status activo">Activo <i class="bi bi-check2-circle"
+                                style="color: green;"></i></span>
+                        {% elif alumno.formato_tres_opciones.estado == 'devuelto' %}
+                        <span class="status devuelto">Devuelto <i class="bi bi-check2-circle"
+                                style="color: rgb(215, 206, 23);"></i></span>
+                        {% else %}
+                        <span class="status pendiente">Sin activar <i class="bi bi-x-circle"
+                                style="color: red;"></i></span>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-footer">
+                        {% if alumno.formato_tres_opciones.estado == 'activo' %}
+                        <div id="fileNameContainer-formato_tres_opciones" class="file-name-container"
+                            style="display: none;">
+                            <span id="fileName-formato_tres_opciones"></span>
+                        </div>
+                        <div class="modal fade" id="SubirArchivoformato_tres_opciones" tabindex="-1"
+                            aria-labelledby="editarModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{{ url_for('update.subir_documento_alumno_uta') }}" method="POST"
+                                            enctype="multipart/form-data">
+                                            <div class="form-group upload-section">
+                                                <label for="archivo-formato_tres_opciones"
+                                                    class="custom-file-label">Seleccionar
+                                                    archivo</label>
+                                                <input class="file-input" type="file" id="archivo-formato_tres_opciones"
+                                                    name="archivo" required accept=".pdf"
+                                                    onchange="updateFileName('formato_tres_opciones')">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input type="hidden" name="id_alumno" value="{{ alumno._id }}">
+                                                <button type="submit" class="btn-subir-archivo mb-3"
+                                                    id="upload-formato_tres_opciones">Entregar Documento</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% elif alumno.formato_tres_opciones.estado == 'entregado' %}
+                        <p class="status-info">En espera de respuesta</p>
+                        <a href="{{ url_for('view.ver_archivo_alumno_uta_1', id_alumno=alumno._id) }}"
+                            class="btn-visualizar"><i class="fas fa-eye"></i>Visualizar</a>
+                        {% elif alumno.formato_tres_opciones.estado == 'aceptado' %}
+                        <a href="{{ url_for('view.ver_archivo_alumno_uta_1', id_alumno=alumno._id) }}"
+                            class="btn-visualizar"><i class="fas fa-eye"></i>Visualizar</a>
+                        {% elif alumno.formato_tres_opciones.estado == 'devuelto' %}
+                        <p class="status-info">Comentario: {{ alumno.formato_tres_opciones.comentario }}</p>
+                        <div id="fileNameContainer-formato_tres_opciones" class="file-name-container" style="display: none;">
+                            <span id="fileName-formato_tres_opciones"></span>
+                        </div>
+                        <div class="modal fade" id="SubirArchivoformato_tres_opciones" tabindex="-1"
+                            aria-labelledby="editarModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{{ url_for('update.subir_documento_alumno_uta') }}" method="POST"
+                                            enctype="multipart/form-data">
+                                            <div class="form-group upload-section">
+                                                <label for="archivo-formato_tres_opciones"
+                                                    class="custom-file-label">Seleccionar
+                                                    archivo</label>
+                                                <input class="file-input" type="file" id="archivo-formato_tres_opciones"
+                                                    name="archivo" required accept=".pdf"
+                                                    onchange="updateFileName('formato_tres_opciones')">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input type="hidden" name="id_alumno" value="{{ alumno._id }}">
+                                                <button type="submit" class="btn-subir-archivo mb-3"
+                                                    id="upload-formato_tres_opciones">Entregar Documento</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        {% endif %}
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            {%endif%}
+
+
+
+            {% else %}
+            <div class="card-container">
+                {% if alumno %}
+                <div class="card 
+                            {% if alumno.formato_tres_opciones.estado == 'aceptado' or alumno.formato_tres_opciones.estado == 'entregado' or alumno.formato_tres_opciones.estado == 'activo' %}completado
+                            {% elif alumno.formato_tres_opciones.estado == 'devuelto' %}devuelto
+                            {% else %}pendiente{% endif %}">
+
+                    <div class="card-header">
+                        <h3 class="document-name">formato_tres_opciones</h3>
+                    </div>
+
+                    <div class="card-status">
+                        {% if alumno.formato_tres_opciones.estado == 'aceptado' %}
+                        <span class="status completado">Completado <i class="bi bi-check2-circle"
+                                style="color: green;"></i></span>
+                        {% elif alumno.formato_tres_opciones.estado == 'entregado' %}
+                        <span class="status completado">Entregado <i class="bi bi-check2-circle"
+                                style="color: green;"></i></span>
+                        {% elif alumno.formato_tres_opciones.estado == 'activo' %}
+                        <span class="status activo">Activo <i class="bi bi-check2-circle"
+                                style="color: green;"></i></span>
+                        {% elif alumno.formato_tres_opciones.estado == 'devuelto' %}
+                        <span class="status devuelto">Devuelto <i class="bi bi-check2-circle"
+                                style="color: rgb(215, 206, 23);"></i></span>
+                        {% else %}
+                        <span class="status pendiente">Sin activar <i class="bi bi-x-circle"
+                                style="color: red;"></i></span>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-footer">
+
+                        {% if alumno.formato_tres_opciones.estado == 'entregado' or alumno.formato_tres_opciones.estado
+                        == 'aceptado' %}
+                        <a href="{{ url_for('view.ver_archivo_alumno_uta_1', id_alumno=alumno._id) }}"
+                            class="btn-visualizar"><i class="fas fa-eye"></i>Visualizar</a>
+                        {% elif alumno.formato_tres_opciones.estado == 'desactivado' %}
+                        <p class="status-info">El documento no está habilitado para ser subido.</p>
+                        {% else %}
+                        {%if alumno.formato_tres_opciones.estado == 'devuelto' %}
+                        <p class="status-info">Comentario: {{ alumno.formato_tres_opciones.comentario }}</p>
+                        {% endif %}
+                        <div id="fileNameContainer-formato_tres_opciones" class="file-name-container"
+                            style="display: none;">
+                            <span id="fileName-formato_tres_opciones"></span>
+                        </div>
+                        <div class="modal fade" id="SubirArchivoformato_tres_opciones" tabindex="-1"
+                            aria-labelledby="editarModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{{ url_for('update.subir_documento_alumno_uta') }}" method="POST"
+                                            enctype="multipart/form-data">
+                                            <div class="form-group upload-section">
+                                                <label for="archivo-formato_tres_opciones"
+                                                    class="custom-file-label">Seleccionar
+                                                    archivo</label>
+                                                <input class="file-input" type="file" id="archivo-formato_tres_opciones"
+                                                    name="archivo" required accept=".pdf"
+                                                    onchange="updateFileName('formato_tres_opciones')">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input type="hidden" name="id_alumno" value="{{ alumno._id }}">
+                                                <button type="submit" class="btn-subir-archivo mb-3"
+                                                    id="upload-formato_tres_opciones">Entregar Documento</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {%endif%}
+                    </div>
+
+                </div>
+
+                {%endif%}
                 {% if documentos %}
                 {% for key, documento in documentos.items() %}
                 {% if key not in ['_id', 'id_usuario'] %}
-                <div class="card {% if documento.estado == 'aceptado' or documento.estado == 'entregado' or documento.estado == 'activo' %}completado{% elif documento.estado == 'devuelto' %}devuelto{% else %}pendiente{% endif %}">
+                <div
+                    class="card {% if documento.estado == 'aceptado' or documento.estado == 'entregado' or documento.estado == 'activo' %}completado{% elif documento.estado == 'devuelto' %}devuelto{% else %}pendiente{% endif %}">
                     <div class="card-header">
                         <h3 class="document-name">{{ key }}</h3>
                     </div>
@@ -114,28 +332,59 @@
                 {% else %}
                 <p>No hay actividades para mostrar.</p>
                 {% endif %}
+                {%endif%}
             </div>
         </div>
     </div>
 
     <!-- Sidebar derecho fijo solo con la barra de progreso -->
-    <div class="right-sidebar">
-        <h2>Progreso del Alumno</h2>
-        <div class="progress">
-            {% set progreso_total = alumno.progreso if alumno.progreso is not
-            none else 0 %} {# Asegúrate de que 'progreso' no sea None #}
-            {% set progreso_clase = 'bg-primary' if progreso_total < 100 else 'bg-success' %} {# Cambia el color según
-                el progreso #} <div class="progress-bar {{ progreso_clase }}" role="progressbar"
-                aria-valuenow="{{ progreso_total }}" aria-valuemin="0" aria-valuemax="100"
-                style="width: {{ progreso_total }}%;">
-                {{ progreso_total | round(0) }}% {# Muestra el progreso
-                redondeado #}
+    <div class="sidebar-progreso">
+        <div class="header-list">
+            <h3>Mi Progreso</h3>
+        </div>
+        <div class="contenido">
+            <div class="progress">
+                {% set progreso_total = alumno.progreso if alumno.progreso else 0 %}
+                {% set progreso_clase = 'bg-primary' if progreso_total < 100 else 'bg-success' %} <div
+                    class="progress-bar {{ progreso_clase }}" role="progressbar" aria-valuenow="{{ progreso_total }}"
+                    aria-valuemin="0" aria-valuemax="100" style="width: {{ progreso_total }}%;">
+                    {{ progreso_total | round(0) }}%
+            </div>
+        </div>
+        <div class="table-container">
+            <table class="alumnos-table">
+                <thead style="background-color: var(--primary-color);">
+                    <tr>
+                        <th>Actividad</th>
+                        <th>Estatus</th>
+
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    {% for actividad in alumno.actividades %}
+                    <tr>
+                        {% if actividad.estatus == 'completado' %}
+                        <td>{{ actividad.nombre }}</td>
+                        <td>{{ actividad.estatus }}<i style="color: green;" class="bi bi-check2-circle"></i></td>
+                        {% else %}
+                        <td>{{ actividad.nombre }}</td>
+                        <td>{{ actividad.estatus }} <i style="color: red;" class="bi bi-x-circle"></i></td>
+
+                        {% endif %}
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
+
 </div>
 {% endblock %}
 
 {% block scripts %}
+
+
 <script src="{{ url_for('static', filename='js/alumnos_vista.js') }}"></script>
 {% endblock %}
