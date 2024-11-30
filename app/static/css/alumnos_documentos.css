@@ -74,6 +74,10 @@
     border-top: 4px solid #28a745;
 }
 
+.card.activo {
+    border-top: 4px solid #28a745;
+}
+
 .card.entregado {
     border-top: 4px solid #ffa500;
 }
@@ -105,6 +109,10 @@
 }
 
 .status.completado {
+    color: #28a745;
+}
+
+.status.activo {
     color: #28a745;
 }
 

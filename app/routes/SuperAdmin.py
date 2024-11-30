@@ -8,8 +8,6 @@ from app.functions.utils import requiere_permisos
 SuperAdmmin_routes = Blueprint('SuperAdmin', __name__)
 
 
-
-
 @SuperAdmmin_routes.route('/Edulink/SuperAdmin/add', methods=['POST'])
 @nocache
 @requiere_permisos(permisos_requeridos=["create", "delete"], departamento_requerido="Root")

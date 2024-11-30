@@ -55,6 +55,7 @@
                 {% if alumno %}
                 <div class="card 
                         {% if alumno.formato_tres_opciones.estado == 'aceptado' %}completado
+                        {% elif alumno.formato_tres_opciones.estado == 'activo' %}activo
                         {% elif alumno.formato_tres_opciones.estado == 'entregado' %}entregado
                         {% elif alumno.formato_tres_opciones.estado == 'devuelto' %}devuelto
                         {% else %}pendiente{% endif %}">
