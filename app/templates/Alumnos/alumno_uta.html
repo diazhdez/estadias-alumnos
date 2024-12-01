@@ -54,10 +54,9 @@
             <div class="card-container">
                 {% if alumno %}
                 <div class="card 
-                        {% if alumno.formato_tres_opciones.estado == 'aceptado' %}completado
-                        {% elif alumno.formato_tres_opciones.estado == 'entregado' %}entregado
-                        {% elif alumno.formato_tres_opciones.estado == 'devuelto' %}devuelto
-                        {% else %}pendiente{% endif %}">
+                        {% if alumno.formato_tres_opciones.estado == 'aceptado' or alumno.formato_tres_opciones.estado == 'entregado' or alumno.formato_tres_opciones.estado == 'activo' %}completado
+                            {% elif alumno.formato_tres_opciones.estado == 'devuelto' %}devuelto
+                            {% else %}pendiente{% endif %}">
 
                     <div class="card-header">
                         <h3 class="document-name">formato_tres_opciones</h3>
@@ -69,7 +68,7 @@
                                 style="color: green;"></i></span>
                         {% elif alumno.formato_tres_opciones.estado == 'entregado' %}
                         <span class="status entregado">Entregado <i class="bi bi-check2-circle"
-                                style="color: #ffa500;"></i></span>
+                                style="color: green;"></i></span>
                         {% elif alumno.formato_tres_opciones.estado == 'activo' %}
                         <span class="status activo">Activo <i class="bi bi-check2-circle"
                                 style="color: green;"></i></span>
@@ -118,9 +117,40 @@
                             </div>
                         </div>
                         {% elif alumno.formato_tres_opciones.estado == 'entregado' %}
-                        <p class="status-info">En espera de respuesta</p>
+                        <p class="status-info">En espera de respuesta</p><br>
                         <a href="{{ url_for('view.ver_archivo_alumno_uta_1', id_alumno=alumno._id) }}"
                             class="btn-visualizar"><i class="fas fa-eye"></i>Visualizar</a>
+                        <div class="modal fade" id="SubirArchivoformato_tres_opciones" tabindex="-1"
+                            aria-labelledby="editarModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{{ url_for('update.subir_documento_alumno_uta') }}" method="POST"
+                                            enctype="multipart/form-data">
+                                            <div class="form-group upload-section">
+                                                <label for="archivo-formato_tres_opciones"
+                                                    class="custom-file-label">Seleccionar
+                                                    archivo</label>
+                                                <input class="file-input" type="file" id="archivo-formato_tres_opciones"
+                                                    name="archivo" required accept=".pdf"
+                                                    onchange="updateFileName('formato_tres_opciones')">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input type="hidden" name="id_alumno" value="{{ alumno._id }}">
+                                                <button type="submit" class="btn-subir-archivo mb-3"
+                                                    id="upload-formato_tres_opciones">Entregar Documento</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                        <p class="status-info">¿Te equivocaste? Vulvelo a subir</p>    
+
                         {% elif alumno.formato_tres_opciones.estado == 'aceptado' %}
                         <a href="{{ url_for('view.ver_archivo_alumno_uta_1', id_alumno=alumno._id) }}"
                             class="btn-visualizar"><i class="fas fa-eye"></i>Visualizar</a>
@@ -187,16 +217,16 @@
                     <div class="card-status">
                         {% if alumno.formato_tres_opciones.estado == 'aceptado' %}
                         <span class="status completado">Completado <i class="bi bi-check2-circle"
-                                style="color: green;"></i></span>
-                        {% elif alumno.formato_tres_opciones.estado == 'entregado' %}
+                            style="color: green;"></i></span>
+                        {% elif documento.estado == 'entregado' %}
                         <span class="status completado">Entregado <i class="bi bi-check2-circle"
                                 style="color: green;"></i></span>
-                        {% elif alumno.formato_tres_opciones.estado == 'activo' %}
-                        <span class="status activo">Activo <i class="bi bi-check2-circle"
-                                style="color: green;"></i></span>
-                        {% elif alumno.formato_tres_opciones.estado == 'devuelto' %}
+                        {% elif documento.estado == 'devuelto' %}
                         <span class="status devuelto">Devuelto <i class="bi bi-check2-circle"
                                 style="color: rgb(215, 206, 23);"></i></span>
+                        {% elif documento.estado == 'activo' %}
+                        <span class="status completado">Activo <i class="bi bi-check2-circle"
+                                style="color: green;"></i></span>
                         {% else %}
                         <span class="status pendiente">Sin activar <i class="bi bi-x-circle"
                                 style="color: red;"></i></span>

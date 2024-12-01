@@ -99,10 +99,17 @@ def logout():
     db = current_app.get_db_connection() 
     correo = session.get('correo')
     admin = db['administradores'].find_one({'correo': correo})
+    alumno = db['Alumnos'].find_one({'Correo_Institucional': correo})
     if admin:
         administracion = db['administradores']
         administracion.update_one(
             {"correo": correo}, 
+            {'$set': {'en_linea': False}}
+        )
+    if alumno:  
+        Alumno = db['Alumnos']
+        Alumno.update_one(
+            {"Correo_Institucional": correo}, 
             {'$set': {'en_linea': False}}
         )
     session.clear()  # Elimina todas las variables de sesión

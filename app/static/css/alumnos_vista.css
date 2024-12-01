@@ -75,7 +75,7 @@
 }
 
 .card.entregado {
-    border-top: 4px solid #ffa500;
+    border-top: 4px solid #28a745;
 }
 
 .card.pendiente {
@@ -109,7 +109,7 @@
 }
 
 .status.entregado {
-    color: #ffa500;
+    color: #28a745;
 }
 
 .status.pendiente {
