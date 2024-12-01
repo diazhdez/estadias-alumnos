@@ -228,7 +228,7 @@
                 <div class="card-container">
                     {% if alumno %}
                     <div
-                        class="card {% if alumno.formato_tres_opciones.estado == 'aceptado' or alumno.formato_tres_opciones.estado == 'entregado' or alumno.formato_tres_opciones.estado == 'activo' %}completado{% elif alumno.formato_tres_opciones.estado == 'devuelto' %}devuelto{% else %}pendiente{% endif %}">
+                        class="card {% if alumno.formato_tres_opciones.estado == 'aceptado' or alumno.formato_tres_opciones.estado == 'entregado' %}completado{% elif alumno.formato_tres_opciones.estado == 'devuelto' %}devuelto{% else %}pendiente{% endif %}">
                         <div class="card-header">
                             <h3 class="document-name">formato_tres_opciones</h3>
                         </div>
@@ -405,46 +405,56 @@
                     aria-valuemin="0" aria-valuemax="100"
                     style="width: {{ progreso_total }}%;">
                     {{ progreso_total | round(0) }}%
-                </div>
-            </div>
-            <div class="table-container">
-                <table class="alumnos-table">
-                    <thead style="background-color: var(--primary-color);">
-                        <tr>
-                            <th>Actividad</th>
-                            <th>Estatus</th>
-                            <th>Accion</th>
-
-                        </tr>
-                    </thead>
-                    <tbody id="table-body">
-                        {% for actividad in alumno.actividades %}
-                        <tr>
-                            {% if actividad.estatus == 'completado' %}
-                            <td>{{ actividad.nombre }}</td>
-                            <td>{{ actividad.estatus }}<i style="color: green;"
-                                    class="bi bi-check2-circle"></i></td>
-                            <td><span>Actividad completada</span></td>
-                            {% else %}
-                            <td>{{ actividad.nombre }}</td>
-                            <td>{{ actividad.estatus }} <i style="color: red;"
-                                    class="bi bi-x-circle"></i></td>
-                            {% if actividad.encargado == 'vinculacion' %}
-                            <td><a
-                                    href="{{ url_for('update_vinculacion.actualizar_estado_Actividad', documento_id=actividad.idActividad, id_alumno=alumno._id, redirect_view='Vinculacion.documento_alumnos', nombre=alumno.Nombre + ' ' + alumno.Apellido_Pat) }}"
-                                    class="btn">Completar</a></td>
-                            {% else %}
-                            <td><span>No disponible</span></td>
-                            {% endif %}
-                            {% endif %}
-
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
             </div>
         </div>
+        <div class="table-container">
+            <table class="alumnos-table">
+                <thead style="background-color: var(--primary-color);">
+                    <tr>
+                        <th>Actividad</th>
+                        <th>Estatus</th>
+                        <th>Accion</th>
+
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    {% for actividad in alumno.actividades  %}
+                <tr>
+                    {% if actividad.estatus == 'completado' %}
+                        <td>{{ actividad.nombre }}</td>
+                        <td>{{ actividad.estatus }}<i style="color: green;" class="bi bi-check2-circle"></i></td>
+<<<<<<< HEAD
+                        <td></td>
+                    {% else %}
+                        <td>{{ actividad.nombre }}</td>
+                        <td>{{ actividad.estatus }} <i style="color: red;" class="bi bi-x-circle"></i></td>
+                        {% if actividad.encargado == 'vinculacion' %}
+                            <td><a href="#" class="btn">Completar</a></td>
+                        {% else %}
+                            <td></td>
+=======
+                        <td><span>Actividad completada</span></td>
+                        {% else %}
+                        <td>{{ actividad.nombre }}</td>
+                        <td>{{ actividad.estatus }} <i style="color: red;" class="bi bi-x-circle"></i></td>
+                        {% if actividad.encargado == 'vinculacion' %}
+                        <td><a href="{{ url_for('update_vinculacion.actualizar_estado_Actividad', documento_id=actividad.idActividad, id_alumno=alumno._id, redirect_view='Vinculacion.documento_alumnos', nombre=alumno.Nombre + ' ' + alumno.Apellido_Pat) }}"
+                                class="btn">Completar</a></td>
+                        {% else %}
+                        <td><span>No disponible</span></td>
+                        {% endif %}
+>>>>>>> 09f629c3adb585c6386dc44366062542e1697401
+                        {% endif %}
+                    {% endif %}
+
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
+</div>
+
 
     {% endblock %}
 

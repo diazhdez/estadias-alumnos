@@ -47,8 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Simulación de guardar cambios
-        alert("Los cambios se han guardado correctamente.");
         nuevaContraseñaInput.value = "";
         confirmarContraseñaInput.value = "";
         strengthIndicator.style.width = "0"; // Limpia la barra de fuerza
