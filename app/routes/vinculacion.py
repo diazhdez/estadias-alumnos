@@ -570,3 +570,28 @@ def agregarPeriodo():
 @requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
 def configuracion_vinculacion():
     return render_template("configuracion/configuracion.html")
+
+
+@Vinculacion_routes.route("/EduLink/Vinculación/Periodos/Historial/")
+@nocache
+@requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
+def historialPeriodod():
+    correo = session.get('correo')
+    db = current_app.get_db_connection()
+    if 'correo' in session:
+        correo_usuario = session['correo']
+        administradores = db["administradores"]
+        admin = obtener_administrador_por_correo(correo)
+        # Verifica si el correo está en la colección de administradores
+        administrador = administradores.find_one({'correo': correo_usuario})
+
+        if administrador:
+            conexion = db["Periodos"]
+            Periodos = list(conexion.find({'Estatus': False}))
+            return render_template("Vinculacion/historialPeriodos.html", Periodos=Periodos, administrador=admin)
+        else:
+            flash('Acceso denegado: No eres un administrador.', 'danger')
+            return redirect(url_for('session.logout'))
+    else:
+        flash('Acceso denegado: No eres un administrador.', 'danger')
+        return redirect(url_for('session.logout'))
