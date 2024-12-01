@@ -18,6 +18,7 @@ def add_admin():
     contraseña = request.form['contraseña']
     confirmar_contraseña = request.form['confirmar_contraseña']
     departamento = request.form['departamento']
+    carrera = request.form.getlist('carrera[]')
 
     # Validación de contraseñas
     if contraseña != confirmar_contraseña:
@@ -39,6 +40,7 @@ def add_admin():
         'correo': correo,
         'contraseña': hashpass,
         'departamento': departamento,
+        'carrera': carrera,
         'en_linea': False,
         'ultima_conexion': None,
         'movimientos': [

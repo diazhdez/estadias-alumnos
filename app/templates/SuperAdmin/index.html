@@ -211,13 +211,38 @@
                         <select class="form-select me-2" id="departamento" name="departamento" required>
                             <option value="vinculacion">Vinculación</option>
                             <option value="servicios_escolares">Servicios Escoles</option>
-                            <option value="finanzas">finanzas</option>
+                            <option value="finanzas">Finanzas</option>
                             <option value="recursos_materiales">Recursos Materiales</option>
                             <option value="biblioteca">Biblioteca</option>
-                            <option value="juridico">juridico</option>
+                            <option value="juridico">Juridico</option>
                         </select>
 
-                    </div>                    
+                    </div>
+
+                    <div class="form-group">
+                        <label for="idCarrera">Carrera:</label><br>
+                    
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="tics" name="carrera[]" value="TICS">
+                            <label class="form-check-label" for="tics">TICS</label>
+                        </div>
+                        
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="gastronomia" name="carrera[]" value="Gastronomia">
+                            <label class="form-check-label" for="gastronomia">Gastronomia</label>
+                        </div>
+                        
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="mantenimiento-industrial" name="carrera[]" value="Mantenimiento Industrial">
+                            <label class="form-check-label" for="mantenimiento-industrial">Mantenimiento Industrial</label>
+                        </div>
+                        
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="desarrollo-negocios" name="carrera[]" value="Desarrollo de Negocios">
+                            <label class="form-check-label" for="desarrollo-negocios">Desarrollo de Negocios</label>
+                        </div>
+                    </div>
+                                       
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
