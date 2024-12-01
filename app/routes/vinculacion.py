@@ -575,7 +575,7 @@ def configuracion_vinculacion():
 @Vinculacion_routes.route("/EduLink/Vinculación/Periodos/Historial/")
 @nocache
 @requiere_permisos(permisos_requeridos=["create", "delete", "update", "view"], departamento_requerido="vinculacion")
-def historialPeriodod():
+def historialPeriodos():
     correo = session.get('correo')
     db = current_app.get_db_connection()
     if 'correo' in session:
