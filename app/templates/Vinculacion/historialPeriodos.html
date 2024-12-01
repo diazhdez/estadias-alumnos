@@ -1,0 +1,66 @@
+<!-- templates/iniciar_periodo.html -->
+{% extends "base.html" %}
+
+{% block title %}Iniciar Periodo{% endblock %}
+
+{% block styles %}
+<!-- Incluir estilos específicos para esta página -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/periodo.css') }}">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='img/LOGO-UTA.png') }}">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='js/alerts.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4 d-flex flex-column align-items-center">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div style="width: 25%; position: fixed; top: 20%; right: 10%; z-index: 1050;"
+        class="alert alert-{{ category }} alert-dismissible fade show flash-message" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <!-- Contenedor de tarjetas de periodos -->
+    <div class="row mt-4 w-100 d-flex justify-content-center">
+        {% for Periodos in Periodos %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header text-center">
+                    <h5>Periodo Terminado</h5>
+                </div>
+                <div class="card-body">
+                    <label><small>Nombre Del Periodo</small></label>
+                    <input type="text" class="form-control mb-2" value="{{ Periodos.NombrePeriodo }}" readonly>
+                    <label><small>Duración</small></label>
+                    <input type="text" class="form-control mb-2" value="{{ Periodos.Duracion }}" readonly>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/alerts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/unir.js') }}"></script>
+<script>
+    // Código JavaScript para el manejo de fechas
+    var fechaActual = new Date().toISOString().split('T')[0];
+    document.getElementById("fech1").setAttribute("min", fechaActual);
+
+    function cambio1() {
+        const M1 = MesNum_MesPalabra(SelecMes(document.getElementById("fech1").value));
+        const M2 = MesNum_MesPalabra(SelecMes(document.getElementById("fech2").value));
+        document.getElementById("periodo").value = M1 + "-" + M2 + " " + Anio(document.getElementById("fech2").value);
+    } 
+</script>
+{% endblock %}
