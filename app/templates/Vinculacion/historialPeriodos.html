@@ -1,7 +1,7 @@
 <!-- templates/iniciar_periodo.html -->
 {% extends "base.html" %}
 
-{% block title %}Iniciar Periodo{% endblock %}
+{% block title %}Historial de Periodos{% endblock %}
 
 {% block styles %}
 <!-- Incluir estilos específicos para esta página -->
@@ -16,35 +16,32 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mt-4 d-flex flex-column align-items-center">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, message in messages %}
-    <div style="width: 25%; position: fixed; top: 20%; right: 10%; z-index: 1050;"
-        class="alert alert-{{ category }} alert-dismissible fade show flash-message" role="alert">
-        {{ message }}
-    </div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
+<div class="container mt-5">
+    <!-- Título principal -->
+    <h1 class="text-center mb-5" style="font-weight: 700; color: #333;">Historial de Periodos Terminados</h1>
 
-    <!-- Contenedor de tarjetas de periodos -->
-    <div class="row mt-4 w-100 d-flex justify-content-center">
-        {% for Periodos in Periodos %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <div class="card-header text-center">
-                    <h5>Periodo Terminado</h5>
-                </div>
-                <div class="card-body">
-                    <label><small>Nombre Del Periodo</small></label>
-                    <input type="text" class="form-control mb-2" value="{{ Periodos.NombrePeriodo }}" readonly>
-                    <label><small>Duración</small></label>
-                    <input type="text" class="form-control mb-2" value="{{ Periodos.Duracion }}" readonly>
+    <!-- Contenedor de tarjetas -->
+    <div class="row d-flex justify-content-center">
+        {% if Periodos %}
+            {% for Periodo in Periodos %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-lg" style="border-radius: 15px; transition: transform 0.3s ease-in-out;">
+                    <div class="card-header text-center text-white" 
+                        style="border-top-left-radius: 15px; border-top-right-radius: 15px; background: linear-gradient(135deg, #007bff, #0056b3);">
+                        <h5 class="mb-0">{{ Periodo.NombrePeriodo }}</h5>
+                    </div>
+                    <div class="card-body" style="background-color: #f8f9fa; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+                        <p class="mb-2" style="font-size: 14px; font-weight: bold; color: #555;">Nombre del Periodo</p>
+                        <div class="form-control mb-3 bg-light" readonly>{{ Periodo.NombrePeriodo }}</div>
+                        <p class="mb-2" style="font-size: 14px; font-weight: bold; color: #555;">Duración</p>
+                        <div class="form-control bg-light" readonly>{{ Periodo.Duracion }}</div>
+                    </div>
                 </div>
             </div>
-        </div>
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+            <p class="text-muted">No hay periodos terminados registrados.</p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
