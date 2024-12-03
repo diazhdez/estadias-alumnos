@@ -48,7 +48,11 @@
                 <h1>Alumno no encontrado</h1>
                 {% endif %}
             </div>
-
+            <!-- Texto explicativo -->
+            <p class="text-muted text-center mb-3">
+             <strong>Todos los formatos deben subirse en formato PDF</strong>.
+            </p>
+            <br>
 
             {%if documentos is none %}
             <div class="card-container">
@@ -291,7 +295,8 @@
                 <div
                     class="card {% if documento.estado == 'aceptado' or documento.estado == 'entregado' or documento.estado == 'activo' %}completado{% elif documento.estado == 'devuelto' %}devuelto{% else %}pendiente{% endif %}">
                     <div class="card-header">
-                        <h3 class="document-name">{{ key }}</h3>
+                        <h3 class="document-name" title="{{ key }}">{{ key }}</h3>
+                        <h4 class="document-name"> {{documento.descripcion}}</h4>
                     </div>
                     <div class="card-status">
                         {% if documento.estado == 'aceptado' %}

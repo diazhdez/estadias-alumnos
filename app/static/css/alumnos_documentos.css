@@ -98,6 +98,17 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    position: relative; /* Necesario para el tooltip */
+    cursor: pointer; /* Indica que el elemento tiene interactividad */
+}
+
+.card-header h4 {
+    font-size: 10px;
+    margin: 8px 0;
+    color: #333;
+    font-weight: 600;
+    white-space: normal;
+    overflow: visible;
 }
 
 /* Estatus de la tarjeta */
@@ -490,7 +501,7 @@
 
 
 .table-container {
-    max-height: 45%; /* Ajusta la altura máxima según tus necesidades */
+    max-height: 25%; /* Ajusta la altura máxima según tus necesidades */
     overflow-y: auto;  /* Habilita el desplazamiento vertical */
     border: 1px solid #ddd; /* Opcional: añade un borde alrededor del contenedor */
     border-radius: 8px; /* Opcional: redondea las esquinas */

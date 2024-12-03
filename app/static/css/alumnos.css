@@ -276,7 +276,7 @@ body {
 }
 
 .table-container {
-    max-height: 45%; /* Ajusta la altura máxima según tus necesidades */
+    max-height: 25%; /* Ajusta la altura máxima según tus necesidades */
     overflow-y: auto;  /* Habilita el desplazamiento vertical */
     border: 1px solid #ddd; /* Opcional: añade un borde alrededor del contenedor */
     border-radius: 8px; /* Opcional: redondea las esquinas */
