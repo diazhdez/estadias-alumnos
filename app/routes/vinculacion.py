@@ -27,11 +27,13 @@ def Home():
             periodos = list(db['Periodos'].find())
 
             # Convertir periodos a diccionarios con _id como clave
-            periodos_dict = {str(periodo['_id']): {
-                'Duracion': periodo['Duracion']} for periodo in periodos}
+            periodos_dict = {str(periodo['_id']): {'Duracion': periodo['Duracion']} for periodo in periodos}
 
-            # Obtener todos los alumnos
-            lista_alumnos = list(alumnos.find({}))
+            # Obtener las carreras que el administrador tiene asignadas
+            carreras_admin = administrador.get('carrera', [])
+
+            # Filtrar los alumnos que tienen una carrera que coincida con las carreras del administrador
+            lista_alumnos = list(alumnos.find({"Carrera": {"$in": carreras_admin}}))
 
             # Crear una lista para almacenar los alumnos con su progreso
             alumnos_con_progreso = []
@@ -58,6 +60,7 @@ def Home():
     else:
         flash('Acceso denegado: No eres un administrador.', 'danger')
         return redirect(url_for('main.index'))
+
 
 
 @Vinculacion_routes.route("/EduLink/Vinculación/DocumentoAlumno/")

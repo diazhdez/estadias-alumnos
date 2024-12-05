@@ -17,7 +17,7 @@ def agregarAlumno():
             matricula = request.form['Matricula']
             existing_alumno = alumnos.find_one({
                 '$or': [
-                    {'Correo': correo},
+                    {'Correo_Institucional': correo},
                     {'Matricula': matricula}
                 ]
             })

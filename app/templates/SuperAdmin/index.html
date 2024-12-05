@@ -222,27 +222,36 @@
                     <div class="form-group">
                         <label for="idCarrera">Carrera:</label><br>
                     
+                        <!-- TICS -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="tics" name="carrera[]" value="TICS">
-                            <label class="form-check-label" for="tics">TICS</label>
+                            <input class="form-check-input" type="checkbox" id="tics_1" name="carrera[]" value="T.S.U. EN DESARROLLO DE SOFTWARE MULTIPLATAFORMA" onchange="selectTICS(this)">
+                            <input class="form-check-input" type="checkbox" id="tics_2" name="carrera[]" value="INGENIERÍA EN DESARROLLO Y GESTIÓN DE SOFTWARE" onchange="selectTICS(this)">
+                            <label class="form-check-label" for="tics_1">TICS</label>
                         </div>
-                        
+                    
+                        <!-- Gastronomía -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="gastronomia" name="carrera[]" value="Gastronomia">
-                            <label class="form-check-label" for="gastronomia">Gastronomia</label>
+                            <input class="form-check-input" type="checkbox" id="gastronomia_1" name="carrera[]" value="T.S.U. EN GASTRONOMÍA" onchange="selectGastronomia(this)">
+                            <input class="form-check-input" type="checkbox" id="gastronomia_2" name="carrera[]" value="LICENCIATURA EN GASTRONOMÍA" onchange="selectGastronomia(this)">
+                            <label class="form-check-label" for="gastronomia_1">Gastronomía</label>
                         </div>
-                        
+                    
+                        <!-- Mantenimiento Industrial -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="mantenimiento-industrial" name="carrera[]" value="Mantenimiento Industrial">
-                            <label class="form-check-label" for="mantenimiento-industrial">Mantenimiento Industrial</label>
+                            <input class="form-check-input" type="checkbox" id="mantenimiento-industrial_1" name="carrera[]" value="T.S.U. EN MANTENIMIENTO INDUSTRIAL ÁREA INSTALACIONES" onchange="selectMantenimientoIndustrial(this)">
+                            <input class="form-check-input" type="checkbox" id="mantenimiento-industrial_2" name="carrera[]" value="INGENIERÍA EN MANTENIMIENTO INDUSTRIAL" onchange="selectMantenimientoIndustrial(this)">
+                            <label class="form-check-label" for="mantenimiento-industrial_1">Mantenimiento Industrial</label>
                         </div>
-                        
+                    
+                        <!-- Desarrollo de Negocios -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="desarrollo-negocios" name="carrera[]" value="Desarrollo de Negocios">
-                            <label class="form-check-label" for="desarrollo-negocios">Desarrollo de Negocios</label>
+                            <input class="form-check-input" type="checkbox" id="desarrollo-negocios_1" name="carrera[]" value="T.S.U. EN DESARROLLO DE NEGOCIOS ÁREA MERCADOTECNIA" onchange="selectDesarrolloNegocios(this)">
+                            <input class="form-check-input" type="checkbox" id="desarrollo-negocios_2" name="carrera[]" value="LICENCIATURA EN INNOVACIÓN DE NEGOCIOS Y MERCADOTECNIA" onchange="selectDesarrolloNegocios(this)">
+                            <label class="form-check-label" for="desarrollo-negocios_1">Desarrollo de Negocios</label>
                         </div>
                     </div>
-                                       
+                    
+                            
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -321,7 +330,64 @@
         };
     }); */
 </script>
+<script>
+    // Funciones para seleccionar las dos carreras por cada grupo
+    function selectTICS(checkbox) {
+        let tics1 = document.getElementById('tics_1');
+        let tics2 = document.getElementById('tics_2');
+        if (checkbox.checked) {
+            // Si seleccionas el checkbox de TICS, marcar ambos
+            tics1.checked = true;
+            tics2.checked = true;
+        } else {
+            // Si desmarcas, desmarcar ambos
+            tics1.checked = false;
+            tics2.checked = false;
+        }
+    }
 
+    function selectGastronomia(checkbox) {
+        let gastronomia1 = document.getElementById('gastronomia_1');
+        let gastronomia2 = document.getElementById('gastronomia_2');
+        if (checkbox.checked) {
+            // Si seleccionas el checkbox de Gastronomía, marcar ambos
+            gastronomia1.checked = true;
+            gastronomia2.checked = true;
+        } else {
+            // Si desmarcas, desmarcar ambos
+            gastronomia1.checked = false;
+            gastronomia2.checked = false;
+        }
+    }
+
+    function selectMantenimientoIndustrial(checkbox) {
+        let mantenimiento1 = document.getElementById('mantenimiento-industrial_1');
+        let mantenimiento2 = document.getElementById('mantenimiento-industrial_2');
+        if (checkbox.checked) {
+            // Si seleccionas el checkbox de Mantenimiento Industrial, marcar ambos
+            mantenimiento1.checked = true;
+            mantenimiento2.checked = true;
+        } else {
+            // Si desmarcas, desmarcar ambos
+            mantenimiento1.checked = false;
+            mantenimiento2.checked = false;
+        }
+    }
+
+    function selectDesarrolloNegocios(checkbox) {
+        let desarrollo1 = document.getElementById('desarrollo-negocios_1');
+        let desarrollo2 = document.getElementById('desarrollo-negocios_2');
+        if (checkbox.checked) {
+            // Si seleccionas el checkbox de Desarrollo de Negocios, marcar ambos
+            desarrollo1.checked = true;
+            desarrollo2.checked = true;
+        } else {
+            // Si desmarcas, desmarcar ambos
+            desarrollo1.checked = false;
+            desarrollo2.checked = false;
+        }
+    }
+</script>
 
 
 

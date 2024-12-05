@@ -23,6 +23,11 @@ def add_admin():
     # Validación de contraseñas
     if contraseña != confirmar_contraseña:
         flash('Las contraseñas no coinciden.', 'danger')
+        return redirect(url_for('SuperAdmin.home')) 
+    
+    existing_admin = db['administradores'].find_one({'correo': correo})
+    if existing_admin:
+        flash ('El correo del administrador ya están registrados.','warning')
         return redirect(url_for('SuperAdmin.home'))
 
     # Hashear la contraseña
