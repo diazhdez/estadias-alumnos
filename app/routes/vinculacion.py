@@ -128,7 +128,7 @@ def carga():
         administrador = administradores.find_one({'correo': correo_usuario})
         if administrador:
 
-            return render_template("vinculacion/CargaAlumnos.html", Periodos=periodos, administrador=admin)
+            return render_template("Vinculacion/CargaAlumnos.html", Periodos=periodos, administrador=admin)
         else:
             flash('Acceso denegado: No eres un administrador.', 'danger')
             return redirect(url_for('main.index'))
@@ -522,7 +522,7 @@ def archivos_vinculacion():
             for archivo in archivos:
                 archivo['extension'] = archivo['nombre'].split(
                     '.')[-1].lower()  # Obtener la extensión de cada archivo
-            return render_template("vinculacion/Archivos_vinculacion.html", archivos=archivos, administrador=admin)
+            return render_template("Vinculacion/Archivos_vinculacion.html", archivos=archivos, administrador=admin)
         else:
             flash('Acceso denegado: No eres un administrador.', 'danger')
             return redirect(url_for('smain.index'))
