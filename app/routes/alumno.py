@@ -73,7 +73,7 @@ def catalago():
         archivos = list(conexion.find())
         for archivo in archivos:
             archivo['extension'] = archivo['nombre'].split('.')[-1].lower()  # Obtener la extensión de cada archivo
-        return render_template("Alumnos/Archivos_uta.html", archivos=archivos, alumno=alumno)
+        return render_template("Alumnos/archivos_uta.html", archivos=archivos, alumno=alumno)
     else:
         flash('Acceso denegado: Debes de inciar sesion.', 'danger')
         return redirect(url_for('session.logout'))
