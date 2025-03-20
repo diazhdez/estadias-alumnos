@@ -53,7 +53,7 @@ def Home():
                 # Agregar a la lista de resultados
                 alumnos_con_progreso.append(alumno)
 
-            return render_template("vinculacion/alumnos.html", alumnos=alumnos_con_progreso, periodos=periodos, administrador=admin)
+            return render_template("Vinculacion/alumnos.html", alumnos=alumnos_con_progreso, periodos=periodos, administrador=admin)
         else:
             flash('Acceso denegado: No eres un administrador.', 'danger')
             return redirect(url_for('main.index'))
