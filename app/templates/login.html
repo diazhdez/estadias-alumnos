@@ -56,7 +56,7 @@
 
 
       <form class="form" action="/iniciar/" method="post">
-
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <h2>Login Here</h2>
         <input type="email" name="correo" placeholder="Introduce tu correo" required>
         <input type="password" name="password" id="password" placeholder="Contraseña" required>

@@ -7,26 +7,33 @@ session_routes = Blueprint('session', __name__)
 
 
 @session_routes.route('/iniciar/', methods=['POST'])
+@session_routes.route('/iniciar/', methods=['POST'])
 def iniciar():
     db = current_app.get_db_connection()  # Obtener la conexión a la base de datos
     if db is None:
         flash('No se pudo conectar a la base de datos.', 'danger')
         return redirect(url_for('session.logout'))
-    
-    correo = request.form['correo']
+
+    correo = request.form['correo'].strip().lower()  # Normalizar el correo
     password = request.form['password']
     alumno = db['Alumnos'] 
     administracion = db['administradores']
 
     # Verificar si es un alumno
     login_alumno = alumno.find_one({'Correo_Institucional': correo})
+
     if login_alumno:
+        if login_alumno.get('intentos_fallidos', 0) >= 3:
+            flash('Tu cuenta está bloqueada por demasiados intentos fallidos. Por favor, inténtalo más tarde.', 'danger')
+            return redirect(url_for('main.index'))
+
         if login_alumno.get('en_linea') == True:
             flash('El usuario ya tiene una sesión activa.', 'warning')
             return redirect(url_for('main.index'))
 
         if bcrypt.checkpw(password.encode('utf-8'), login_alumno['Contraseña']):
-            # Autenticación exitosa
+            # Restablecer los intentos fallidos si la autenticación es exitosa
+            alumno.update_one({"Correo_Institucional": correo}, {'$set': {'intentos_fallidos': 0}})
             session['correo'] = correo
             alumno.update_one(
                 {"Correo_Institucional": correo},
@@ -34,7 +41,13 @@ def iniciar():
             )
             flash('Inicio de sesión exitoso como alumno.', 'success')
             return redirect(url_for('alumno.alumno_vista'))
-    
+
+        else:
+            # Incrementar el contador de intentos fallidos
+            alumno.update_one({"Correo_Institucional": correo}, {'$inc': {'intentos_fallidos': 1}})
+            flash('Correo o contraseña incorrectos', 'danger')
+            return redirect(url_for('main.index'))
+
     # Buscar en la colección de Administradores
     login_departamentos = administracion.find_one({'correo': correo})
 
@@ -46,11 +59,9 @@ def iniciar():
     if login_departamentos and bcrypt.checkpw(password.encode('utf-8'), login_departamentos['contraseña']):
         departamento = login_departamentos['departamento']
         session['correo'] = correo
-        administracion.update_one({"correo":correo}, 
-            {'$set':{
-                'en_linea': True, 'ultima_conexion': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            }})
+        administracion.update_one({"correo": correo}, {'$set': {'en_linea': True, 'ultima_conexion': datetime.now().strftime('%Y-%m-%d %H:%M:%S')}})
         
+        # Redirigir al usuario según su departamento
         if departamento == 'vinculacion':
             flash('Bienvenido de vuelta.', 'success')
             return redirect(url_for('Vinculacion.Home'))
@@ -63,21 +74,14 @@ def iniciar():
         elif departamento == 'Root':
             flash('Bienvenido de vuelta.', 'success')
             return redirect(url_for('SuperAdmin.home'))
-        elif departamento == 'recursos_materiales':
-            flash('Bienvenido de vuelta.', 'success')
-            return redirect(url_for('Recursos.Recursos'))
-        elif departamento == 'biblioteca':
-            flash('Bienvenido de vuelta.', 'success')
-            return redirect(url_for('Biblioteca.Biblioteca'))
-        elif departamento == 'juridico':
-            flash('Bienvenido de vuelta.', 'success')
-            return redirect(url_for('Juridico.Juridico'))
         else:
             flash('Departamento no reconocido.', 'danger')
             return redirect(url_for('main.index'))
+
     # Si el inicio de sesión falla, muestra un mensaje de error
     flash('Correo o contraseña incorrectos', 'danger')
     return redirect(url_for('main.index'))
+
 
 
 
