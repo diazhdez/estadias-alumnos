@@ -1,4 +1,4 @@
-from flask import request, abort
+from flask import render_template, request, abort
 from collections import defaultdict
 import time
 
@@ -14,4 +14,5 @@ def limit_requests():
     ip_requests[ip] = [t for t in ip_requests[ip] if now - t < 5]
 
     if len(ip_requests[ip]) > 10:
-        abort(429)  # Too Many Requests
+        # Redirigir a una página de error con el mensaje
+        return render_template("error_page.html"), 429
