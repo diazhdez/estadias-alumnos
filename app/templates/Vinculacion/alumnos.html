@@ -1,4 +1,3 @@
-<!-- templates/alumnos.html -->
 {% extends 'base.html' %}
 
 {% block title %}Información de Alumnos{% endblock %}
@@ -123,7 +122,7 @@
     </div>
     <div class="contenido">
         <h4 id="nombreAlumno">{{ alumno.Nombre }} {{ alumno.Apellido_Pat }}</h4>
-
+ 
         <!-- Barra de progreso -->
         <div class="progress">
             {% set progreso_total = alumno.progreso if alumno.progreso else 0 %}
@@ -203,6 +202,7 @@
             </div>
             <div class="modal-body">
                 <form action="{{ url_for('create_vinculacion.agregarAlumno') }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <div class="form-group">
                         <label for="matricula_Alum">Matricula del Alumno</label>
                         <input type="number" class="form-control" id="Matricula" name="Matricula"
@@ -299,8 +299,83 @@
         </div>
     </div>
 </div>
+<!-- Modal de Términos y Condiciones -->
+<div class="modal fade" id="terminosModal" tabindex="-1" aria-labelledby="terminosModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="terminosModalLabel">Términos y Condiciones</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar">X</button>
+            </div>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                <strong>Última actualización: [Fecha]</strong>
+                <p>Bienvenido al sistema de seguimiento de estadías estudiantiles (EduLink). Al utilizar este
+                    Sistema, aceptas los siguientes Términos y Condiciones. Si no estás de acuerdo con ellos, no
+                    utilices el Sistema.</p>
+
+                <strong>1. Registro y Acceso</strong>
+                <p>1.1. El acceso al Sistema requiere un registro previo con información veraz y actualizada.
+                </p>
+                <p>1.2. El uso de credenciales es personal e intransferible. El usuario es responsable de
+                    mantener la confidencialidad de su cuenta.</p>
+                <p>1.3. La institución educativa puede suspender o cancelar cuentas en caso de uso indebido.</p>
+
+                <strong>2. Uso del Sistema</strong>
+                <p>2.1. El Sistema debe utilizarse únicamente para la gestión y seguimiento de estadías
+                    estudiantiles.</p>
+                <p>2.2. Está prohibido modificar, alterar o manipular información sin autorización.</p>
+                <p>2.3. Se prohíbe el acceso no autorizado a información o funcionalidades restringidas.</p>
+                <p>2.4. Los usuarios no pueden compartir datos personales de terceros sin su consentimiento.</p>
+
+                <strong>3. Gestión de Documentación</strong>
+                <p>3.1. Los alumnos deben subir exclusivamente los documentos requeridos para su estadía.</p>
+                <p>3.2. Los documentos serán revisados por el área de vinculación y podrán ser aceptados,
+                    rechazados o requerir modificaciones.</p>
+                <p>3.3. La información y documentos proporcionados son responsabilidad del usuario y deben ser
+                    veraces.</p>
+                <p>3.4. La documentación estará disponible únicamente dentro del periodo de estadía activa.</p>
+
+                <strong>4. Protección de Datos Personales</strong>
+                <p>4.1. El Sistema cumple con la legislación vigente en materia de protección de datos
+                    personales.</p>
+                <p>4.2. La información recabada se utilizará únicamente para la gestión de estadías y no será
+                    compartida con terceros sin autorización.</p>
+                <p>4.3. Los usuarios pueden solicitar la actualización o eliminación de sus datos personales
+                    conforme a la normativa aplicable.</p>
+
+                <strong>5. Responsabilidades y Limitaciones</strong>
+                <p>5.1. La institución educativa no se hace responsable por errores en la información
+                    proporcionada por los usuarios.</p>
+                <p>5.2. El Sistema puede experimentar interrupciones temporales debido a mantenimiento o
+                    actualizaciones.</p>
+                <p>5.3. Se recomienda a los usuarios conservar copias de seguridad de los documentos importantes
+                    antes de subirlos al Sistema.</p>
+
+                <strong>6. Modificaciones a los Términos y Condiciones</strong>
+                <p>6.1. La institución se reserva el derecho de modificar estos Términos y Condiciones en
+                    cualquier momento.</p>
+                <p>6.2. Se notificará a los usuarios sobre cambios relevantes antes de su implementación.</p>
+
+                <strong>7. Contacto y Soporte</strong>
+                <p>Para cualquier consulta o soporte técnico, comunícate con el área de vinculación a través del
+                    correo electrónico [correo institucional].</p>
+            </div>
+            <div class="modal-footer">
+                {% if administrador %}
+                <form action="{{ url_for('main.aceptar_terminos',redirect_view='Vinculacion.Home') }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input hidden type="hidden" name="usuario_id" value="{{administrador._id}}">
+                    <button type="submit" class="btn btn-success">Acepto</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}
+
 
 {% block scripts %}
 <script>
@@ -391,4 +466,8 @@
     }
 
 </script>
+{% if mostrar_modal %}
+<script src="{{ url_for('static', filename='js/terminos _condiciones.js') }}"></script>
+{%endif%}
+
 {% endblock %}

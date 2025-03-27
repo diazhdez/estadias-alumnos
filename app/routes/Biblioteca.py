@@ -23,6 +23,7 @@ def Biblioteca():
         administrador = administradores.find_one({'correo': correo_usuario})  
         if administrador:     
             alumnos = db["Alumnos"]
+            acepto_terminos = db["aceptacion_terminos"].find_one({"usuario_id": administrador['_id']})
             # Obtener la lista de Periodos
             periodos = list(db['Periodos'].find())
  
@@ -49,7 +50,7 @@ def Biblioteca():
                 # Agregar a la lista de resultados
                 alumnos_con_progreso.append(alumno)
 
-            return render_template("Biblioteca/biblioteca.html", alumnos=alumnos_con_progreso, periodos=periodos, administrador=admin)
+            return render_template("Biblioteca/biblioteca.html", alumnos=alumnos_con_progreso, periodos=periodos, administrador=admin,mostrar_modal=not acepto_terminos)
         else:
             flash('Acceso denegado: No eres un administrador.', 'danger')
             return redirect(url_for('main.index'))

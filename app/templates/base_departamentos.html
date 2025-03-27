@@ -1,6 +1,7 @@
 <!-- templates/base.html -->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,8 +13,9 @@
     <title>{% block title %}Página Principal{% endblock %}</title>
     {% block styles %}{% endblock %}
 </head>
+
 <body>
-    <div class="sidebar active" >
+    <div class="sidebar active">
         <div class="logo_content">
             <div class="logo">
                 <img src="{{ url_for('static', filename='img/LOGO-UTA.png') }}" alt="">
@@ -37,11 +39,11 @@
         <div class="profile_content">
             <div class="profile">
                 <div class="profile_details">
-                    <img src="{{ url_for('static', filename='img/LOGO-UTA.png') }}" alt=""> 
+                    <img src="{{ url_for('static', filename='img/LOGO-UTA.png') }}" alt="">
                     <div class="name_job">
                         {% if administrador %}
-                            <div class="name">{{administrador.administrador}}</div>
-                            <div class="job">{{administrador.departamento}}</div>
+                        <div class="name">{{administrador.administrador}}</div>
+                        <div class="job">{{administrador.departamento}}</div>
                         {% endif %}
                     </div>
                 </div>
@@ -49,15 +51,23 @@
             </div>
         </div>
     </div>
-    
+
     <div class="home_content">
         {% block content %}
         <!-- El contenido principal se incluirá aquí -->
         {% endblock %}
     </div>
+
     {% block scripts %}
 
     {% endblock %}
     <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var modal = new bootstrap.Modal(document.getElementById('terminosModal'));
+            modal.show();
+        });
+    </script>
 </body>
+
 </html>

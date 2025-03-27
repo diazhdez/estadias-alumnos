@@ -23,6 +23,7 @@ Configuración
 <div class="configuracion-container">
     <h2 class="titulo-configuracion"><i class="bx bx-cog"></i> Configuración de Usuario</h2>
     <form id="configuracion-form" action="{{ url_for('update.cambiar_contraseña') }}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <!-- Información del Usuario -->
         <div class="section">
             <h3 class="subtitulo-configuracion"><i class="bx bx-user"></i>Información Personal</h3>

@@ -72,6 +72,7 @@
           </div>
           <div class="modal-body">
               <form action="{{ url_for('update_vinculacion.upload_file') }}" method="POST" enctype="multipart/form-data">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                   <div class="mb-3">
                       <label for="archivo" class="form-label">Selecciona un archivo</label>
                       <div class="custom-file-upload">

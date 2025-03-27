@@ -1,6 +1,7 @@
 <!-- templates/base.html -->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,8 +13,9 @@
     <title>{% block title %}Página Principal{% endblock %}</title>
     {% block styles %}{% endblock %}
 </head>
+
 <body>
-    <div class="sidebar active" >
+    <div class="sidebar active">
         <div class="logo_content">
             <div class="logo">
                 <img src="{{ url_for('static', filename='img/LOGO-UTA.png') }}" alt="">
@@ -28,35 +30,40 @@
                 <span class="tooltip">Buscar</span>
             </li>
             <li>
-                <a href="{{ url_for('Vinculacion.Home') }}"><i class='bx bx-home'></i><span class="links_name">Inicio</span></a>
+                <a href="{{ url_for('Vinculacion.Home') }}"><i class='bx bx-home'></i><span
+                        class="links_name">Inicio</span></a>
                 <span class="tooltip">Inicio</span>
             </li>
 
             <li>
-                <a href="{{ url_for('Vinculacion.iniciarPeriodo') }}"><i class='bx bx-pie-chart-alt-2'></i><span class="links_name">Periodos</span></a>
+                <a href="{{ url_for('Vinculacion.iniciarPeriodo') }}"><i class='bx bx-pie-chart-alt-2'></i><span
+                        class="links_name">Periodos</span></a>
                 <span class="tooltip">Periodos</span>
             </li>
             <li>
-                <a href="{{ url_for('Vinculacion.historialPeriodos') }}"><i class='bx bx-history'></i><span class="links_name">Historial de Periodos</span></a>
+                <a href="{{ url_for('Vinculacion.historialPeriodos') }}"><i class='bx bx-history'></i><span
+                        class="links_name">Historial de Periodos</span></a>
                 <span class="tooltip">Historial de Periodos</span>
             </li>
             <li>
-                <a href="{{ url_for('Vinculacion.carga') }}"><i class='bx bx-folder'></i><span class="links_name">Carga de Alumnos</span></a>
+                <a href="{{ url_for('Vinculacion.carga') }}"><i class='bx bx-folder'></i><span class="links_name">Carga
+                        de Alumnos</span></a>
                 <span class="tooltip">Carga</span>
             </li>
             <li>
-                <a href="{{ url_for('Vinculacion.archivos_vinculacion') }}"><i class='bx bx-cloud-upload'></i><span class="links_name">Subir Archivos</span></a>
+                <a href="{{ url_for('Vinculacion.archivos_vinculacion') }}"><i class='bx bx-cloud-upload'></i><span
+                        class="links_name">Subir Archivos</span></a>
                 <span class="tooltip">Archivos</span>
             </li>
         </ul>
         <div class="profile_content">
             <div class="profile">
                 <div class="profile_details">
-                    <img src="{{ url_for('static', filename='img/LOGO-UTA.png') }}" alt=""> 
+                    <img src="{{ url_for('static', filename='img/LOGO-UTA.png') }}" alt="">
                     <div class="name_job">
                         {% if administrador %}
-                            <div class="name">{{administrador.administrador}}</div>
-                            <div class="job">{{administrador.departamento}}</div>
+                        <div class="name">{{administrador.administrador}}</div>
+                        <div class="job">{{administrador.departamento}}</div>
                         {% endif %}
                     </div>
                 </div>
@@ -64,15 +71,19 @@
             </div>
         </div>
     </div>
-    
+
     <div class="home_content">
         {% block content %}
         <!-- El contenido principal se incluirá aquí -->
+
         {% endblock %}
     </div>
+    
     {% block scripts %}
-
+    
     {% endblock %}
     <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+    
 </body>
+
 </html>

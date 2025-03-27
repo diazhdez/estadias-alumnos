@@ -66,6 +66,7 @@
             </div>
             <div class="modal-footer justify-content-center">
                 <form action="{{ url_for('update_vinculacion.terminarPeriodo') }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="idPeriodo" value="{{ Periodos._id }}">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-danger"><i class="bi bi-trash3-fill me-1"></i> Terminar</button>
@@ -86,6 +87,7 @@
             </div>
             <div class="modal-body">
                 <form action="{{ url_for('Vinculacion.agregarPeriodo') }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <div class="form-group mb-4">
                         <label class="form-label">Nombre del Periodo</label>
                         <select name="N_periodo" id="N_periodo" class="form-select rounded-input">

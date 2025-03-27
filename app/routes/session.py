@@ -7,7 +7,6 @@ session_routes = Blueprint('session', __name__)
 
 
 @session_routes.route('/iniciar/', methods=['POST'])
-@session_routes.route('/iniciar/', methods=['POST'])
 def iniciar():
     db = current_app.get_db_connection()  # Obtener la conexión a la base de datos
     if db is None:
@@ -18,6 +17,7 @@ def iniciar():
     password = request.form['password']
     alumno = db['Alumnos'] 
     administracion = db['administradores']
+    acepta_terminos = "terminos" in request.form  # Verifica si la casilla está marcada
 
     # Verificar si es un alumno
     login_alumno = alumno.find_one({'Correo_Institucional': correo})
@@ -55,7 +55,7 @@ def iniciar():
         if login_departamentos.get('en_linea') == True:
             flash('El usuario ya tiene una sesión activa.', 'warning')
             return redirect(url_for('main.index'))
-
+ 
     if login_departamentos and bcrypt.checkpw(password.encode('utf-8'), login_departamentos['contraseña']):
         departamento = login_departamentos['departamento']
         session['correo'] = correo
@@ -71,6 +71,15 @@ def iniciar():
         elif departamento == 'finanzas':
             flash('Bienvenido de vuelta.', 'success')
             return redirect(url_for('Finanzas.Finanzas'))
+        elif departamento == 'biblioteca':
+            flash('Bienvenido de vuelta.', 'success')
+            return redirect(url_for('Biblioteca.Biblioteca'))
+        elif departamento == 'recursos_materiales':
+            flash('Bienvenido de vuelta.', 'success')
+            return redirect(url_for('Recursos.Recursos'))
+        elif departamento == 'juridico':
+            flash('Bienvenido de vuelta.', 'success')
+            return redirect(url_for('Juridico.Juridico'))
         elif departamento == 'Root':
             flash('Bienvenido de vuelta.', 'success')
             return redirect(url_for('SuperAdmin.home'))

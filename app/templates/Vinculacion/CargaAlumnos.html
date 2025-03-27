@@ -35,6 +35,7 @@
                 <div class="modal-content">
                     <div class="modal-body">
                         <form action="{{ url_for('Vinculacion.carga_alumnos') }}" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <div class="wrapper">
                                 <header>Carga de Alumnos</header>
                                     <input type="file" class="file-input" name="archivo" required accept=".xlsx,.xls" hidden>

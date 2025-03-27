@@ -22,6 +22,7 @@ def Finanzas():
         # Verifica si el correo está en la colección de administradores
         administrador = administradores.find_one({'correo': correo_usuario})  
         if administrador:     
+            acepto_terminos = db["aceptacion_terminos"].find_one({"usuario_id": administrador['_id']})
             alumnos = db["Alumnos"]
             # Obtener la lista de Periodos
             periodos = list(db['Periodos'].find())
@@ -34,7 +35,7 @@ def Finanzas():
 
             # Crear una lista para almacenar los alumnos con su progreso
             alumnos_con_progreso = []
-
+ 
             for alumno in lista_alumnos:
                 periodo_info = periodos_dict.get(alumno.get('Periodo'), {'Duracion': ''})
                 alumno['Duracion'] = periodo_info['Duracion']
@@ -49,7 +50,7 @@ def Finanzas():
                 # Agregar a la lista de resultados
                 alumnos_con_progreso.append(alumno)
 
-            return render_template("Finanzas/caja.html", alumnos=alumnos_con_progreso, periodos=periodos, administrador=admin)
+            return render_template("Finanzas/caja.html", alumnos=alumnos_con_progreso, periodos=periodos, administrador=admin,mostrar_modal=not acepto_terminos)
         else:
             flash('Acceso denegado: No eres un administrador.', 'danger')
             return redirect(url_for('main.index'))

@@ -13,10 +13,12 @@ def alumno_vista():
     if correo:
         alumno = obtener_usuario_por_correo(correo)
         if alumno:
+            
             documentacion_alumno = obtener_documentos_alumno_uta(alumno['_id'])
 
             # Obtener la lista de carreras y periodos
             db = current_app.get_db_connection()
+            acepto_terminos = db["aceptacion_terminos"].find_one({"usuario_id": alumno['_id']})
             carreras = list(db['carreras'].find())
             periodos = list(db['Periodos'].find())
 
@@ -52,7 +54,7 @@ def alumno_vista():
                 alumno=alumno,
                 documentos=documentacion_alumno,
                 Carreras=carreras,
-                Periodos=periodos
+                Periodos=periodos,mostrar_modal=not acepto_terminos
             )
         else:
             flash('No se encontró al alumno.', 'danger')
