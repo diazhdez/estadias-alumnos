@@ -36,4 +36,6 @@ def aceptar_terminos():
         flash("Ya habías aceptado los términos anteriormente.", "info")
         return redirect(url_for(redirect_view))
 
-
+@main_routes.route("/cambio/")
+def combio_psswd():
+    return render_template("cambio_psswd.html")

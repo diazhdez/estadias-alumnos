@@ -1,0 +1,85 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Boxicons CDN Link -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/LOGO-UTA.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/configuracion.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/alerts.css') }}">
+    <title>{% block title %}Página Principal{% endblock %}</title>
+    {% block styles %}{% endblock %}
+</head>
+
+<body>
+    <div class="home_content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div style="width: 25%; position: fixed; top: 15%; right: 30%; z-index: 1050;"
+            class="alert alert-{{ category }} alert-dismissible fade show flash-message" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <div class="configuracion-container">
+            <h2 class="titulo-configuracion"><i class="bx bx-cog"></i> Configuración de Usuario</h2>
+            <form id="configuracion-form" action="{{ url_for('update.cambiar_contraseña') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <!-- Información del Usuario -->
+
+                <!-- Cambiar Contraseña -->
+                <div class="section">
+                    <h3 class="subtitulo-configuracion"><i class="bx bx-lock"></i> Cambiar Contraseña</h3>
+
+                    <!-- Nueva Contraseña -->
+                    <div class="form-group">
+                        <label for="nueva_contraseña">Nueva Contraseña:</label>
+                        <div class="password-container">
+                            <input type="password" id="nueva_contraseña" name="nueva_contraseña"
+                                placeholder="Ingresa tu nueva contraseña">
+                            <button type="button" class="toggle-password"><i class="bx bx-show"></i></button>
+                        </div>
+                        <div id="strength-indicator" class="strength-indicator">
+                            <span class="strength-text"></span>
+                        </div>
+                        <div class="password-requirements">
+                            <strong>Para una contraseña fuerte:</strong>
+                            <ul>
+                                <li>Mínimo 8 caracteres</li>
+                                <li>Incluye mayúsculas y minúsculas</li>
+                                <li>Debe contener números</li>
+                                <li>Usa caracteres especiales (@, #, $, etc.)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Confirmar Contraseña -->
+                    <div class="form-group">
+                        <label for="confirmar_contraseña">Confirmar Contraseña:</label>
+                        <div class="password-container">
+                            <input type="password" id="confirmar_contraseña" name="confirmar_contraseña"
+                                placeholder="Confirma tu nueva contraseña">
+                            <button type="button" class="toggle-password"><i class="bx bx-show"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Botón Guardar -->
+                <div class="form-group">
+                    <input type="hidden" name="id_alumno" value="">
+                    <button type="submit" id="guardar-configuracion"><i class="bx bx-save"></i> Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/configuracion.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+</body>
+
+</html>
