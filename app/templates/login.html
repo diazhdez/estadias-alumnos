@@ -50,12 +50,12 @@
     <div class="content">
       <h1>Sobre<br><span>Nosotros</span> <br></h1>
       <p class="par">En EduLink, nos dedicamos a optimizar el proceso de gestión y seguimiento
-        <br>de estadías profesionales en la Universidad Tecnológica de Aguascalientes (UTA).
+        <br>de estadías profesionales en la Universidad Tecnológica de Acapulco (UTA).
         <br>Nuestro sistema facilita la administración de documentos, la comunicación entre estudiantes
         <br>y el área de vinculación, y el control eficiente de cada etapa del proceso.
       </p>
 
-      <button type="button" class="cn" onclick="window.location.href='https://www.utacapulco.edu.mx/'">VISITAR</button>
+      <button type="button" class="cn" onclick="window.location.href='https://www.utacapulco.edu.mx/'">VISITA LA UTA</button>
 
 
       <form class="form" action="/iniciar/" method="post">
@@ -80,7 +80,7 @@
               <h2 class="modal-title" id="exampleModalLabel" style="color: black;">Cambiar contraseña</h2>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar">X</button>
             </div>
-            <form method="POST" action="">
+            <form method="POST" action="/recuperar_contraseña/">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <div class="modal-body" style="max-height: 400px; overflow-y: auto; color: black;">
                 <p>Por favor introduce tu correo para cambiar tu contraseña</p>

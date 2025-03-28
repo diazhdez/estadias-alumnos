@@ -88,7 +88,7 @@ def iniciar():
             return redirect(url_for('main.index'))
 
     # Si el inicio de sesión falla, muestra un mensaje de error
-    flash('Correo o contraseña incorrectos', 'danger')
+    flash('Correo o contraseña incorrectos', 'danger') 
     return redirect(url_for('main.index'))
 
 

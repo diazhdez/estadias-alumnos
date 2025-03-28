@@ -68,7 +68,7 @@ def cambiar_contraseña():
         if alumno:
             db['Alumnos'].update_one(
                 {'_id': ObjectId(id_alumno)},  # Filtro
-                {'$set': {'contraseña': hashpass}}  # Actualización
+                {'$set': {'Contraseña': hashpass}}  # Actualización
             )
             flash('Contraseña Actualizada exitosamente', 'succcess')
             return redirect(url_for('alumno.configuracion_alumno', id_alumno=id_alumno))

@@ -6,7 +6,7 @@ import time
 ip_requests = defaultdict(list)
 ip_blocked = defaultdict(float)  # Almacena el tiempo en que la IP fue bloqueada
 
-BLOCK_TIME = 50 * 60  # Tiempo de bloqueo en segundos (20 minutos)
+
 
 def limit_requests():
     ip = request.remote_addr

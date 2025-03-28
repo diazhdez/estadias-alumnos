@@ -49,6 +49,7 @@ def create_app():
     with app.app_context():
         # Importar las rutas (BluePrints)
         from app.routes.main import main_routes
+        from app.routes.recuperacion import recuperacion_routes
         from app.routes.session import session_routes
         from app.routes.alumno import alumno_routes
         from app.routes.update import update_routes
@@ -66,6 +67,7 @@ def create_app():
 
         # Registrar todos los blueprints
         app.register_blueprint(main_routes)
+        app.register_blueprint(recuperacion_routes)
         app.register_blueprint(session_routes)
         app.register_blueprint(alumno_routes)
         app.register_blueprint(update_routes)
