@@ -2,6 +2,7 @@ from datetime import datetime
 from flask import Blueprint, current_app, render_template, redirect, url_for, flash, session, request
 from app.functions.funciones import nocache, obtener_administrador_por_correo, obtener_usuario_por_correo
 import bcrypt
+from app.push import subscriptions, send_push
 
 session_routes = Blueprint('session', __name__)
 
@@ -60,9 +61,14 @@ def iniciar():
         departamento = login_departamentos['departamento']
         session['correo'] = correo
         administracion.update_one({"correo": correo}, {'$set': {'en_linea': True, 'ultima_conexion': datetime.now().strftime('%Y-%m-%d %H:%M:%S')}})
+
+        mensaje = "¡Hola! Has iniciado sesión."
+        for sub in subscriptions:
+            send_push(sub, mensaje)
         
         # Redirigir al usuario según su departamento
         if departamento == 'vinculacion':
+            
             flash('Bienvenido de vuelta.', 'success')
             return redirect(url_for('Vinculacion.Home'))
         elif departamento == 'servicios_escolares':

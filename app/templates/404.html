@@ -5,12 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/404.css') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+
     <title>404</title>
 </head>
 
 <body>
     <h1>404</h1>
     <p>La página que estás buscando no se encuentra.</p>
+    <script src="{{ url_for('static', filename='js/servicework.js') }}"></script>
 </body>
 
 </html>

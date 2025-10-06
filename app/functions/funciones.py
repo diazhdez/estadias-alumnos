@@ -187,7 +187,7 @@ def asignar_actividades1():
             for actividad in lista_actividades:
                 if actividad["Tipo"] == "Normal":
                 # Verificar si la actividad es la de orden 1
-                    estatus = "completado" if actividad["Orden"] == "1" else "no iniciado"
+                    estatus = "completado" if actividad["Orden"] == 1 else "no iniciado"
 
                     alumno_actividad = {
                         "idAlumno": id_alumno,

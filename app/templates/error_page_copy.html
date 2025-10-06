@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/404.css') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
     <title>404</title>
 </head>
 
@@ -12,6 +13,8 @@
     <h1>Lo sentimos</h1>
     <p>Por tu seguridad y la de tus datos, hemos deshabilitado temporalmente el acceso desde tu dirección IP. Esto es solo una medida preventiva para garantizar que todos los usuarios tengan una experiencia estable y segura.</p>
     <p>El servicio estará disponible nuevamente en breve. Te agradecemos por tu comprensión y paciencia.</p>
+
+    <script src="{{ url_for('static', filename='js/servicework.js') }}"></script>
 </body>
 
 </html>

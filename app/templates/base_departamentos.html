@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <!-- Boxicons CDN Link -->
+     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/LOGO-UTA.png') }}">
@@ -68,6 +69,8 @@
             modal.show();
         });
     </script>
+    <script src="{{ url_for('static', filename='js/servicework.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/notificaciones_push.js') }}"></script>
 </body>
 
 </html>

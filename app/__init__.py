@@ -1,9 +1,12 @@
 from flask import Flask, current_app, g
 import pymongo
 from config import Config
-from app.functions.rate_limiting import limit_requests
+
 from flask_wtf.csrf import CSRFProtect
 import certifi
+
+
+
 
 def create_app():
     # Inicializar la aplicación Flask
@@ -15,8 +18,8 @@ def create_app():
     # Configurar la protección CSRF
     csrf = CSRFProtect(app)
 
-    # Aplicar la limitación de peticiones
-    app.before_request(limit_requests)
+    # Registrar el blueprint de notificaciones
+    
 
     # Establecer la clave secreta para la sesión
     app.secret_key = 'M0i1Xc$GfPw3Yz@2SbQ9lKpA5rJhDtE7'
@@ -27,7 +30,7 @@ def create_app():
     def get_db_connection():
         """Función para obtener la conexión a la base de datos MongoDB"""
         if 'db' not in g:
-            client = pymongo.MongoClient(current_app.config['MONGO_URI'], tlsCAFile=ca)
+            client = pymongo.MongoClient(current_app.config['MONGO_URI'])
             g.db = client[current_app.config['DATABASE_NAME']]
         return g.db
 
@@ -64,8 +67,10 @@ def create_app():
         from app.routes.Juridico import Juridico_routes
         from app.routes.Recursos import Recursos_routes
         from app.routes.SuperAdmin import SuperAdmmin_routes
+        from app.routes.notificaciones import bp  
 
         # Registrar todos los blueprints
+        app.register_blueprint(bp)
         app.register_blueprint(main_routes)
         app.register_blueprint(recuperacion_routes)
         app.register_blueprint(session_routes)
