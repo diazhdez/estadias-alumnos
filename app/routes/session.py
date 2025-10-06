@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import Blueprint, current_app, render_template, redirect, url_for, flash, session, request
 from app.functions.funciones import nocache, obtener_administrador_por_correo, obtener_usuario_por_correo
 import bcrypt
-from app.push import subscriptions, send_push
+from app.push import subscriptions, send_notification
 
 session_routes = Blueprint('session', __name__)
 
@@ -64,7 +64,7 @@ def iniciar():
 
         mensaje = "¡Hola! Has iniciado sesión."
         for sub in subscriptions:
-            send_push(sub, mensaje)
+            send_notification(sub, mensaje)
         
         # Redirigir al usuario según su departamento
         if departamento == 'vinculacion':
