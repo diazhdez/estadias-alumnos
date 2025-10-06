@@ -10,8 +10,6 @@ function urlBase64ToUint8Array(base64String) {
     return Uint8Array.from([...rawData].map(char => char.charCodeAt(0)));
 }
 
-
-
 if ('serviceWorker' in navigator && 'PushManager' in window) {
     navigator.serviceWorker.register('/sw.js')
     .then(registration => {

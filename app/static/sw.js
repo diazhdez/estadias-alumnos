@@ -30,13 +30,13 @@ self.addEventListener("activate", event => {
 });
 
 self.addEventListener('push', function(event) {
-    const data = event.data.json();
-    event.waitUntil(
-        self.registration.showNotification("Notificación", {
-            body: data.body,
-            data: { url: data.url }
-        })
-    );
+  const data = event.data.json();
+  event.waitUntil(
+    self.registration.showNotification(data.title || 'Notificación', {
+      body: data.body,
+      data: data.url || '/'
+    })
+  );
 });
 
 self.addEventListener("notificationclick", event => {
