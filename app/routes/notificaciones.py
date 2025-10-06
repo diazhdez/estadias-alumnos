@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.push import add_subscription, subscriptions, send_push
+from app.push import add_subscription, subscriptions, send_notification
 
 bp = Blueprint("notificaciones", __name__)
 
