@@ -13,7 +13,7 @@ function urlBase64ToUint8Array(base64String) {
 
 
 if ('serviceWorker' in navigator && 'PushManager' in window) {
-    navigator.serviceWorker.register('/static/sw.js')
+    navigator.serviceWorker.register('/sw.js')
     .then(registration => {
         console.log('SW registrado:', registration.scope);
         return Notification.requestPermission()
