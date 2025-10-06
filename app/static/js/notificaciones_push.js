@@ -1,4 +1,4 @@
-const VAPID_PUBLIC_KEY = "BKT8mVwq7_lF2LJX0x5pK1G6xZJl3Y5D9Tt0GZocJXwQ7DdQG6GgE6kP0q1q3iP3xGzS7e5V9l7ZcRtxkZJ3t5g";
+const VAPID_PUBLIC_KEY = "BMU4Eo9PZSY1D6w52Weo7xZB6VfPhwCjv8kVjY7NheHGgU4yqFvfr2Hfl1nPo1UOpE8oBz";
 
 function urlBase64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
@@ -8,6 +8,8 @@ function urlBase64ToUint8Array(base64String) {
     const rawData = window.atob(base64);
     return Uint8Array.from([...rawData].map(char => char.charCodeAt(0)));
 }
+
+
 
 if ('serviceWorker' in navigator && 'PushManager' in window) {
     navigator.serviceWorker.register('/static/sw.js')
